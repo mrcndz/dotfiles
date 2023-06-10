@@ -1,19 +1,16 @@
 -- Load all config files
-require "user.plugins"
 require "user.options"
+require "user.plugins"
 require "user.commands"
 require "user.keymaps"
-require "user.themes"
-require "user.illuminate"
-
+-- require "user.illuminate"
 
 if vim.g.vscode then
-  -- VSCode extension
-  require "user.vscode"
+    -- VSCode extension
+    require "user.vscode.vscode-keymap"
+    require "user.vscode.hop"
+    require "user.vscode.options"
 else
-    require "user.plugins"
-    require "user.options"
-    require "user.commands"
-    require "user.keymaps"
-    requier "user.themes"
+    require "user.terminal.keymaps"
+	require "user.themes"
 end
