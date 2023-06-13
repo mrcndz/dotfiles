@@ -2,6 +2,7 @@
 local Utils = require('user.utils')
 
 -- local exprnnoremap = Utils.exprnnoremap
+local noremap = Utils.noremap
 local nnoremap = Utils.nnoremap
 local vnoremap = Utils.vnoremap
 local xnoremap = Utils.xnoremap
@@ -9,27 +10,28 @@ local inoremap = Utils.inoremap
 local tnoremap = Utils.tnoremap
 local nmap = Utils.nmap
 local xmap = Utils.xmap
+local map = Utils.map
 
--- vim.g.mapleader = " "
--- vim.g.maplocalleader = " "
+nmap("<space>", "<leader>")
 
 -- Command mapping
 nmap("<leader>r", ":so ~/.config/nvim/init.lua<CR>")
 nnoremap("<leader>e", ":PlugInstall<CR>")
 nnoremap("<leader>q", ":q<CR>")
+
+-- Sandwich mapping
 nmap("si", "<Plug>(sandwich-add)")
+nmap("sd", "<Plug>(sandwich-delete)")
+nmap("sr", "<Plug>(sandwich-replace)")
 
 -- Move lines
 -- nnoremap("<A-k>", ":m .-2<CR>==")
 -- nnoremap("<A-j>", ":m .+1<CR>==")
 
 -- Disable hl with 2 esc
-nnoremap("<silent><esc>", "<esc>:noh<CR><esc>")
-vnoremap("<silent><esc>", "<esc>:noh<CR><esc>")
+-- nnoremap("<silent><esc>", "<esc>:noh<CR><esc>")
+-- vnoremap("<silent><esc>", "<esc>:noh<CR><esc>")
 -- inoremap("<silent><esc>", "<esc>:noh<CR><esc>")
-
--- Trim white spaces
--- nnoremap ("<F2>", ":let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>")
 
 -- Page up/down with recentering
 -- nnoremap("<C-u>", "<C-u>zz")

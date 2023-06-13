@@ -1,7 +1,6 @@
 -- Windows keymaps
 --
 -- Move Through windows
-
 vim.cmd[[
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j

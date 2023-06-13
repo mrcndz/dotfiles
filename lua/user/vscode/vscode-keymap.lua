@@ -16,4 +16,5 @@ nnoremap <silent> n :call VSCodeNotify('editor.action.nextMatchFindAction')<CR>
 nnoremap <silent> N :call VSCodeNotify('editor.action.previousMatchFindAction')<CR>
 xnoremap <silent> N :call VSCodeNotify('editor.action.previousMatchFindAction')<CR>
 xnoremap <silent> n :call VSCodeNotify('editor.action.nextMatchFindAction')<CR>
+nnoremap <silent> <leader>t :call VSCodeNotify('workbench.action.togglePanel')<CR>
 ]]
