@@ -26,7 +26,7 @@ nmap("si", "<Plug>(sandwich-add)")
 -- Disable hl with 2 esc
 nnoremap("<silent><esc>", "<esc>:noh<CR><esc>")
 vnoremap("<silent><esc>", "<esc>:noh<CR><esc>")
-inoremap("<silent><esc>", "<esc>:noh<CR><esc>")
+-- inoremap("<silent><esc>", "<esc>:noh<CR><esc>")
 
 -- Trim white spaces
 -- nnoremap ("<F2>", ":let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>")
@@ -50,12 +50,12 @@ nnoremap("<C-s>", ":w<CR>")
 -- nnoremap("<leader>vs", ":vsplit<CR>")
 
 -- Populate substitution
-nnoremap("<leader>s", ":s//g<Left><Left>")
-nnoremap("<leader>S", ":%s//g<Left><Left>")
-nnoremap("<leader><C-s>", ":%s//gc<Left><Left><Left>")
-vnoremap("<leader>s", ":s//g<Left><Left>")
-vnoremap("<leader><A-s>", ":%s//g<Left><Left>")
-vnoremap("<leader>S", ":%s//gc<Left><Left><Left>")
+-- nnoremap("<leader>s", ":s//g<Left><Left>")
+-- nnoremap("<leader>S", ":%s//g<Left><Left>")
+-- nnoremap("<leader><C-s>", ":%s//gc<Left><Left><Left>")
+-- vnoremap("<leader>s", ":s//g<Left><Left>")
+-- vnoremap("<leader><A-s>", ":%s//g<Left><Left>")
+-- vnoremap("<leader>S", ":%s//gc<Left><Left><Left>")
 
 -- Delete buffer
 -- nnoremap("<A-w>", ":bd<CR>")
@@ -67,8 +67,8 @@ nnoremap("Y", "y$")
 xnoremap("<leader>p", '\"_dP')
 
 -- Delete without overwriting register
-nnoremap("<leader>d", '\"_d')
-vnoremap("<leader>d", '\"_d')
+-- nnoremap("<leader>d", '\"_d')
+-- vnoremap("<leader>d", '\"_d')
 
 -- Different register for delete and paste
 nnoremap("d", '\"_d')
