@@ -8,9 +8,12 @@ nnoremap <silent> <C-h> :call VSCodeNotify('workbench.action.navigateLeft')<CR>
 xnoremap <silent> <C-h> :call VSCodeNotify('workbench.action.navigateLeft')<CR>
 nnoremap <silent> <C-l> :call VSCodeNotify('workbench.action.navigateRight')<CR>
 xnoremap <silent> <C-l> :call VSCodeNotify('workbench.action.navigateRight')<CR>
-nnoremap <silent> <Space>c :call VSCodeNotify('editor.action.addCommentLine')<CR>
-xnoremap <silent> <Space>c :call VSCodeNotify('editor.action.addCommentLine')<CR>
-nnoremap <silent> <Space>b :call VSCodeNotify('editor.action.addBlockComment')<CR>
-xnoremap <silent> <Space>b :call VSCodeNotify('editor.action.addBlockComment')<CR>
 
+" Find
+nnoremap <silent> / :call VSCodeNotify('actions.find')<CR>
+xnoremap <silent> / :call VSCodeNotify('actions.find')<CR>
+nnoremap <silent> n :call VSCodeNotify('editor.action.nextMatchFindAction')<CR>
+nnoremap <silent> N :call VSCodeNotify('editor.action.previousMatchFindAction')<CR>
+xnoremap <silent> N :call VSCodeNotify('editor.action.previousMatchFindAction')<CR>
+xnoremap <silent> n :call VSCodeNotify('editor.action.nextMatchFindAction')<CR>
 ]]
