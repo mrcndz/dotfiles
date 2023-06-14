@@ -13,6 +13,7 @@ local xmap = Utils.xmap
 local map = Utils.map
 
 nmap("<space>", "<leader>")
+nmap(";", ":")
 
 -- Command mapping
 nmap("<leader>r", ":so ~/.config/nvim/init.lua<CR>")
