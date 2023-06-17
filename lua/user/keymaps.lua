@@ -90,3 +90,9 @@ vnoremap("<C-c>", '\"+y') -- Windows behavior
 nnoremap("p", '\"+p')
 vnoremap("p", '\"+p')
 vnoremap ("<C-v>", '\"+p') -- Windows behavior
+
+-- Easy motion for me
+nnoremap("A", "$")
+nnoremap("I", "^")
+vnoremap("A", "$")
+vnoremap("I", "^")
