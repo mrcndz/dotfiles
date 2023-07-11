@@ -22,8 +22,11 @@ nnoremap("<leader>q", ":q<CR>")
 
 -- Sandwich mapping
 nmap("si", "<Plug>(sandwich-add)")
+xmap("si", "<Plug>(sandwich-add)")
 nmap("sd", "<Plug>(sandwich-delete)")
+xmap("sd", "<Plug>(sandwich-delete)")
 nmap("sr", "<Plug>(sandwich-replace)")
+xmap("sr", "<Plug>(sandwich-replace)")
 
 -- Move lines
 -- nnoremap("<A-k>", ":m .-2<CR>==")
