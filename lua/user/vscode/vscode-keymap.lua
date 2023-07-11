@@ -18,4 +18,13 @@ xnoremap <silent> N :call VSCodeNotify('editor.action.previousMatchFindAction')<
 xnoremap <silent> n :call VSCodeNotify('editor.action.nextMatchFindAction')<CR>
 nnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
 xnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
+
+" Jupyter
+nnoremap <silent> <leader>jr :call VSCodeNotify('jupyter.runcurrentcell')<CR>
+nnoremap <silent> <leader>jk :call VSCodeNotify('jupyter.restartkernel')<CR>
+nnoremap <silent> <leader>js :call VSCodeNotify('jupyter.debugstop')<CR>
+nnoremap <silent> <leader>jy :call VSCodeNotify('jupyter.interactive.copyCell')<CR>
+nnoremap <silent> <leader>jy :call VSCodeNotify('notebook.cell.cut')<CR>
 ]]
+
+
