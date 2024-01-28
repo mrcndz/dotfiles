@@ -1,5 +1,4 @@
 -- Keymap functions
-
 local M = {}
 
 function M.map(mode, lhs, rhs)
@@ -19,8 +18,11 @@ end
 --      "expr?" optional expr option
 --      "nore?" optional no-remap option
 --      modes -> 'n' = NORMAL, 'i' = INSERT, 'x' = 'VISUAL', 'v' = VISUAL + SELECT, 't' = TERMINAL
-
+--
+--
 function M.nmap(lhs, rhs) M.map('n', lhs, rhs) end
+
+function M.vmap(lhs, rhs) M.map('n', lhs, rhs) end
 
 function M.xmap(lhs, rhs) M.map('x', lhs, rhs) end
 
