@@ -40,5 +40,5 @@ Plug 'sainnhe/everforest'
 
 vim.call('plug#end')
 
-require "plugin.telescope"
+-- require "plugin.telescope"
 -- require "plugin.which-key"

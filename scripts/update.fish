@@ -1,5 +1,5 @@
 #!/usr/bin/env fish
 echo updating...
-cp ~/.config/fish/config.fish $DOTFILES/fish/
+rsync -av --exclude 'plugged' --exclude '.*' ~/.config/nvim/ $DOTFILES/nvim/
 cp ~/.tmux.conf $DOTFILES/tmux/
 cp -r ~/.config/nvim $DOTFILES
