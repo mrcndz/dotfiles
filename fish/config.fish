@@ -1,30 +1,32 @@
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-eval /Users/marc/opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
-# <<< conda initialize <<<
-
 # Paths
 fish_add_path /opt/homebrew/sbin
 fish_add_path /opt/homebrew/bin
 fish_add_path $HOME/.cargo/bin/
 
 # Variable:
-set -gx FISH_CONFIG $HOME/.config/fish/config.fish
+set -gx CONFIG_FISH $DOTFILES/fish/config.fish
+set -gx CONFIG_TMUX $DOTFILES/tmux/.tmux.conf
+set -gx CONFIG_NVIM $DOTFILES/nvim/
 set -gx EDITOR nvim
-set -gx DOTFILES $HOME/Repos/dotfiles
-set -gx TMUX_CONFIG $HOME/.tmux.conf
 
 # Alias
-alias reload_fish="source $FISH_CONFIG"
-alias config_fish="$EDITOR $FISH_CONFIG"
-alias config_tmux="$EDITOR $TMUX_CONFIG"
+alias reload_fish="source $CONFIG_FISH"
+alias config_fish="$EDITOR $CONFIG_FISH"
+alias config_tmux="$EDITOR $CONFIG_TMUX"
+alias config_vim="$EDITOR $CONFIG_NVIM"
 
 # Plugins
+# Add new plugins to the list by running `set plugins -a <author>/<plugin-name>`
+set -l plugins jorgebucaran/autopair.fish
+set -a plugins patrickf1/fzf.fish
 
-set plugins -l \
-    jorgebucaran/autopair.fish \
-    patrickf1/fzf.fish
+# Auto install plugin if not installed
+for plugin in $plugins
+    if not fisher list | grep -q $plugin
+        echo $plugin >> $__fish_config_dir/fish_plugins
+        echo "run `fisher update` to complete the install of $plugin"
+    end
+end
 
 # Autorun Tmux
 if status is-interactive
