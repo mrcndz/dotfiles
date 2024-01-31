@@ -33,3 +33,6 @@ if status is-interactive
 and not set -q TMUX
     exec tmux
 end
+
+# Call Theme
+source $DOTFILES/fish/theme.fish
