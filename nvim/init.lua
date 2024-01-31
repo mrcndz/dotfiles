@@ -1,5 +1,8 @@
 -- Load all config files
 -- require "user.illuminate"
+local dir = os.getenv("DOTFILES") .. "/nvim/lua/?.lua"
+package.path = package.path .. ";" .. dir
+
 require "user.options"
 require "user.commands"
 require "user.keymaps"
