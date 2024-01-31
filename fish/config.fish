@@ -19,6 +19,7 @@ alias config_vim="$EDITOR $CONFIG_NVIM"
 # Add new plugins to the list by running `set plugins -a <author>/<plugin-name>`
 set -l plugins jorgebucaran/autopair.fish
 set -a plugins patrickf1/fzf.fish
+set -a plugins ilanCosman/tide@v6
 
 # Auto install plugin if not installed
 for plugin in $plugins
