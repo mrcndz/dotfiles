@@ -18,8 +18,7 @@ alias config_vim="$EDITOR $CONFIG_NVIM"
 # Plugins
 # Add new plugins to the list by running `set plugins -a <author>/<plugin-name>`
 set -l plugins jorgebucaran/autopair.fish
-set -a plugins patrickf1/fzf.fish
-set -a plugins ilanCosman/tide@v6
+set -a plugins ilancosman/tide@v6
 
 # Auto install plugin if not installed
 for plugin in $plugins
@@ -32,7 +31,7 @@ end
 # Autorun Tmux
 if status is-interactive
 and not set -q TMUX
-    exec tmux
+    exec tmux -f $DOTFILES/tmux/.tmux.conf
 end
 
 # Call Theme
