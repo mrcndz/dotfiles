@@ -1,0 +1,14 @@
+.DS_Store
+.Trashes
+.Spotlight-V100
+.fseventsd
+Library/
+Applications/
+Music
+Movies
+*.jar
+.cargo
+.rustup
+opt/
+* - Google Drive
+*.mcma
