@@ -1,0 +1,7 @@
+fzf
+fd
+bat
+fisher
+xsel
+ripgrep
+jump
