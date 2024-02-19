@@ -1,3 +1,4 @@
+set -gx DOTFILES $HOME/.dotfiles
 source $DOTFILES/fish/fisher.fish
 source $DOTFILES/fish/theme.fish
 source $DOTFILES/fzf/fzf.fish
@@ -8,7 +9,6 @@ fish_add_path /opt/homebrew/bin
 fish_add_path $HOME/.cargo/bin/
 
 # Variable:
-set -gx DOTFILES $HOME/.dotfiles
 set -gx CONFIG_FISH $DOTFILES/fish/config.fish
 set -gx CONFIG_TMUX $DOTFILES/tmux/.tmux.conf
 set -gx CONFIG_NVIM $DOTFILES/nvim/
