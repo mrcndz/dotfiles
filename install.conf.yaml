@@ -1,0 +1,23 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+      force: true
+
+- clean:
+    ~/:
+      force: true
+
+- link:
+    ~/.dotfiles/: ./
+    ~/.tmux.conf: tmux/tmux.conf
+    ~/.config/nvim/:
+      glob: true
+      path: nvim/*
+    ~/.config/fish/config.fish: fish/config.fish
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - [git pull, Updating dotfiles]
+  - [chsh -s $(which fish), Changing shell to fish]
+  - [nvim +PlugInstall +qall, Installing neovim plugins]
