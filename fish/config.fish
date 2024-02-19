@@ -8,6 +8,7 @@ fish_add_path /opt/homebrew/bin
 fish_add_path $HOME/.cargo/bin/
 
 # Variable:
+set -gx DOTFILES $HOME/.dotfiles
 set -gx CONFIG_FISH $DOTFILES/fish/config.fish
 set -gx CONFIG_TMUX $DOTFILES/tmux/.tmux.conf
 set -gx CONFIG_NVIM $DOTFILES/nvim/
@@ -29,7 +30,7 @@ fisher_plugin_install PatrickF1/fzf.fish
 # Autorun Tmux
 if status is-interactive
 and not set -q TMUX
-    exec tmux -f $DOTFILES/tmux/.tmux.conf
+    exec tmux -f $DOTFILES/tmux/tmux.conf
 end
 
 jump shell fish | source

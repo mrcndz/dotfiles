@@ -14,12 +14,9 @@ local vmap = Utils.vmap
 local map = Utils.map
 
 nmap("<space>", "<leader>")
-
--- MANUAL:
-
--- nmap("<leader>r", ":so ~/.config/nvim/init.lua<CR>")
--- nnoremap("<leader>e", ":PlugInstall<CR>")
--- nnoremap("<leader>q", ":q<CR>")
+nmap("<leader>r", ":so ~/.config/nvim/init.lua<CR>")
+nnoremap("<leader>e", ":PlugInstall<CR>")
+nnoremap("<leader>q", ":q<CR>")
 
 -- Plugins ---------------------------------------
 -- MvVis
@@ -28,6 +25,22 @@ vnoremap("<A-j>", "<Plug>(MvVisDown)")
 vnoremap("<A-k>", "<Plug>(MvVisUp)")
 vnoremap("<A-l>", "<Plug>(MvVisRight)")
 
+-- Smoothie
+vim.cmd[[
+nnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
+vnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
+nnoremap <unique> <C-U> <cmd>call smoothie#do("\<C-U>") <CR>
+vnoremap <unique> <C-U> <cmd>call smoothie#do("\<C-U>") <CR>
+vnoremap <unique> zz <cmd>call smoothie#do("zz") <CR>
+nnoremap <unique> zz <cmd>call smoothie#do("zz") <CR>
+vnoremap <unique> zu <cmd>call smoothie#do("zt") <CR>
+nnoremap <unique> zu <cmd>call smoothie#do("zt") <CR>
+vnoremap <unique> zd <cmd>call smoothie#do("zb") <CR>
+nnoremap <unique> zd <cmd>call smoothie#do("zb") <CR>
+vnoremap <unique> <C-E> <cmd>call smoothie#do("\<C-E>") <CR>
+nnoremap <unique> <C-E> <cmd>call smoothie#do("\<C-E>") <CR>
+]]
+
 -- Sandwich
 nmap("si", "<Plug>(sandwich-add)")
 xmap("si", "<Plug>(sandwich-add)")
@@ -35,6 +48,27 @@ nmap("sd", "<Plug>(sandwich-delete)")
 xmap("sd", "<Plug>(sandwich-delete)")
 nmap("sr", "<Plug>(sandwich-replace)")
 xmap("sr", "<Plug>(sandwich-replace)")
+
+-- Telescope
+nmap("<F1>", ":Telescope find_files<CR>")
+nmap("<leader>fg", ":Telescope live_grep<CR>")
+nmap("<leader>fb", ":Telescope buffers<CR>")
+nmap("<leader>fr", ":Telescope lsp_references<CR>")
+nmap("<leader>fs", ":Telescope lsp_document_symbols<CR>")
+nmap("<leader>fd", ":Telescope lsp_definitions<CR>")
+nmap("<leader>fi", ":Telescope lsp_implementations<CR>")
+nmap("<leader>fc", ":Telescope lsp_code_actions<CR>")
+nmap("<leader>fw", ":Telescope lsp_workspace_symbols<CR>")
+nmap("<leader>fm", ":Telescope lsp_document_diagnostics<CR>")
+nmap("<leader>fl", ":Telescope lsp_workspace_diagnostics<CR>")
+nmap("<leader>fo", ":Telescope lsp_document_symbols<CR>")
+nmap("<leader>fp", ":Telescope lsp_document_diagnostics<CR>")
+
+-- Nvim tmux navigator
+nnoremap("<silent><A-h>", "<Cmd>NvimTmuxNavigateLeft<CR>")
+nnoremap("<silent><A-j>", "<Cmd>NvimTmuxNavigateDown<CR>")
+nnoremap("<silent><A-k>", "<Cmd>NvimTmuxNavigateUp<CR>")
+nnoremap("<silent><A-l>", "<Cmd>NvimTmuxNavigateRight<CR>")
 -- End Plugins ---------------------------------------
 
 -- Macro over visual
@@ -52,12 +86,12 @@ vim.cmd[[
 nnoremap("<C-s>", ":w<CR>")
 
 -- Page up/down with recentering
-nnoremap("<C-u>", "<C-u>zz")
-nnoremap("<C-d>", "<C-d>zz")
+-- nnoremap("<C-u>", "<C-u>zz")
+-- nnoremap("<C-d>", "<C-d>zz")
 
 -- Splits
-nnoremap("<leader>ws", ":split<CR>")
-nnoremap("<leader>vs", ":vsplit<CR>")
+nnoremap("<leader>w|", ":split<CR>")
+nnoremap("<leader>w-", ":vsplit<CR>")
 
 -- Yank to end of line
 nnoremap("Y", "y$")
