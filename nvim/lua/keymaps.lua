@@ -54,11 +54,12 @@ xmap("sd", "<Plug>(sandwich-delete)")
 nmap("sr", "<Plug>(sandwich-replace)")
 xmap("sr", "<Plug>(sandwich-replace)")
 
--- Nvim tmux navigator
-nnoremap("<silent><A-h>", "<Cmd>NvimTmuxNavigateLeft<CR>")
-nnoremap("<silent><A-j>", "<Cmd>NvimTmuxNavigateDown<CR>")
-nnoremap("<silent><A-k>", "<Cmd>NvimTmuxNavigateUp<CR>")
-nnoremap("<silent><A-l>", "<Cmd>NvimTmuxNavigateRight<CR>")
+-- Tmux
+nnoremap("<silent><C-h>", ":TmuxNavigateLeft<CR>")
+nnoremap("<silent><C-l>", ":TmuxNavigateRight<CR>")
+nnoremap("<silent><C-j>", ":TmuxNavigateDown<CR>")
+nnoremap("<silent><C-k>", ":TmuxNavigateUp<CR>")
+
 
 -- Telescope bookmark
 nmap("ml", ":Telescope bookmarks list<CR>")
