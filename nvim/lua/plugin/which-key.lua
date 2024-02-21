@@ -82,14 +82,26 @@ local setup = {
 local mappings = {
     ["b"] = { "<cmd>Telescope buffers<cr>", "Buffers" },
     ["e"] = { "<cmd>NERDTree<cr>", "Explorer" },
-    ["w"] = { "<cmd>w!<CR>", "Save" },
     ["q"] = { "<cmd>q!<CR>", "Quit" },
     ["f"] = { "<cmd>Telescope find_files<cr>", "Find files", },
     ["F"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
-    ["P"] = { "<cmd>lua require('telescope').extensions.projects.projects()<cr>", "Projects" },
+    ["r"] = { "<cmd>Telescope ", "Open Recents" },
+    ["m"] = {"<cmd>Telescope bookmarks list<cr>", "Bookmarks" },
+    -- LSP WITH TELESCOPE
+    l = {
+        name = "LSP",
+        r = { "<cmd>Telescope lsp_references<cr>", "References" },
+        d = { "<cmd>Telescope lsp_definitions<cr>", "Definitions" },
+        a = { "<cmd>Telescope lsp_code_actions<cr>", "Code Actions" },
+        s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
+        S = { "<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols" },
+        i = { "<cmd>Telescope lsp_implementations<cr>", "Implementations" },
+        t = { "<cmd>Telescope lsp_type_definitions<cr>", "Type Definitions" },
+        I = { "<cmd>Telescope lsp_incoming_calls<cr>", "Incoming calls" },
+        O = { "<cmd>Telescope lsp_outgoing_calls<cr>", "Outgoing calls" },
+    },
     s = {
         name = "Telescope",
-        b = {"<cmd>Telescope bookmarks list<cr>", "Bookmarks" },
         g = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
         c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
         h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
@@ -99,9 +111,6 @@ local mappings = {
         k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
         C = { "<cmd>Telescope commands<cr>", "Commands" },
     },
-    l = {
-        name = "LSP",
-    }
 }
 
 wk.setup(setup)
