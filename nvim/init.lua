@@ -1,5 +1,4 @@
 -- Load all config files
--- require "user.illuminate"
 require "options"
 require "commands"
 require "keymaps"
