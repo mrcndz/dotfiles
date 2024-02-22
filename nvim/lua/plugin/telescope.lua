@@ -8,8 +8,8 @@ require('telescope').setup{
       i = {
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
-        ["<C-u>"] = actions.results_scrolling_up,
-        ["<C-d>"] = actions.results_scrolling_down,
+        ["<C-u>"] = actions.preview_scrolling_up,
+        ["<C-d>"] = actions.preview_scrolling_down,
       },
     },
   },
