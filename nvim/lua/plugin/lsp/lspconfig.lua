@@ -23,8 +23,6 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)                                   -- go to previous diagnostic]')
     buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)                                   -- go to next diagnostic
 
-    vim.diagnostic.config({ virtual_lines = true })
-    vim.diagnostic.config({ virtual_text = true })
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

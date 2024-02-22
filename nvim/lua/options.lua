@@ -60,9 +60,9 @@ vim.g.loaded_ruby_provider = 0
 vim.g.indentLine_char_list = {'▏', '¦', '┆', '┊'}
 vim.g.indentLine_setColors = 0
 vim.g.indentLine_setConceal = 0
--- Disable inline error messages
+-- Enable inline error messages
 vim.diagnostic.config {
-  virtual_text = false,
-  underline = false,
+  virtual_text = true,
+  underline = true,
   signs = true,          -- Keep gutter signs
 }

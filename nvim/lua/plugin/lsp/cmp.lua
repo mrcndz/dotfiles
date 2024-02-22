@@ -8,8 +8,11 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     -- Enter key confirms completion item
     ['<CR>'] = cmp.mapping.confirm({select = false}),
-
-    -- Ctrl + space triggers completion menu
+    ['<C-Tab>'] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
+    ['<C-j>'] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Insert}),
+    ['<C-k>'] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Insert}),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-u>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
   }),
   snippet = {
