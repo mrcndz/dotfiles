@@ -81,13 +81,12 @@ local setup = {
 
 local mappings = {
     ["b"] = { "<cmd>Telescope buffers<cr>", "Buffers" },
-    ["e"] = { "<cmd>NERDTree<cr>", "Explorer" },
+    ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
     ["q"] = { "<cmd>q!<CR>", "Quit" },
     ["f"] = { "<cmd>Telescope find_files<cr>", "Find files", },
     ["F"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
     ["r"] = { "<cmd>Telescope ", "Open Recents" },
     ["m"] = {"<cmd>Telescope bookmarks list<cr>", "Bookmarks" },
-    -- LSP WITH TELESCOPE
     l = {
         name = "LSP",
         r = { "<cmd>Telescope lsp_references<cr>", "References" },
