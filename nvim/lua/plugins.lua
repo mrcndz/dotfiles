@@ -24,6 +24,7 @@ Plug "nvimtools/none-ls.nvim"                           --
 ----------------------------------------------------------
 
 -- Essentials ---------------------------------------------
+Plug 'RRethy/vim-illuminate'                  -- Illuminate  --
 Plug 'nvim-treesitter/nvim-treesitter'    -- Treesitter  --
 Plug 'preservim/nerdtree'                 -- Nerdtree    --
 Plug 'folke/which-key.nvim'               -- Which-key   --
