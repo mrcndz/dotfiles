@@ -1,5 +1,4 @@
 local wk = require("which-key")
-local nnoremap = require("Utils").nnoremap
 
 local opts = {
   mode = "n", -- NORMAL mode
