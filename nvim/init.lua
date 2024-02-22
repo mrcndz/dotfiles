@@ -9,7 +9,6 @@ if vim.g.vscode then
     require "vscode.vscode-keymap"
 else
 	require "plugins"
-    require "terminal.keymaps"
     require "themes"
 end
 
