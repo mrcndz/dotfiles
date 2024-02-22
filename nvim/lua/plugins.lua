@@ -1,4 +1,4 @@
---To install plugin use `:PlugInstall`
+--To install plugin use `:PlugInstall'
 local Plug = vim.fn['plug#']
 
 vim.call('plug#begin', '~/.config/nvim/plugged')
@@ -43,12 +43,14 @@ Plug 'psliwka/vim-smoothie'               -- Smoothie    --
 Plug 'nvim-tree/nvim-tree.lua'            -- Nvim-tree   --
 -----------------------------------------------------------
 
--- Themes ---------------------------------------------------------
+-- Visual -------------------------------------------------
 Plug 'luochen1990/rainbow'                -- Rainbow     --
 Plug 'sainnhe/everforest'                 -- Everforest  --
 Plug 'sainnhe/sonokai'                    -- Sonokai     --
 Plug 'sainnhe/edge'                       -- Edge        --
--------------------------------------------------------------------
+Plug 'vim-airline/vim-airline'            -- Airline     --
+Plug 'vim-airline/vim-airline-themes'     -- Airline     --
+-----------------------------------------------------------
 
 -- Keymaps ----------------------------------------------------------
 Plug 'subnut/visualstar.vim'              -- * for visual mode     --
@@ -75,3 +77,4 @@ require "plugin.telescope"
 require "plugin.which-key"
 require "plugin.bookmarks"
 require "plugin.nvim-tree"
+require "plugin.airline"
