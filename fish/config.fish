@@ -20,6 +20,7 @@ alias config_fish="$EDITOR $CONFIG_FISH"
 alias config_tmux="$EDITOR $CONFIG_TMUX"
 alias config_vim="$EDITOR $CONFIG_NVIM"
 alias j="jump"
+alias v="nvim"
 
 # Plugins
 # Add new plugins to the list by running `set plugins -a <author>/<plugin-name>`
