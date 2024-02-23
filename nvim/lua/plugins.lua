@@ -34,7 +34,6 @@ Plug "nvimtools/none-ls.nvim"                           --
 -- Essentials ---------------------------------------------
 Plug 'RRethy/vim-illuminate'              -- Illuminate  --
 Plug 'nvim-treesitter/nvim-treesitter'    -- Treesitter  --
--- Plug 'preservim/nerdtree'                 -- Nerdtree    --
 Plug 'folke/which-key.nvim'               -- Which-key   --
 Plug 'tomasky/bookmarks.nvim'             -- Bookmarks   --
 Plug 'cohama/lexima.vim'                  -- Lexima      --
@@ -43,13 +42,13 @@ Plug 'psliwka/vim-smoothie'               -- Smoothie    --
 Plug 'nvim-tree/nvim-tree.lua'            -- Nvim-tree   --
 -----------------------------------------------------------
 
--- Visual -------------------------------------------------
+-- Themes -------------------------------------------------
 Plug 'luochen1990/rainbow'                -- Rainbow     --
 Plug 'sainnhe/everforest'                 -- Everforest  --
 Plug 'sainnhe/sonokai'                    -- Sonokai     --
 Plug 'sainnhe/edge'                       -- Edge        --
-Plug 'vim-airline/vim-airline'            -- Airline     --
-Plug 'vim-airline/vim-airline-themes'     -- Airline     --
+-- Visual -------------------------------------------------
+Plug 'nvim-lualine/lualine.nvim'
 -----------------------------------------------------------
 
 -- Keymaps ----------------------------------------------------------
@@ -60,12 +59,11 @@ Plug 'tpope/vim-commentary'               -- Comment               --
 ---------------------------------------------------------------------
 
 -- Etc --------------------------------------------------------------
-Plug 'alexghergh/nvim-tmux-navigation'     -- Tmux navigation      --
-Plug 'christoomey/vim-tmux-navigator'                             --
+Plug 'alexghergh/nvim-tmux-navigation'    -- Tmux navigation       --
+Plug 'christoomey/vim-tmux-navigator'     --                       --
 Plug 'github/copilot.vim'                 -- Copilot               --
 Plug 'Yggdroot/indentLine'                -- Indent line           --
-Plug 'tpope/vim-eunuch'                   -- Eunuch                --
--- Plug 'wellle/tmux-complete.vim'        -- Tmux complete         --
+Plug 'tpope/vim-fugitive'                 -- Fugitive              --
 ---------------------------------------------------------------------
 
 vim.call('plug#end')
@@ -77,4 +75,5 @@ require "plugin.telescope"
 require "plugin.which-key"
 require "plugin.bookmarks"
 require "plugin.nvim-tree"
-require "plugin.airline"
+require "plugin.lualine"
+
