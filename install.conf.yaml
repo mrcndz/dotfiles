@@ -20,4 +20,5 @@
   - [git submodule update --init --recursive, Installing submodules]
   - [git pull, Updating dotfiles]
   - [chsh -s $(which fish), Changing shell to fish]
+  - [bash .tmux/plugins/tpm/bin/install_plugins, Installing tmux plugins]
   - [nvim +PlugInstall +qall, Installing neovim plugins]
