@@ -3,7 +3,6 @@ vim.g.barbar_auto_setup = false -- disable auto-setup
 require'barbar'.setup {
   exclude_ft = {'javascript'},
   exclude_name = {'package.json'},
-
   focus_on_close = 'left',
   hide = {extensions = false, inactive = true},
   highlight_alternate = false,
@@ -13,12 +12,12 @@ require'barbar'.setup {
   icons = {
     buffer_index = true,
     buffer_number = false,
-    button = '',
+    button = '×',
     diagnostics = {
-      [vim.diagnostic.severity.ERROR] = {enabled = true, icon = ''},
+      [vim.diagnostic.severity.ERROR] = {enabled = false},
       [vim.diagnostic.severity.WARN] = {enabled = false},
       [vim.diagnostic.severity.INFO] = {enabled = false},
-      [vim.diagnostic.severity.HINT] = {enabled = true, icon = ''},
+      [vim.diagnostic.severity.HINT] = {enabled = false, icon = ''},
     },
     filetype = {
       custom_colors = false,
@@ -32,7 +31,7 @@ require'barbar'.setup {
 
     alternate = {filetype = {enabled = false}},
     current = {buffer_index = true},
-    inactive = {button = '×'},
+    inactive = {button = ''},
     visible = {modified = {buffer_number = false}},
   },
 
