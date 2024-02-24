@@ -24,6 +24,12 @@ vnoremap("J", "<Plug>(MvVisDown)")
 vnoremap("K", "<Plug>(MvVisUp)")
 vnoremap("L", "<Plug>(MvVisRight)")
 
+-- Buffer
+nnoremap("<A-.>", "<cmd>BufferNext<CR>")
+nnoremap("<A-,>", "<cmd>BufferPrevious<CR>")
+nnoremap("<A-<>", "<cmd>BufferMovePrevious<CR>")
+nnoremap("<A->>", "<cmd>BufferMoveNext<CR>")
+
 -- Smoothie
 vim.cmd[[
 nnoremap <unique> <C-D> <cmd>call smoothie#do("\<C-D>") <CR>
@@ -62,7 +68,7 @@ nnoremap("<silent><C-k>", ":TmuxNavigateUp<CR>")
 
 
 -- Telescope bookmark
-nmap("ml", ":Telescope bookmarks list<CR>")
+nmap("ml", ":Telescope bookmarks list theme=dropdown<CR>")
 
 -- End Plugins ---------------------------------------
 
@@ -79,10 +85,6 @@ vim.cmd[[
 
 nnoremap("<C-s>", ":w<CR>")
 nnoremap("<C-q>", ":q<CR>")
-
--- Tabs
-nnoremap("<Tab>", "gt")
-nnoremap("<S-Tab>", "gT")
 
 -- Yank to end of line
 nnoremap("Y", "y$")
