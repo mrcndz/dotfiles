@@ -18,6 +18,7 @@ local function my_on_attach(bufnr)
     vim.keymap.set('n', '-', api.node.open.horizontal, opts('Open: Horizontal Split'))
     vim.keymap.set('n', '>', api.tree.change_root_to_node, opts('CD'))
     vim.keymap.set('n', '<', api.tree.change_root_to_parent, opts('CD'))
+    vim.keymap.set('n', 't', api.node.open.tab, opts('Open: Tab'))
 end
 
 require("nvim-tree").setup {
