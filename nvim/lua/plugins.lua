@@ -48,12 +48,13 @@ Plug 'sainnhe/everforest'                 -- Everforest  --
 Plug 'sainnhe/sonokai'                    -- Sonokai     --
 Plug 'sainnhe/edge'                       -- Edge        --
 -- Visual -------------------------------------------------
-Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-lualine/lualine.nvim'          -- statusline  --
+Plug 'romgrk/barbar.nvim'                 -- tabline     --
 -----------------------------------------------------------
 
 -- Keymaps ----------------------------------------------------------
 Plug 'subnut/visualstar.vim'              -- * for visual mode     --
-Plug 'phaazon/hop.nvim'                   -- Hop                   --
+Plug 'phaazon/hop.nvim'                   -- Jump letters          --
 Plug 'Jorengarenar/vim-MvVis'             -- Move selected text    --
 Plug 'tpope/vim-commentary'               -- Comment               --
 ---------------------------------------------------------------------
@@ -76,4 +77,5 @@ require "plugin.which-key"
 require "plugin.bookmarks"
 require "plugin.nvim-tree"
 require "plugin.lualine"
+require "plugin.barbar"
 
