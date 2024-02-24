@@ -61,10 +61,10 @@ Plug 'tpope/vim-commentary'               -- Comment               --
 
 -- Etc --------------------------------------------------------------
 Plug 'alexghergh/nvim-tmux-navigation'    -- Tmux navigation       --
-Plug 'christoomey/vim-tmux-navigator'     --                       --
 Plug 'github/copilot.vim'                 -- Copilot               --
-Plug 'Yggdroot/indentLine'                -- Indent line           --
+-- Plug 'Yggdroot/indentLine'                -- Indent line           --
 Plug 'tpope/vim-fugitive'                 -- Fugitive              --
+Plug 'lukas-reineke/indent-blankline.nvim' -- Indent blankline    --
 ---------------------------------------------------------------------
 
 vim.call('plug#end')
@@ -78,4 +78,5 @@ require "plugin.bookmarks"
 require "plugin.nvim-tree"
 require "plugin.lualine"
 require "plugin.barbar"
-
+require "plugin.nvim-tmux-navigation"
+require "plugin.indent-blankline"
