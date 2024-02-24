@@ -61,10 +61,10 @@ nmap("sr", "<Plug>(sandwich-replace)")
 xmap("sr", "<Plug>(sandwich-replace)")
 
 -- Tmux
-nnoremap("<silent><C-h>", ":TmuxNavigateLeft<CR>")
-nnoremap("<silent><C-l>", ":TmuxNavigateRight<CR>")
-nnoremap("<silent><C-j>", ":TmuxNavigateDown<CR>")
-nnoremap("<silent><C-k>", ":TmuxNavigateUp<CR>")
+nnoremap("<C-h>", ":NvimTmuxNavigateLeft<CR>")
+nnoremap("<C-l>", ":NvimTmuxNavigateRight<CR>")
+nnoremap("<C-j>", ":NvimTmuxNavigateDown<CR>")
+nnoremap("<C-k>", ":NvimTmuxNavigateUp<CR>")
 
 
 -- Telescope bookmark
