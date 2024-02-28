@@ -15,7 +15,7 @@ nnoremap('<space>', ':WhichKey <leader><CR>')
 
 -- Move text
 vnoremap('J', ":m '>+1<CR>gv=gv")
-vnoremmap('K', ":m '<-2<CR>gv=gv")
+vnoremap('K', ":m '<-2<CR>gv=gv")
 
 -- search centering
 nnoremap('n', 'nzzzv')
