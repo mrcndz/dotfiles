@@ -20,7 +20,4 @@ set -x FZF_DEFAULT_OPTS " \
     --preview-window right:50%:wrap \
     --ansi"
 
-    #     --preview '__fzf_preview__ {}' \
-
-
-
+#     --preview '__fzf_preview__ {}' \

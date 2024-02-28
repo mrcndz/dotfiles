@@ -36,7 +36,7 @@ return {
             buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)                                     -- rename symbol
             buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)                                -- code action
             buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)                       -- add workspace folder
-            buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)                    -- remove workspace folder
+            buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove workspace_folder()<CR>', opts)                    -- remove workspace folder
             buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts) -- list workspace folders
             buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)                                   -- go to previous diagnostic]')
             buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)                                   -- go to next diagnostic
