@@ -26,6 +26,7 @@ nnoremap('<A-.>', '<cmd>BufferNext<CR>')
 nnoremap('<A-,>', '<cmd>BufferPrevious<CR>')
 nnoremap('<A-<>', '<cmd>BufferMovePrevious<CR>')
 nnoremap('<A->>', '<cmd>BufferMoveNext<CR>')
+nnoremap('<C-p>', '<cmd>BufferPin<cr>')
 
 -- Macro over visual
 vim.cmd([[
