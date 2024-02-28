@@ -8,16 +8,16 @@ return {
         local filename = vim.fn.expand('%:t')
         local extension = vim.fn.expand('%:e')
         local filepath = vim.fn.expand('%:~:.')
-      
+
         local icon = require('nvim-web-devicons').get_icon(filename, extension)
-      
+
         if icon == nil then
           return '' .. filepath
         end
-      
+
         return icon .. ' ' .. filepath
       end
-      
+
       require('lualine').setup {
         options = {
           icons_enabled = true,
