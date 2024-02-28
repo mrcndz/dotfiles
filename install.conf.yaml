@@ -19,6 +19,5 @@
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
   - [git pull, Updating dotfiles]
+  - [echo "nvim dir backup in ~/.config/nvim/backup"; mv ~/.config/nvim ~/.config/nvim.backup.d]
   - [chsh -s $(which fish), Changing shell to fish]
-  - [bash .tmux/plugins/tpm/bin/install_plugins, Installing tmux plugins]
-  - [nvim +PlugInstall +qall, Installing neovim plugins]
