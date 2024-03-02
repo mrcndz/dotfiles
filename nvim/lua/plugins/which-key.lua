@@ -19,7 +19,6 @@ local mappings = {
     name = 'LSP',
     r = { '<cmd>Telescope lsp_references theme=cursor<cr>', 'References' },
     d = { '<cmd>Telescope lsp_definitions theme=cursor<cr>', 'Definitions' },
-    a = { '<cmd>Telescope lsp_code_actions theme=cursor<cr>', 'Code Actions' },
     s = { '<cmd>Telescope lsp_document_symbols theme=ivy<cr>', 'Document Symbols' },
     S = { '<cmd>Telescope lsp_workspace_symbols theme=ivy<cr>', 'Workspace Symbols' },
     i = { '<cmd>Telescope lsp_implementations theme=cursor<cr>', 'Implementations' },
