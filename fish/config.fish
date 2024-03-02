@@ -21,6 +21,7 @@ alias config_tmux="$EDITOR $CONFIG_TMUX"
 alias config_vim="$EDITOR $CONFIG_NVIM"
 alias j="jump"
 alias v="nvim"
+alias g ="git"
 
 # Plugins
 # Add new plugins to the list by running `set plugins -a <author>/<plugin-name>`
@@ -30,7 +31,7 @@ fisher_plugin_install PatrickF1/fzf.fish
 
 # Autorun Tmux
 if status is-interactive
-and not set -q TMUX
+    and not set -q TMUX
     exec tmux -f $DOTFILES/tmux/tmux.conf
 end
 
