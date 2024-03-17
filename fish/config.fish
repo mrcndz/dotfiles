@@ -1,18 +1,16 @@
+# Variables
+set -gx EDITOR nvim
 set -gx DOTFILES $HOME/.dotfiles
+
+# Source
 source $DOTFILES/fish/fisher.fish
 source $DOTFILES/fish/theme.fish
-source $DOTFILES/fzf/fzf.fish
+source $DOTFILES/fish/fzf.fish
 
 # Paths
 fish_add_path /opt/homebrew/sbin
 fish_add_path /opt/homebrew/bin
 fish_add_path $HOME/.cargo/bin/
-
-# Variable:
-set -gx CONFIG_FISH $DOTFILES/fish/config.fish
-set -gx CONFIG_TMUX $DOTFILES/tmux/.tmux.conf
-set -gx CONFIG_NVIM $DOTFILES/nvim/
-set -gx EDITOR nvim
 
 # Alias
 alias reload_fish="source $CONFIG_FISH"
@@ -36,5 +34,3 @@ if status is-interactive
 end
 
 jump shell fish | source
-
-# Configs
