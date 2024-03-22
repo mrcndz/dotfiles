@@ -19,5 +19,5 @@
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
   - [git pull, Updating dotfiles]
-  - [echo "nvim dir backup in ~/.config/nvim/backup"; mv ~/.config/nvim ~/.config/nvim.backup.d]
+  - [fish ~/.dotfiles/fish/fisher.fish]
   - [chsh -s $(which fish), Changing shell to fish]
