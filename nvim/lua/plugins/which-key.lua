@@ -9,12 +9,17 @@ local opts = {
 
 local mappings = {
   ['e'] = { '<cmd>NvimTreeToggle<cr>', 'Explorer' },
-  ['q'] = { '<cmd>q!<CR>', 'Quit' },
   ['b'] = { '<cmd>Telescope buffers theme=ivy<cr>', 'Buffers' },
-  ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Find files' },
-  ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Find Text' },
+  ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Files...' },
+  ['g'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Grep' },
   ['h'] = { '<cmd>Telescope help_tags theme=ivy<cr>', 'Help' },
   ['<F2>'] = { "<cmd>lua require'conform'.format()<cr>", 'Format' },
+  S = {
+    name = 'Session',
+    s = { '<cmd>SessionManager save_current_session<cr>', 'Save' },
+    l = { '<cmd>SessionManager load_session<cr>', 'Load' },
+    d = { '<cmd>SessionManager delete_session<cr>', 'Delete' },
+  },
   l = {
     name = 'LSP',
     r = { '<cmd>Telescope lsp_references theme=cursor<cr>', 'References' },
@@ -26,13 +31,17 @@ local mappings = {
     I = { '<cmd>Telescope lsp_incoming_calls theme=cursor<cr>', 'Incoming calls' },
     O = { '<cmd>Telescope lsp_outgoing_calls theme=cursor<cr>', 'Outgoing calls' },
   },
+  G = {
+    name = 'Git',
+    b = { '<cmd>Telescope git_branches theme=ivy<cr>', 'Checkout branch' },
+    c = { '<cmd>Telescope git_commits theme=ivy<cr>', 'Commits' },
+    s = { '<cmd>Telescope git_status theme=cursor<cr>', 'Status' },
+  },
   s = {
-    name = 'Telescope',
-    g = { '<cmd>Telescope git_branches theme=ivy<cr>', 'Checkout branch' },
-    C = { '<cmd>Telescope colorscheme theme=dropdown<cr>', 'Colorscheme' },
-    h = { '<cmd>Telescope help_tags theme=ivy<cr>', 'Find Help' },
+    name = 'Search...',
+    C = { '<cmd>Telescope colorscheme theme=dropdown<cr>', 'Colorschemes' },
+    o = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Recents' },
     M = { '<cmd>Telescope man_pages theme=ivy<cr>', 'Man Pages' },
-    R = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Open Recent File' },
     r = { '<cmd>Telescope registers theme=dropdown<cr>', 'Registers' },
     k = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
     c = { '<cmd>Telescope commands theme=ivy<cr>', 'Commands' },
