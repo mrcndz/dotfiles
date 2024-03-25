@@ -17,5 +17,4 @@ set -x FZF_DEFAULT_OPTS " \
     --marker='✓ ' \
     --header='Search '
     --preview-window right:50%:wrap \
-    --ansi \
-    --preview '__fzf_preview__ {}'"
+    --ansi"
