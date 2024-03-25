@@ -13,8 +13,8 @@ fish_add_path $HOME/.cargo/bin/
 
 # Alias
 alias j="jump"
+alias g="git"
 alias v="nvim"
-alias g ="git"
 
 # Autorun Tmux
 if status is-interactive
