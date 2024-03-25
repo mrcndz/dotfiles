@@ -20,4 +20,3 @@
   - [git submodule update --init --recursive, Installing submodules]
   - [git pull, Updating dotfiles]
   - [fish ~/.dotfiles/fish/fisher.fish]
-  - [chsh -s $(which fish), Changing shell to fish]
