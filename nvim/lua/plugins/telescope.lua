@@ -5,6 +5,7 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       'xiyaowong/telescope-emoji.nvim',
+      'nvim-telescope/telescope-ui-select.nvim',
     },
     config = function()
       local builtin = require('telescope.builtin')
@@ -61,6 +62,7 @@ return {
       })
 
       require('telescope').load_extension('emoji')
+      require('telescope').load_extension('ui-select')
 
       vim.api.nvim_set_keymap('n', '<F1>', '<cmd>Telescope commands theme=dropdown<CR>', { noremap = true, silent = true })
     end,
