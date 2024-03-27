@@ -6,6 +6,7 @@ return {
     'williamboman/mason-lspconfig.nvim',
     'VidocqH/lsp-lens.nvim',
     'simrat39/rust-tools.nvim',
+    'folke/neodev.nvim',
   },
   config = function()
     local signs = { Error = ' ', Warn = ' ', Hint = '󰠠 ', Info = ' ' }
@@ -15,6 +16,7 @@ return {
     end
 
     require('lsp-lens').setup()
+    require('neodev').setup()
 
     local lspconfig = require('lspconfig')
     local cmp_nvim_lsp = require('cmp_nvim_lsp')
@@ -62,8 +64,13 @@ return {
     })
 
     lspconfig['lua_ls'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
+      settings = {
+        Lua = {
+          completion = {
+            callSnippet = 'Replace',
+          },
+        },
+      },
     })
 
     lspconfig['tsserver'].setup({
