@@ -61,6 +61,8 @@ return {
       })
 
       require('telescope').load_extension('emoji')
+
+      vim.api.nvim_set_keymap('n', '<F1>', '<cmd>Telescope commands theme=dropdown<CR>', { noremap = true, silent = true })
     end,
   },
 }
