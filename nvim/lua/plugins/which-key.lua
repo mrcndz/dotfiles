@@ -9,11 +9,12 @@ local opts = {
 
 local mappings = {
   ['e'] = { '<cmd>NvimTreeToggle<cr>', 'Explorer' },
-  ['b'] = { '<cmd>Telescope buffers theme=ivy<cr>', 'Buffers' },
-  ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Files...' },
-  ['g'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Grep' },
-  ['h'] = { '<cmd>Telescope help_tags theme=ivy<cr>', 'Help' },
-  ['<F2>'] = { "<cmd>lua require'conform'.format()<cr>", 'Format' },
+  ['b'] = { '<cmd>Telescope buffers theme=dropdown<cr>', 'Buffers' },
+  ['o'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Recentes' },
+  ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Open file' },
+  ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Live Grep' },
+  ['s'] = { '<cmd>w<cr>', 'Save' },
+  ['q'] = { '<cmd>q<cr>', 'Quit' },
   S = {
     name = 'Session',
     s = { '<cmd>SessionManager save_current_session<cr>', 'Save' },
@@ -37,14 +38,14 @@ local mappings = {
     c = { '<cmd>Telescope git_commits theme=ivy<cr>', 'Commits' },
     s = { '<cmd>Telescope git_status theme=cursor<cr>', 'Status' },
   },
-  s = {
-    name = 'Search...',
+  t = {
+    name = 'Telescope',
     C = { '<cmd>Telescope colorscheme theme=dropdown<cr>', 'Colorschemes' },
-    o = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Recents' },
+    c = { '<cmd>Telescope commands theme=dropdown<cr>', 'Commands' },
     M = { '<cmd>Telescope man_pages theme=ivy<cr>', 'Man Pages' },
     r = { '<cmd>Telescope registers theme=dropdown<cr>', 'Registers' },
     k = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
-    c = { '<cmd>Telescope commands theme=ivy<cr>', 'Commands' },
+    b = { '<cmd>Telescope bookmarks list<cr> theme=dropdown' },
   },
 }
 
