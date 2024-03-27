@@ -5,6 +5,7 @@ return {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'VidocqH/lsp-lens.nvim',
+    'simrat39/rust-tools.nvim',
   },
   config = function()
     local signs = { Error = ' ', Warn = ' ', Hint = '󰠠 ', Info = ' ' }
@@ -75,11 +76,6 @@ return {
       on_attach = on_attach,
     })
 
-    lspconfig['rust_analyzer'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
     lspconfig['marksman'].setup({
       capabilities = capabilities,
       on_attach = on_attach,
@@ -124,5 +120,7 @@ return {
       capabilities = capabilities,
       on_attach = on_attach,
     })
+
+    require('rust-tools').setup({})
   end,
 }
