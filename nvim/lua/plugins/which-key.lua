@@ -8,14 +8,14 @@ local opts = {
 }
 
 local mappings = {
-  ['e'] = { '<cmd>NvimTreeToggle<cr>', 'Explorer' },
-  ['b'] = { '<cmd>Telescope buffers theme=dropdown<cr>', 'Buffers' },
-  ['o'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Recentes' },
-  ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Open file' },
-  ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Live Grep' },
-  ['s'] = { '<cmd>w<cr>', 'Save' },
-  ['q'] = { '<cmd>q<cr>', 'Quit' },
-  S = {
+  ['e'] = { '<cmd>NvimTreeToggle<cr>', 'Toggle Explorer' },
+  ['o'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Search Recents' },
+  ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Search Files' },
+  ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
+  ['k'] = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
+  ['t'] = { '<cmd>lua require("material.functions").find_style()<cr>', 'Themes' },
+  ['x'] = { '<cmd>BufferClose<cr>', 'Tab close' },
+  s = {
     name = 'Session',
     s = { '<cmd>SessionManager save_current_session<cr>', 'Save' },
     l = { '<cmd>SessionManager load_session<cr>', 'Load' },
@@ -32,20 +32,11 @@ local mappings = {
     I = { '<cmd>Telescope lsp_incoming_calls theme=cursor<cr>', 'Incoming calls' },
     O = { '<cmd>Telescope lsp_outgoing_calls theme=cursor<cr>', 'Outgoing calls' },
   },
-  G = {
+  g = {
     name = 'Git',
     b = { '<cmd>Telescope git_branches theme=ivy<cr>', 'Checkout branch' },
     c = { '<cmd>Telescope git_commits theme=ivy<cr>', 'Commits' },
     s = { '<cmd>Telescope git_status theme=cursor<cr>', 'Status' },
-  },
-  t = {
-    name = 'Telescope',
-    C = { '<cmd>Telescope colorscheme theme=dropdown<cr>', 'Colorschemes' },
-    c = { '<cmd>Telescope commands theme=dropdown<cr>', 'Commands' },
-    M = { '<cmd>Telescope man_pages theme=ivy<cr>', 'Man Pages' },
-    r = { '<cmd>Telescope registers theme=dropdown<cr>', 'Registers' },
-    k = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
-    b = { '<cmd>Telescope bookmarks list<cr> theme=dropdown' },
   },
 }
 
@@ -61,7 +52,7 @@ return {
     icons = {
       breadcrumb = '»',
       separator = '➜',
-      group = '+',
+      group = ' ', -- Folder icon
     },
     popup_mappings = {
       scroll_down = '<c-d>', -- binding to scroll down inside the popup

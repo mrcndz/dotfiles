@@ -10,13 +10,13 @@ return {
     config = function()
       local builtin = require('telescope.builtin')
       local actions = require('telescope.actions')
+      local action_state = require('telescope.actions.state')
 
       require('telescope').setup({
         extensions = {
           ['ui-select'] = { require('telescope.themes').get_dropdown({}) },
         },
         defaults = {
-          -- outras configurações padrão
           file_ignore_patterns = {
             '.git/',
             'node_modules/',
@@ -59,12 +59,52 @@ return {
             },
           },
         },
+        pickers = {
+          git_commits = {
+            mappings = {
+              i = {
+                ['<C-o>'] = function() -- show diffview for the selected commit
+                  -- Open in diffview
+                  local entry = action_state.get_selected_entry()
+                  -- close Telescope window properly prior to switching windows
+                  actions.close(vim.api.nvim_get_current_buf())
+                  vim.cmd(('DiffviewOpen %s^!'):format(entry.value))
+                end,
+              },
+            },
+          },
+          git_bcommits = {
+            mappings = {
+              i = {
+                ['<C-o>'] = function() -- show diffview for the selected commit of current buffer
+                  -- Open in diffview
+                  local entry = action_state.get_selected_entry()
+                  -- close Telescope window properly prior to switching windows
+                  actions.close(vim.api.nvim_get_current_buf())
+                  vim.cmd(('DiffviewOpen %s^!'):format(entry.value))
+                end,
+              },
+            },
+          },
+          git_branches = {
+            mappings = {
+              i = {
+                ['<C-o>'] = function() -- show diffview comparing the selected branch with the current branch
+                  -- Open in diffview
+                  local entry = action_state.get_selected_entry()
+                  -- close Telescope window properly prior to switching windows
+                  actions.close(vim.api.nvim_get_current_buf())
+                  vim.cmd(('DiffviewOpen %s..'):format(entry.value))
+                end,
+              },
+            },
+          },
+        },
       })
 
       require('telescope').load_extension('emoji')
       require('telescope').load_extension('ui-select')
-
-      vim.api.nvim_set_keymap('n', '<F1>', '<cmd>Telescope commands theme=dropdown<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<F1>', '<cmd>Telescope buffers theme=dropdown<cr>')
     end,
   },
 }
