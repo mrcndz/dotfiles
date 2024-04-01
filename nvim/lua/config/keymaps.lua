@@ -22,8 +22,8 @@ nnoremap('n', 'nzzzv')
 nnoremap('N', 'Nzzzv')
 
 -- Buffer
-nnoremap('<A-.>', '<cmd>BufferNext<CR>')
-nnoremap('<A-,>', '<cmd>BufferPrevious<CR>')
+nnoremap('<A-l>', '<cmd>BufferNext<CR>')
+nnoremap('<A-h>', '<cmd>BufferPrevious<CR>')
 nnoremap('<A-<>', '<cmd>BufferMovePrevious<CR>')
 nnoremap('<A->>', '<cmd>BufferMoveNext<CR>')
 nnoremap('<C-p>', '<cmd>BufferPin<cr>')
