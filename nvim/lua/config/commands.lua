@@ -1,18 +1,24 @@
--- Define commands
+local autocmd = vim.api.nvim_create_autocmd
 
--- Toggle highlight
--- vim.cmd([[command! HiLiToggle (g:hlsearch ? ':nohls' : ':set hls')]])
+-- Autopin Barbar plugin and close close
+if package.loaded['barbar'] then
+  autocmd({ 'BufRead' }, {
+    pattern = { '*' },
+    callback = function()
+      vim.api.nvim_create_autocmd({ 'BufModifiedSet' }, {
+        buffer = 0,
+        once = true,
+        callback = function()
+          vim.cmd('BufferPin')
+        end,
+      })
+    end,
+  })
 
--- Remove trailing whitespaces
--- (if a file requires trailing spaces, exclude its type using the regex)
-vim.cmd [[autocmd BufWritePre * %s/\s\+$//e ]]
-
--- Swap folder
-vim.cmd('command! ListSwap split | enew | r !ls -l ~/.local/share/nvim/swap')
-vim.cmd('command! CleanSwap !rm -rf ~/.local/state/nvim/swap/')
-
--- Open help tags
-vim.cmd("command! HelpTags Telescope help_tags")
-
--- Create ctags
-vim.cmd('command! MakeCTags !ctags -R --exclude=@.ctagsignore .')
+  autocmd({ 'BufAdd' }, {
+    pattern = { '*' },
+    callback = function()
+      vim.cmd('BufferCloseAllButCurrentOrPinned')
+    end,
+  })
+end
