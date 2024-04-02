@@ -17,39 +17,7 @@ return {
           ['ui-select'] = { require('telescope.themes').get_dropdown({}) },
         },
         defaults = {
-          file_ignore_patterns = {
-            '.git/',
-            'node_modules/',
-            'opt/',
-            'Library/',
-            '.DS_Store',
-            '.AppleDouble',
-            '.LSOverride',
-            'opt/',
-            'Music/',
-            'Movies/',
-            'Applications/',
-            'Pictures/',
-            'Remote/',
-            'Icon',
-            '.DocumentRevisions-V100',
-            '.fseventsd',
-            '.Spotlight-V100',
-            '.TemporaryItems',
-            '.Trashes',
-            '.VolumeIcon.icns',
-            '.com.apple.timemachine.donotpresent',
-            'Downloads/',
-            '.AppleDB',
-            '.AppleDesktop',
-            'Network Trash Folder',
-            'Temporary Items',
-            'Library/',
-            'Photos Library.photoslibrary/',
-            '.log',
-            'Documents/',
-            '*Google Drive',
-          },
+          file_ignore_patterns = {},
           mappings = {
             i = {
               ['<C-j>'] = actions.move_selection_next,
@@ -73,10 +41,25 @@ return {
               },
             },
           },
+          git_status = {
+            mappings = {
+              i = {
+                ['<C-o>'] = function() -- show diffview for the selected file
+                  -- Open in diffview
+                  local entry = action_state.get_selected_entry()
+                  -- close Telescope window properly prior to switching windows
+                  actions.close(vim.api.nvim_get_current_buf())
+                  print(entry.value)
+                  local dotgitpath = vim.fn.finddir('.git', '.;')
+                  vim.cmd(('DiffviewFileHistory ' .. vim.fn.fnamemodify(dotgitpath, ':h') .. '/' .. entry.value))
+                end,
+              },
+            },
+          },
           git_bcommits = {
             mappings = {
               i = {
-                ['<C-o>'] = function() -- show diffview for the selected commit of current buffer
+                ['<C-o>'] = function() -- DiffviewOpen
                   -- Open in diffview
                   local entry = action_state.get_selected_entry()
                   -- close Telescope window properly prior to switching windows
