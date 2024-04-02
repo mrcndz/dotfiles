@@ -16,10 +16,54 @@ return {
         disable = {
           background = false,
         },
-        lualine_style = 'stealth',
+        lualine_style = 'default',
       })
-
       vim.cmd('colorscheme material')
+
+      local highlihts = {
+        'BufferDefaultCurrent',
+        'BufferDefaultCurrentADDED',
+        'BufferDefaultCurrentBtn',
+        'BufferDefaultCurrentCHANGED',
+        'BufferDefaultCurrentDELETED',
+        'BufferDefaultCurrentERROR',
+        'BufferDefaultCurrentHINT',
+        'BufferDefaultCurrentIcon',
+        'BufferDefaultCurrentIndex',
+        'BufferDefaultCurrentINFO',
+        'BufferDefaultCurrentNumber',
+        'BufferDefaultCurrentMod',
+        'BufferDefaultCurrentModBtn',
+        'BufferDefaultCurrentPin',
+        'BufferDefaultCurrentPinBtn',
+        'BufferDefaultCurrentSign',
+        'BufferDefaultCurrentSignRight',
+        'BufferDefaultCurrentTarget',
+        'BufferDefaultCurrentWARN',
+        'BufferCurrent',
+        'BufferCurrentADDED',
+        'BufferCurrentBtn',
+        'BufferCurrentCHANGED',
+        'BufferCurrentDELETED',
+        'BufferCurrentERROR',
+        'BufferCurrentHINT',
+        'BufferCurrentIcon',
+        'BufferCurrentIndex',
+        'BufferCurrentINFO',
+        'BufferCurrentNumber',
+        'BufferCurrentMod',
+        'BufferCurrentModBtn',
+        'BufferCurrentPin',
+        'BufferCurrentPinBtn',
+        'BufferCurrentSign',
+        'BufferCurrentSignRight',
+        'BufferCurrentTarget',
+        'BufferCurrentWARN',
+      }
+
+      for _, hl in ipairs(highlihts) do
+        vim.cmd('hi ' .. hl .. ' guifg=gray')
+      end
     end,
   },
 }

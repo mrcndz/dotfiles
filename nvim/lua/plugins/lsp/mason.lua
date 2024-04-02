@@ -25,6 +25,7 @@ return {
         'vimls',
         'sqlls',
         'yamlls',
+        'rust_analyzer',
       },
     })
   end,

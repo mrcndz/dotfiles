@@ -1,11 +1,11 @@
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
+    'simrat39/rust-tools.nvim',
     'hrsh7th/cmp-nvim-lsp',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'VidocqH/lsp-lens.nvim',
-    'simrat39/rust-tools.nvim',
     'folke/neodev.nvim',
   },
   config = function()
@@ -17,10 +17,13 @@ return {
 
     require('lsp-lens').setup()
     require('neodev').setup()
+    require('rust-tools').setup()
 
     local lspconfig = require('lspconfig')
     local cmp_nvim_lsp = require('cmp_nvim_lsp')
-    local capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 
     local on_attach = function(client, bufnr)
       local function buf_set_keymap(...)
@@ -127,7 +130,5 @@ return {
       capabilities = capabilities,
       on_attach = on_attach,
     })
-
-    require('rust-tools').setup({})
   end,
 }

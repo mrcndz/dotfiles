@@ -5,6 +5,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
       vim.g.barbar_auto_setup = false
+      vim.cmd('hi BufferDefaultCurrentMod guifg=black')
     end,
     opts = {
       exclude_ft = { 'javascript' },
@@ -19,7 +20,7 @@ return {
         buffer_number = false,
         button = '×',
         diagnostics = {
-          [vim.diagnostic.severity.ERROR] = { enabled = true },
+          [vim.diagnostic.severity.ERROR] = { enabled = true, icon = '' },
           [vim.diagnostic.severity.WARN] = { enabled = false },
           [vim.diagnostic.severity.INFO] = { enabled = false },
           [vim.diagnostic.severity.HINT] = { enabled = false, icon = '' },
