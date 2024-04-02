@@ -13,8 +13,9 @@ local mappings = {
   ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Search Files' },
   ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
   ['k'] = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
-  ['t'] = { '<cmd>lua require("material.functions").find_style()<cr>', 'Themes' },
+  ['T'] = { '<cmd>lua require("material.functions").find_style()<cr>', 'Themes' },
   ['x'] = { '<cmd>BufferClose<cr>', 'Tab close' },
+  ['t'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
   s = {
     name = 'Session',
     s = { '<cmd>SessionManager save_current_session<cr>', 'Save' },
@@ -36,7 +37,7 @@ local mappings = {
     name = 'Git',
     b = { '<cmd>Telescope git_branches theme=ivy<cr>', 'Checkout branch' },
     c = { '<cmd>Telescope git_commits theme=ivy<cr>', 'Commits' },
-    s = { '<cmd>Telescope git_status theme=cursor<cr>', 'Status' },
+    s = { '<cmd>Telescope git_status theme=ivy<cr>', 'Status' },
   },
 }
 
