@@ -1,7 +1,6 @@
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
-    'simrat39/rust-tools.nvim',
     'hrsh7th/cmp-nvim-lsp',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
@@ -17,7 +16,6 @@ return {
 
     require('lsp-lens').setup()
     require('neodev').setup()
-    require('rust-tools').setup()
 
     local lspconfig = require('lspconfig')
     local cmp_nvim_lsp = require('cmp_nvim_lsp')
