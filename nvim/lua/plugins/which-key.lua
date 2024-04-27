@@ -9,13 +9,14 @@ local opts = {
 
 local mappings = {
   ['e'] = { '<cmd>NvimTreeToggle<cr>', 'Toggle Explorer' },
-  ['o'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Search Recents' },
+  ['h'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Search Recents' },
   ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Search Files' },
   ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
   ['k'] = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
   ['T'] = { '<cmd>lua require("material.functions").find_style()<cr>', 'Themes' },
   ['x'] = { '<cmd>BufferClose<cr>', 'Tab close' },
   ['t'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
+  ['d'] = { '<cmd>TroubleToggle', 'Diagnostics' },
   s = {
     name = 'Session',
     s = { '<cmd>SessionManager save_current_session<cr>', 'Save' },

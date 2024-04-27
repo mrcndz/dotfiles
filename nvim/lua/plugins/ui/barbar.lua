@@ -5,7 +5,6 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
       vim.g.barbar_auto_setup = false
-      vim.cmd('hi BufferDefaultCurrentMod guifg=black')
     end,
     opts = {
       exclude_ft = { 'javascript' },
