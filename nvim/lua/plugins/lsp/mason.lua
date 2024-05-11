@@ -6,14 +6,33 @@ return {
   },
 
   config = function()
-    require('mason').setup()
+    require('mason').setup({
+      ensure_installed = {
+        'bashls',
+        'marksman',
+        'lua_ls',
+        'dockerls',
+        'cssls',
+        'dockerls',
+        'ltex',
+        'html',
+        'jsonls',
+        'pyright',
+        'mypy',
+        'ruff',
+        'black',
+        'tsserver',
+        'sqlls',
+        'yamlls',
+        'rust_analyzer',
+      },
+    })
 
     require('mason-lspconfig').setup({
       ensure_installed = {
         'bashls',
         'marksman',
         'lua_ls',
-        'cmake',
         'dockerls',
         'cssls',
         'dockerls',
@@ -22,11 +41,10 @@ return {
         'jsonls',
         'pyright',
         'tsserver',
-        'vimls',
         'sqlls',
         'yamlls',
         'rust_analyzer',
       },
     })
-  end,
+  end
 }

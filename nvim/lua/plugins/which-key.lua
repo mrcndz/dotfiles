@@ -1,22 +1,48 @@
 local opts = {
-  mode = 'n', -- NORMAL mode
+  mode = 'n',     -- NORMAL mode
   prefix = '<leader>',
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
+  buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true,  -- use `silent` when creating keymaps
   noremap = true, -- use `noremap` when creating keymaps
-  nowait = true, -- use `nowait` when creating keymaps
+  nowait = true,  -- use `nowait` when creating keymaps
 }
 
 local mappings = {
-  ['e'] = { '<cmd>NvimTreeToggle<cr>', 'Toggle Explorer' },
+  ['e'] = { '<cmd>NvimTreeFindFileToggle<cr>', 'Toggle Explorer' },
   ['h'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Search Recents' },
-  ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Search Files' },
+  -- ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Search Files' },
+  ['f'] = { function()
+    local builtin = require('telescope.builtin')
+    local actions = require('telescope.actions')
+    local action_state = require('telescope.actions.state')
+    local themes = require('telescope.themes')
+    local api = require('nvim-tree.api')
+
+    local function update_nvim_tree(prompt_bufnr, _)
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        local filepath = selection.cwd .. '/' .. selection.value
+        api.tree.find_file(filepath)
+        -- Continue editing...
+        vim.cmd('edit ' .. filepath)
+      end)
+      return true
+    end
+
+    if api.tree.is_visible() then
+      builtin.find_files(themes.get_dropdown({ attach_mappings = update_nvim_tree }))
+    else
+      builtin.find_files(themes.get_dropdown({}))
+    end
+  end, 'Search Files test' },
   ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
   ['k'] = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
   ['T'] = { '<cmd>lua require("material.functions").find_style()<cr>', 'Themes' },
   ['x'] = { '<cmd>BufferClose<cr>', 'Tab close' },
   ['t'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
-  ['d'] = { '<cmd>TroubleToggle', 'Diagnostics' },
+  ['d'] = { '<cmd>TroubleToggle<CR>', 'Diagnostics' },
+  ['b'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
   s = {
     name = 'Session',
     s = { '<cmd>SessionManager save_current_session<cr>', 'Save' },
@@ -58,7 +84,7 @@ return {
     },
     popup_mappings = {
       scroll_down = '<c-d>', -- binding to scroll down inside the popup
-      scroll_up = '<c-u>', -- binding to scroll up inside the popup
+      scroll_up = '<c-u>',   -- binding to scroll up inside the popup
     },
     window = {
       border = 'rounded',
