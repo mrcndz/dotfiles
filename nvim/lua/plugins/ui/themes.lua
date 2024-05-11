@@ -7,9 +7,9 @@ return {
       vim.g.material_style = 'deep ocean'
 
       local hour = tonumber(os.date('%H'))
-      if hour > 7 and hour < 17 then
-        vim.g.material_style = 'lighter'
-      end
+      -- if hour > 7 and hour < 17 then
+      --   vim.g.material_style = 'lighter'
+      -- end
     end,
     config = function()
       require('material').setup({
