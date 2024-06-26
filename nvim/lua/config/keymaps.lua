@@ -13,6 +13,7 @@ local imap = Utils.imap
 
 nnoremap('<space>', ':WhichKey <leader><CR>')
 inoremap('jj', '<Esc>')
+inoremap('<Esc>', '<Esc>')
 
 -- Move text
 vnoremap('J', ":m '>+1<CR>gv=gv")
