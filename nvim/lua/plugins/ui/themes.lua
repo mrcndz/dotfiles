@@ -5,7 +5,6 @@ return {
     priority = 1000,
     init = function()
       vim.g.material_style = 'deep ocean'
-
       local hour = tonumber(os.date('%H'))
       -- if hour > 7 and hour < 17 then
       --   vim.g.material_style = 'lighter'
