@@ -52,12 +52,14 @@ local mappings = {
   l = {
     name = 'LSP',
     r = { '<cmd>Telescope lsp_references theme=cursor<cr>', 'References' },
-    d = { '<cmd>Telescope lsp_definitions theme=cursor<cr>', 'Definitions' },
+    R = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename Symbol' },
+    d = { '<cmd>lua vim.diagnostic.open_float()<CR>', 'Diagnostics' },
+    D = { '<cmd>Telescope lsp_definitions theme=cursor<cr>', 'Definitions' },
     s = { '<cmd>Telescope lsp_document_symbols theme=ivy<cr>', 'Document Symbols' },
     S = { '<cmd>Telescope lsp_workspace_symbols theme=ivy<cr>', 'Workspace Symbols' },
     i = { '<cmd>Telescope lsp_implementations theme=cursor<cr>', 'Implementations' },
-    t = { '<cmd>Telescope lsp_type_definitions theme=cursor<cr>', 'Type Definitions' },
     I = { '<cmd>Telescope lsp_incoming_calls theme=cursor<cr>', 'Incoming calls' },
+    t = { '<cmd>Telescope lsp_type_definitions theme=cursor<cr>', 'Type Definitions' },
     O = { '<cmd>Telescope lsp_outgoing_calls theme=cursor<cr>', 'Outgoing calls' },
   },
   g = {

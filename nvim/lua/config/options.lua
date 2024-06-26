@@ -1,14 +1,16 @@
 -- Visual
-vim.o.guicursor = 'n-v-c-i:block-Cursor/lCursor-blinkon0'
+-- vim.o.guicursor = 'n-v-c-i:'
+vim.opt.guicursor = {
+  'n-c-v-sm:block-Cursor/lCursor-blinkon0',
+  'i-ci-ve:ver10',
+}
 vim.o.conceallevel = 0 -- Don't hide quotes in markdown
 vim.o.cmdheight = 1
 vim.o.pumheight = 10
 vim.o.showmode = false
-vim.o.showtabline = 2      -- Always show tabline
+vim.o.showtabline = 0      -- Always show tabline
 vim.o.title = true
 vim.o.termguicolors = true -- Use true colors, required for some plugins
--- vim.o.ls                 = 0                         -- Doesn't seem to work
--- vim.o.ch                 = 0                         -- Creates a bug with output messages not appearing correctly
 vim.wo.number = true
 vim.wo.relativenumber = true
 vim.wo.signcolumn = 'yes'
@@ -59,21 +61,7 @@ vim.o.updatetime = 300          -- Delay until write to Swap and HoldCommand eve
 vim.g.do_file_type_lua = 1
 -- Disable default plugins
 -- vim.g.loaded_netrwPlugin = false                     -- I can't remember what the issue was with this option
---
--- Python providers
-local pynvim_env = os.getenv('HOME') .. '/.local/bin/pyenv/versions/pynvim/'
-vim.g.python3_host_prog = os.getenv('HOME') .. pynvim_env .. '/bin/python'
-vim.g.black_virtualenv = os.getenv('HOME') .. pynvim_env
--- Disable unused providers
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
--- IdentLine
 vim.g.indentLine_char_list = { '▏', '¦', '┆', '┊' }
 vim.g.indentLine_setColors = 0
 vim.g.indentLine_setConceal = 0
 -- Enable inline error messages
-vim.diagnostic.config({
-  virtual_text = true,
-  underline = true,
-  signs = true, -- Keep gutter signs
-})
