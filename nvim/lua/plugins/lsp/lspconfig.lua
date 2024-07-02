@@ -23,15 +23,20 @@ return {
     require('neodev').setup()
     require('mason').setup({
       ensure_installed = {
+        -- Markdown
         'marksman',
+        -- Lua
         'lua_ls',
+        -- Docker
         'dockerls',
+        -- Json
         'jsonls',
-        'mypy',
-        'ruff',
-        'black',
+        -- Rust
         'rust_analyzer',
+        -- Python
         'basedpyright',
+        'ruff',
+        'blue',
         -- 'pyright',
       },
     })
