@@ -29,9 +29,9 @@ return {
       blue = {
         args = { '--line-length', '120' },
       },
-
     },
   },
+
   init = function()
     vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
   end,
