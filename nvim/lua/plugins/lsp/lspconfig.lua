@@ -14,10 +14,10 @@ return {
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
     end
 
-    vim.diagnostic.config {
+    vim.diagnostic.config({
       float = { border = 'single' },
-      virtual_text = { severity = vim.diagnostic.severity.ERROR }
-    }
+      virtual_text = { severity = vim.diagnostic.severity.ERROR },
+    })
 
     require('lsp-lens').setup()
     require('neodev').setup()
@@ -27,11 +27,12 @@ return {
         'lua_ls',
         'dockerls',
         'jsonls',
-        'pyright',
         'mypy',
         'ruff',
         'black',
         'rust_analyzer',
+        'basedpyright',
+        -- 'pyright',
       },
     })
 
@@ -71,19 +72,34 @@ return {
       end, {
         nargs = 1,
         complete = 'dir',
-        desc = 'add a workspace folder'
+        desc = 'add a workspace folder',
       })
     end
 
-    lspconfig['pyright'].setup({
+    -- lspconfig['pyright'].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    --   settings = {
+    --     python = {
+    --       analysis = {
+    --         autoSearchPaths = true,
+    --         useLibraryCodeForTypes = true,
+    --         diagnosticMode = 'workspace',
+    --       },
+    --     },
+    --   },
+    -- })
+
+    lspconfig['basedpyright'].setup({
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
-        python = {
+        basedpyright = {
+          typeCheckingMode = 'standard',
           analysis = {
             autoSearchPaths = true,
             useLibraryCodeForTypes = true,
-            diagnosticMode = 'workspace',
+            -- diagnosticMode = 'workspace',
           },
         },
       },
