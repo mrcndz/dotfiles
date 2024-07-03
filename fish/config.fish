@@ -1,6 +1,6 @@
 # Variables
-set -gx EDITOR nvim
-set -gx DOTFILES $HOME/.dotfiles
+set -x EDITOR nvim
+set -x DOTFILES $HOME/.dotfiles
 
 # Source
 source $DOTFILES/fish/theme.fish
@@ -16,6 +16,7 @@ fish_add_path $HOME/.local/share/nvim/mason/bin
 alias j="jump"
 alias g="git"
 alias v="nvim"
+alias cg="chatgpt"
 
 # Autorun Tmux
 if status is-interactive
@@ -23,4 +24,5 @@ if status is-interactive
     exec tmux -f $DOTFILES/tmux/tmux.conf
 end
 
+chatgpt --set-completions fish | source
 jump shell fish | source
