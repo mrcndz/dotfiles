@@ -37,18 +37,12 @@ local mappings = {
     end
   end, 'Search Files test' },
   ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
-  ['k'] = { '<cmd>Telescope keymaps<cr> theme=dropdown', 'Keymaps' },
-  ['T'] = { '<cmd>lua require("material.functions").find_style()<cr>', 'Themes' },
   ['x'] = { '<cmd>BufferClose<cr>', 'Tab close' },
   ['t'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
   ['d'] = { '<cmd>TroubleToggle<CR>', 'Diagnostics' },
   ['b'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
-  s = {
-    name = 'Session',
-    s = { '<cmd>SessionManager save_current_session<cr>', 'Save' },
-    l = { '<cmd>SessionManager load_session<cr>', 'Load' },
-    d = { '<cmd>SessionManager delete_session<cr>', 'Delete' },
-  },
+  ['c'] = { '<cmd>Telescope commands<CR>', 'Commands' },
+  ['s'] = { '<cmd>Telescope session-lens' },
   l = {
     name = 'LSP',
     r = { '<cmd>Telescope lsp_references theme=cursor<cr>', 'References' },
