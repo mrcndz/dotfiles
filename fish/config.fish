@@ -17,6 +17,7 @@ alias j="jump"
 alias g="git"
 alias v="nvim"
 alias cg="chatgpt"
+alias bat="batcat"
 
 # Autorun Tmux
 if status is-interactive
@@ -26,3 +27,8 @@ end
 
 chatgpt --set-completions fish | source
 jump shell fish | source
+
+
+# Run command to open nvim
+bind \ce 'nvim (pwd)'
+bind \cg lazygit
