@@ -37,7 +37,7 @@ local mappings = {
     end
   end, 'Search Files test' },
   ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
-  ['x'] = { '<cmd>BufferClose<cr>', 'Tab close' },
+  ['x'] = { '<cmd>bd<cr>', 'Buffer close' },
   ['t'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
   ['d'] = { '<cmd>TroubleToggle<CR>', 'Diagnostics' },
   ['b'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
