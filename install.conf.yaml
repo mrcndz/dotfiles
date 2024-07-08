@@ -7,6 +7,8 @@
 - clean:
     ~/:
       force: true
+    ~/.config:
+      recursive: true
 
 - link:
     ~/.dotfiles/: ./
@@ -15,6 +17,7 @@
       glob: true
       path: nvim/*
     ~/.config/fish/config.fish: fish/config.fish
+    ~/.config/lazygit/config.yml: lazygit/config.yml
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
