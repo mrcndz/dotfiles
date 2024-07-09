@@ -138,6 +138,17 @@ return {
     'stevearc/oil.nvim',
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
+      local oil = require('oil')
+
+      local quit_and_save = function()
+        oil.save({
+          confirm = true,
+        })
+
+        oil.close()
+      end
+
+
       require('oil').setup({
         default_file_explorer = false,
         columns = {
@@ -146,12 +157,13 @@ return {
         keymaps = {
           ["<CR>"] = "actions.select",
           ["?"] = "actions.show_help",
-          ["q"] = "actions.close",
+          ["q"] = quit_and_save,
           ["<"] = "actions.parent",
           ["gs"] = "actions.change_sort",
           ["gx"] = "actions.open_external",
           ["h"] = "actions.toggle_hidden",
           ["H"] = "actions.toggle_trash",
+          ["<C-p>"] = "actions.preview",
         },
         use_default_keymaps = false,
       })
