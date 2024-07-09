@@ -8,3 +8,4 @@ bind -M default \co "jump top | nvim (fzf)"
 bind -M insert \cg lazygit
 bind -M default \cg lazygit
 bind -M insert \t accept-autosuggestion
+bind -M insert --sets-mode default jj repaint
