@@ -1,10 +1,12 @@
 # Variables
-set -x EDITOR nvim
-set -x DOTFILES $HOME/.dotfiles
+set -gx EDITOR nvim
+set -gx DOTFILES $HOME/.dotfiles
 
 # Source
 source $DOTFILES/fish/theme.fish
 source $DOTFILES/fish/fzf.fish
+source $DOTFILES/fish/keybindings.fish
+source $DOTFILES/fish/local.fish
 
 # Paths
 fish_add_path /opt/homebrew/sbin
@@ -14,9 +16,12 @@ fish_add_path $HOME/.local/share/nvim/mason/bin
 
 # Alias
 alias j="jump"
-alias g="git"
 alias v="nvim"
+alias g="git"
+alias lg="lazygit"
 alias cg="chatgpt"
+alias bat="batcat"
+alias dot="cd $DOTFILES"
 
 # Autorun Tmux
 if status is-interactive
