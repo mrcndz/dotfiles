@@ -6,6 +6,7 @@ set -gx DOTFILES $HOME/.dotfiles
 source $DOTFILES/fish/theme.fish
 source $DOTFILES/fish/fzf.fish
 source $DOTFILES/fish/keybindings.fish
+source $DOTFILES/fish/local.fish
 
 # Paths
 fish_add_path /opt/homebrew/sbin

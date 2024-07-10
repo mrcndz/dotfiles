@@ -9,3 +9,6 @@ bind -M insert \cg lazygit
 bind -M default \cg lazygit
 bind -M insert \t accept-autosuggestion
 bind -M insert --sets-mode default jj repaint
+bind yy fish_clipboard_copy
+bind Y fish_clipboard_copy
+bind p fish_clipboard_paste
