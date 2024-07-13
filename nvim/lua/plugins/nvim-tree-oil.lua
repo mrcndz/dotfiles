@@ -65,9 +65,8 @@ return {
           return true
         end
 
-        require('telescope.builtin').find_files(themes.get_dropdown({ attach_mappings = open_nvim_tree, }))
+        require('telescope.builtin').find_files(themes.get_dropdown({ attach_mappings = open_nvim_tree }))
       end
-
 
       local function my_on_attach(bufnr)
         local api = require('nvim-tree.api')
@@ -90,7 +89,9 @@ return {
 
         -- api.config.mappings.default_on_attach(bufnr)
         vim.keymap.set('n', 'y', api.fs.copy.node, opts('Copy'))
+        vim.keymap.set('n', 'd', api.fs.remove, opts('Delete'))
         vim.keymap.set('n', 'V', api.fs.copy.filename, opts('Copy filename'))
+        vim.keymap.set('n', 'r', api.fs.rename, opts('Rename'))
         vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
         vim.keymap.set('n', '|', api.node.open.vertical, opts('Open: Vertical Split'))
         vim.keymap.set('n', '-', api.node.open.horizontal, opts('Open: Horizontal Split'))
@@ -109,7 +110,7 @@ return {
         actions = {
           open_file = {
             quit_on_open = true,
-          }
+          },
         },
         sort = {
           sorter = 'case_sensitive',
@@ -136,7 +137,7 @@ return {
   },
   {
     'stevearc/oil.nvim',
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       local oil = require('oil')
 
@@ -148,25 +149,24 @@ return {
         oil.close()
       end
 
-
       require('oil').setup({
         default_file_explorer = false,
         columns = {
-          "icon",
+          'icon',
         },
         keymaps = {
-          ["<CR>"] = "actions.select",
-          ["?"] = "actions.show_help",
-          ["q"] = quit_and_save,
-          ["<"] = "actions.parent",
-          ["gs"] = "actions.change_sort",
-          ["gx"] = "actions.open_external",
-          ["h"] = "actions.toggle_hidden",
-          ["H"] = "actions.toggle_trash",
-          ["<C-p>"] = "actions.preview",
+          ['<CR>'] = 'actions.select',
+          ['?'] = 'actions.show_help',
+          ['q'] = quit_and_save,
+          ['<'] = 'actions.parent',
+          ['gs'] = 'actions.change_sort',
+          ['gx'] = 'actions.open_external',
+          ['h'] = 'actions.toggle_hidden',
+          ['H'] = 'actions.toggle_trash',
+          ['<C-p>'] = 'actions.preview',
         },
         use_default_keymaps = false,
       })
-    end
-  }
+    end,
+  },
 }

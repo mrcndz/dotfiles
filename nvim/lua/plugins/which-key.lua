@@ -1,48 +1,52 @@
 local opts = {
-  mode = 'n',     -- NORMAL mode
+  mode = 'n', -- NORMAL mode
   prefix = '<leader>',
-  buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true,  -- use `silent` when creating keymaps
+  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true, -- use `silent` when creating keymaps
   noremap = true, -- use `noremap` when creating keymaps
-  nowait = true,  -- use `nowait` when creating keymaps
+  nowait = true, -- use `nowait` when creating keymaps
 }
 
 local mappings = {
   ['e'] = { '<cmd>NvimTreeFindFileToggle<cr>', 'Toggle Explorer' },
   ['h'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Search Recents' },
   -- ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Search Files' },
-  ['f'] = { function()
-    local builtin = require('telescope.builtin')
-    local actions = require('telescope.actions')
-    local action_state = require('telescope.actions.state')
-    local themes = require('telescope.themes')
-    local api = require('nvim-tree.api')
+  ['f'] = {
+    function()
+      local builtin = require('telescope.builtin')
+      local actions = require('telescope.actions')
+      local action_state = require('telescope.actions.state')
+      local themes = require('telescope.themes')
+      local nvimtree_api = require('nvim-tree.api')
 
-    local function update_nvim_tree(prompt_bufnr, _)
-      actions.select_default:replace(function()
-        actions.close(prompt_bufnr)
-        local selection = action_state.get_selected_entry()
-        local filepath = selection.cwd .. '/' .. selection.value
-        api.tree.find_file(filepath)
-        -- Continue editing...
-        vim.cmd('edit ' .. filepath)
-      end)
-      return true
-    end
+      local function update_nvim_tree(prompt_bufnr, _)
+        actions.select_default:replace(function()
+          actions.close(prompt_bufnr)
+          local selection = action_state.get_selected_entry()
+          local filepath = selection.cwd .. '/' .. selection.value
+          nvimtree_api.tree.find_file(filepath)
+          -- Continue editing...
+          vim.cmd('edit ' .. filepath)
+        end)
+        return true
+      end
 
-    if api.tree.is_visible() then
-      builtin.find_files(themes.get_dropdown({ attach_mappings = update_nvim_tree }))
-    else
-      builtin.find_files(themes.get_dropdown({}))
-    end
-  end, 'Search Files test' },
+      if nvimtree_api.tree.is_visible() then
+        builtin.find_files(themes.get_dropdown({ attach_mappings = update_nvim_tree }))
+      else
+        builtin.find_files(themes.get_dropdown({}))
+      end
+    end,
+
+    'Search Files test',
+  },
   ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
   ['x'] = { '<cmd>bd<cr>', 'Buffer close' },
-  ['t'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
+  ['T'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
   ['d'] = { '<cmd>TroubleToggle<CR>', 'Diagnostics' },
   ['b'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
   ['c'] = { '<cmd>Telescope commands<CR>', 'Commands' },
-  ['s'] = { '<cmd>Telescope session-lens' },
+  ['s'] = { '<cmd>Telescope session-lens', 'Session Lens' },
   l = {
     name = 'LSP',
     r = { '<cmd>Telescope lsp_references theme=cursor<cr>', 'References' },
@@ -56,11 +60,14 @@ local mappings = {
     t = { '<cmd>Telescope lsp_type_definitions theme=cursor<cr>', 'Type Definitions' },
     O = { '<cmd>Telescope lsp_outgoing_calls theme=cursor<cr>', 'Outgoing calls' },
   },
-  g = {
-    name = 'Git',
-    b = { '<cmd>Telescope git_branches theme=ivy<cr>', 'Checkout branch' },
-    c = { '<cmd>Telescope git_commits theme=ivy<cr>', 'Commits' },
-    s = { '<cmd>Telescope git_status theme=ivy<cr>', 'Status' },
+  -- ToggleTerm to open a float terminal
+  ['t'] = { '<cmd>ToggleTerm direction=horizontal name=terminal<cr>', 'Terminal' },
+  -- ToggleTerm to open a float terminal with lazygit
+  ['g'] = {
+    name = 'Lazygit',
+    g = { '<cmd>LazyGit<cr>', 'Lazygit' },
+    c = { '<cmd>LazyGitFilter<cr>', 'Project Commits' },
+    f = { '<cmd>LazyGitFilterCurrentFile<cr>', 'Current File Commits' },
   },
 }
 
@@ -80,7 +87,7 @@ return {
     },
     popup_mappings = {
       scroll_down = '<c-d>', -- binding to scroll down inside the popup
-      scroll_up = '<c-u>',   -- binding to scroll up inside the popup
+      scroll_up = '<c-u>', -- binding to scroll up inside the popup
     },
     window = {
       border = 'rounded',
