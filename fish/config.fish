@@ -1,4 +1,5 @@
 # Variables
+ulimit -n 10240
 set -gx EDITOR nvim
 set -gx DOTFILES $HOME/.dotfiles
 
