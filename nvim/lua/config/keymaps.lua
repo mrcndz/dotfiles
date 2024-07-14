@@ -48,8 +48,8 @@ nnoremap('<C-q>', ':q<CR>')
 nnoremap('Y', 'y$')
 
 -- Different register for delete and paste
-nnoremap('<leader>d', '"_d')
-vnoremap('<leader>d', '"_d')
+-- nnoremap('<leader>d', '"_d')
+-- vnoremap('<leader>d', '"_d')
 nnoremap('d', '"_d')
 vnoremap('d', '"_d')
 nnoremap('x', '"_x')

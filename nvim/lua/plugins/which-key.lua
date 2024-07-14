@@ -7,12 +7,15 @@ local opts = {
   nowait = true, -- use `nowait` when creating keymaps
 }
 
-local mappings = {
-  ['e'] = { '<cmd>NvimTreeFindFileToggle<cr>', 'Toggle Explorer' },
-  ['h'] = { '<cmd>Telescope oldfiles theme=dropdown<cr>', 'Search Recents' },
-  -- ['f'] = { '<cmd>Telescope find_files theme=dropdown<cr>', 'Search Files' },
-  ['f'] = {
-    function()
+return {
+  'folke/which-key.nvim',
+  dependencies = {
+    'nvim-telescope/telescope.nvim',
+  },
+  event = 'VeryLazy',
+  init = function()
+    local wk = require('which-key')
+    local find_file_and_update_nvim_tree = function()
       local builtin = require('telescope.builtin')
       local actions = require('telescope.actions')
       local action_state = require('telescope.actions.state')
@@ -36,48 +39,46 @@ local mappings = {
       else
         builtin.find_files(themes.get_dropdown({}))
       end
-    end,
+    end
 
-    'Search Files test',
-  },
-  ['F'] = { '<cmd>Telescope live_grep theme=dropdown<cr>', 'Search Text' },
-  ['x'] = { '<cmd>bd<cr>', 'Buffer close' },
-  ['T'] = { '<cmd>Telescope treesitter<cr>', 'Treesitter' },
-  ['d'] = { '<cmd>TroubleToggle<CR>', 'Diagnostics' },
-  ['b'] = { '<cmd>Telescope buffers<CR>', 'Buffers' },
-  ['c'] = { '<cmd>Telescope commands<CR>', 'Commands' },
-  ['s'] = { '<cmd>Telescope session-lens', 'Session Lens' },
-  l = {
-    name = 'LSP',
-    r = { '<cmd>Telescope lsp_references theme=cursor<cr>', 'References' },
-    R = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename Symbol' },
-    d = { '<cmd>lua vim.diagnostic.open_float()<CR>', 'Diagnostics' },
-    D = { '<cmd>Telescope lsp_definitions theme=cursor<cr>', 'Definitions' },
-    s = { '<cmd>Telescope lsp_document_symbols theme=ivy<cr>', 'Document Symbols' },
-    S = { '<cmd>Telescope lsp_workspace_symbols theme=ivy<cr>', 'Workspace Symbols' },
-    i = { '<cmd>Telescope lsp_implementations theme=cursor<cr>', 'Implementations' },
-    I = { '<cmd>Telescope lsp_incoming_calls theme=cursor<cr>', 'Incoming calls' },
-    t = { '<cmd>Telescope lsp_type_definitions theme=cursor<cr>', 'Type Definitions' },
-    O = { '<cmd>Telescope lsp_outgoing_calls theme=cursor<cr>', 'Outgoing calls' },
-  },
-  -- ToggleTerm to open a float terminal
-  ['t'] = { '<cmd>ToggleTerm direction=horizontal name=terminal<cr>', 'Terminal' },
-  -- ToggleTerm to open a float terminal with lazygit
-  ['g'] = {
-    name = 'Lazygit',
-    g = { '<cmd>LazyGit<cr>', 'Lazygit' },
-    c = { '<cmd>LazyGitFilter<cr>', 'Project Commits' },
-    f = { '<cmd>LazyGitFilterCurrentFile<cr>', 'Current File Commits' },
-  },
-}
-
-return {
-  'folke/which-key.nvim',
-  event = 'VeryLazy',
-  init = function()
-    vim.o.timeout = true
-    vim.o.timeoutlen = 300
-    require('which-key').register(mappings, opts)
+    -- LSP
+    wk.add({
+      { '<leader>l', group = 'LSP' },
+      { '<leader>lr>', '<cmd>Telescope lsp_references theme=cursor<cr>', desc = 'References', mode = 'n' },
+      { '<leader>lR', '<cmd>lua vim.lsp.buf.rename()<CR>', desc = 'Rename Symbol', mode = 'n' },
+      { '<leader>ld', '<cmd>lua vim.diagnostic.open_float()<CR>', desc = 'Diagnostics', mode = 'n' },
+      { '<leader>lD', '<cmd>Telescope lsp_definitions theme=cursor<cr>', desc = 'Definitions', mode = 'n' },
+      { '<leader>ls', '<cmd>Telescope lsp_document_symbols theme=ivy<cr>', desc = 'Document Symbols', mode = 'n' },
+      { '<leader>lS', '<cmd>Telescope lsp_workspace_symbols theme=ivy<cr>', desc = 'Workspace Symbols', mode = 'n' },
+      { '<leader>li', '<cmd>Telescope lsp_implementations theme=cursor<cr>', desc = 'Implementations', mode = 'n' },
+      { '<leader>lI', '<cmd>Telescope lsp_incoming_calls theme=cursor<cr>', desc = 'Incoming calls', mode = 'n' },
+      { '<leader>lt', '<cmd>Telescope lsp_type_definitions theme=cursor<cr>', desc = 'Type Definitions', mode = 'n' },
+      { '<leader>lO', '<cmd>Telescope lsp_outgoing_calls theme=cursor<cr>', desc = 'Outgoing calls', mode = 'n' },
+    })
+    -- Telescope
+    wk.add({
+      { '<leader>f', find_file_and_update_nvim_tree, desc = 'Search Files', mode = 'n' },
+      { '<leader>F', '<cmd>Telescope live_grep theme=dropdown<cr>', desc = 'Search Text', mode = 'n' },
+      { '<leader>b', '<cmd>Telescope buffers<CR>', desc = 'Buffers', mode = 'n' },
+      { '<leader>c', '<cmd>Telescope commands<CR>', desc = 'Commands', mode = 'n' },
+      { '<leader>s', '<cmd>Telescope session-lens<CR>', desc = 'Session Lens', mode = 'n' },
+      { '<leader>h', '<cmd>Telescope oldfiles theme=dropdown<cr>', desc = 'Search Recents', mode = 'n' },
+    })
+    -- NvimTree
+    wk.add({
+      { '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>', desc = 'Toggle Explorer', mode = 'n' },
+    })
+    -- LazyGit
+    wk.add({
+      { '<leader>g', group = 'Git' },
+      { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'Lazygit', mode = 'n' },
+      { '<leader>gp', '<cmd>LazyGitFilter<cr>', desc = 'Project Commits', mode = 'n' },
+      { '<leader>gf', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Current File Commits', mode = 'n' },
+    })
+    -- Terminal
+    wk.add({
+      { '<leader>t', '<cmd>ToggleTerm direction=horizontal name=terminal<cr>', desc = 'Terminal', mode = 'n' },
+    })
   end,
   opts = {
     icons = {
