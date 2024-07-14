@@ -11,7 +11,9 @@ local vmap = Utils.vmap
 local map = Utils.map
 local imap = Utils.imap
 
-nnoremap('<space>', ':WhichKey <leader><CR>')
+nmap('<space>', '<Nop>')
+vim.g.mapleader = ' '
+-- map leader to space
 inoremap('jj', '<Esc>')
 inoremap('<Esc>', '<Esc>')
 
