@@ -9,7 +9,7 @@ return {
       'hrsh7th/nvim-cmp',
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-nvim-lsp-signature-help'
+      'hrsh7th/cmp-nvim-lsp-signature-help',
     },
 
     config = function()
@@ -44,75 +44,74 @@ return {
       })
     end,
   },
-  -- {
-  --   "zbirenbaum/copilot.lua",
-  --   cmd = "Copilot",
-  --   event = "InsertEnter",
-  --   config = function()
-  --     local copilot = require 'copilot'
-  --
-  --     copilot.setup({
-  --       panel = {
-  --         enabled = true,
-  --         auto_refresh = false,
-  --         keymap = {
-  --           jump_prev = "[[",
-  --           jump_next = "]]",
-  --           accept = "<CR>",
-  --           refresh = "gr",
-  --           open = "<M-CR>"
-  --         },
-  --         layout = {
-  --           position = "bottom",
-  --           ratio = 0.4
-  --         },
-  --       },
-  --       suggestion = {
-  --         enabled = true,
-  --         auto_trigger = true,
-  --         debounce = 75,
-  --         keymap = {
-  --           accept = "<M-a>",
-  --           dismiss = "<M-e>",
-  --           accept_word = "<M-l>",
-  --           accept_line = "<M-j>",
-  --           next = "<C-]>",
-  --           prev = "<C-[>",
-  --         },
-  --       },
-  --       filetypes = {
-  --         yaml = false,
-  --         markdown = false,
-  --         help = false,
-  --         gitcommit = false,
-  --         gitrebase = false,
-  --         hgcommit = false,
-  --         svn = false,
-  --         cvs = false,
-  --         ["."] = false,
-  --       },
-  --       copilot_node_command = 'node', -- Node.js version must be > 18.x
-  --       server_opts_overrides = {},
-  --     })
-  --
-  --     local suggestion = require 'copilot.suggestion'
-  --
-  --     -- Use tab to accept suggestions
-  --     local function tab_complete()
-  --       if suggestion.is_visible() then
-  --         suggestion.accept()
-  --       else
-  --         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Tab>', true, true, true), 'n', false)
-  --       end
-  --     end
-  --
-  --     vim.keymap.set('i', '<Tab>', tab_complete, { noremap = true, silent = true })
-  --   end
-  -- },
   {
-    "supermaven-inc/supermaven-nvim",
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
     config = function()
-      require("supermaven-nvim").setup({})
+      local copilot = require('copilot')
+      copilot.setup({
+        panel = {
+          enabled = true,
+          auto_refresh = false,
+          keymap = {
+            jump_prev = '[[',
+            jump_next = ']]',
+            accept = '<CR>',
+            refresh = 'gr',
+            open = '<M-CR>',
+          },
+          layout = {
+            position = 'bottom',
+            ratio = 0.4,
+          },
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = '<M-a>',
+            dismiss = '<M-e>',
+            accept_word = '<M-l>',
+            accept_line = '<M-j>',
+            next = '<C-]>',
+            prev = '<C-[>',
+          },
+        },
+        filetypes = {
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ['.'] = false,
+        },
+        copilot_node_command = 'node', -- Node.js version must be > 18.x
+        server_opts_overrides = {},
+      })
+
+      local suggestion = require('copilot.suggestion')
+
+      -- Use tab to accept suggestions
+      local function tab_complete()
+        if suggestion.is_visible() then
+          suggestion.accept()
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Tab>', true, true, true), 'n', false)
+        end
+      end
+
+      vim.keymap.set('i', '<Tab>', tab_complete, { noremap = true, silent = true })
     end,
   },
+  -- supermaven = {
+  --   "supermaven-inc/supermaven-nvim",
+  --   config = function()
+  --     require("supermaven-nvim").setup({})
+  --   end
+  -- }
 }
