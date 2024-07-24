@@ -4,3 +4,12 @@ function __fzf_open_file_with_nvim
 
     cat $selected >>fzf
 end
+
+function __cd_back_to
+    set target (string match -r ".*$argv" (pwd))
+    if test -d $target
+        cd $target
+    else
+        echo "Directory $argv not found in path"
+    end
+end
