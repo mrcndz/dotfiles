@@ -8,6 +8,7 @@ source $DOTFILES/fish/theme.fish
 source $DOTFILES/fish/fzf.fish
 source $DOTFILES/fish/keybindings.fish
 source $DOTFILES/fish/local.fish
+source $DOTFILES/fish/scripts.fish
 
 # Paths
 fish_add_path /opt/homebrew/sbin
@@ -19,6 +20,8 @@ fish_add_path $HOME/.local/share/nvim/mason/bin
 alias j="jump"
 alias v="nvim"
 alias g="git"
+alias cdr="cd (ls -t | head -n 1)"
+alias b __cd_back_to
 alias lg="lazygit"
 alias cg="chatgpt"
 alias bat="batcat"
