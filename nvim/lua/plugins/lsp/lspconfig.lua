@@ -81,11 +81,26 @@ return {
       })
     end
 
-    -- lspconfig['pyright'].setup({
+    lspconfig['pyright'].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        python = {
+          analysis = {
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+            diagnosticMode = 'workspace',
+          },
+        },
+      },
+    })
+
+    -- lspconfig['basedpyright'].setup({
     --   capabilities = capabilities,
     --   on_attach = on_attach,
     --   settings = {
-    --     python = {
+    --     basedpyright = {
+    --       typeCheckingMode = 'standard',
     --       analysis = {
     --         autoSearchPaths = true,
     --         useLibraryCodeForTypes = true,
@@ -94,21 +109,6 @@ return {
     --     },
     --   },
     -- })
-
-    lspconfig['basedpyright'].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = {
-        basedpyright = {
-          typeCheckingMode = 'standard',
-          analysis = {
-            autoSearchPaths = true,
-            useLibraryCodeForTypes = true,
-            -- diagnosticMode = 'workspace',
-          },
-        },
-      },
-    })
 
     local servers = {
       'lua_ls',

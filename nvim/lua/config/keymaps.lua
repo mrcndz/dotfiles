@@ -12,7 +12,6 @@ local map = Utils.map
 local imap = Utils.imap
 
 nmap('<space>', '<Nop>')
-vim.g.mapleader = ' '
 -- map leader to space
 inoremap('jj', '<Esc>')
 inoremap('<Esc>', '<Esc>')
