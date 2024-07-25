@@ -37,7 +37,7 @@ return {
         'basedpyright',
         'ruff',
         'blue',
-        -- 'pyright',
+        'pyright',
       },
     })
 
