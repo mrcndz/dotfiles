@@ -34,7 +34,7 @@ return {
             left_bottom = '└',
             right_arrow = '─',
           },
-          style = '#00ffff',
+          style = '#ffb964',
           use_treesitter = true,
         },
         indent = {
@@ -49,11 +49,11 @@ return {
         },
         line_num = {
           enable = true,
-          style = '#00ffff',
+          style = '#ffb964',
           use_treesitter = true,
         },
         blank = {
-          enable = true,
+          enable = false,
         },
       })
     end,
