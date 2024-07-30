@@ -14,12 +14,14 @@ return {
       local bg = '#' .. vim.api.nvim_get_hl_by_name('Normal', true).background
       local utils = require('lualine.utils.utils')
       local colors = {
-        insert = utils.extract_color_from_hllist('bg', { 'PmenuSel', 'PmenuThumb', 'TabLineSel' }, '#000000'),
-        normal = utils.extract_color_from_hllist('fg', { 'DevIconDefault' }, '#000000'),
+        insert = utils.extract_color_from_hllist('fg', { 'Removed' }, '#000000'),
+        normal = utils.extract_color_from_hllist('fg', { 'Normal' }, '#000000'),
         replace = utils.extract_color_from_hllist('fg', { 'Number', 'Type' }, '#000000'),
         visual = utils.extract_color_from_hllist('fg', { 'Special', 'Boolean', 'Constant' }, '#000000'),
         command = utils.extract_color_from_hllist('fg', { 'Identifier' }, '#000000'),
         icon = utils.extract_color_from_hllist('fg', { '@string' }, '#000000'),
+        git = utils.extract_color_from_hllist('fg', { 'Added' }, '#000000'),
+        line = utils.extract_color_from_hllist('fg', { '@variable.builtin' }, '#000000'),
       }
 
       local theme = {
@@ -30,7 +32,7 @@ return {
         },
         insert = {
           a = { bg = bg },
-          b = { bg = bg, fg = 'orange' },
+          b = { bg = bg, fg = colors.insert },
           c = { bg = bg },
         },
         replace = {
@@ -71,13 +73,13 @@ return {
             { 'mode' },
           },
           lualine_c = {
-            { 'branch', icon = '', color = { fg = 'cyan' } },
+            { 'branch', icon = '', color = { fg = colors.git } },
             { 'diagnostics', color = { bg = bg } },
             { 'filename', icon = { '', color = { fg = 'white' } }, filestatus = true, symbols = { modified = '', readonly = '', unnamed = '󰡯', newfile = '' }, path = 1, color = { fg = 'gray' } },
             { 'filetype', icon_only = true, color = { bg = bg }, padding = { left = 1, right = 1 } },
           },
-          lualine_x = { color = { bg = bg } },
-          lualine_y = { { 'location', icon = '', color = { fg = 'orange' } }, { 'progress', icon = '󰉸', color = { fg = 'orange' } } },
+          lualine_x = {},
+          lualine_y = { { 'location', icon = '', color = { fg = colors.line } }, { 'progress', icon = '󰉸', color = { fg = colors.line } } },
           lualine_z = {},
         },
         inactive_sections = {
