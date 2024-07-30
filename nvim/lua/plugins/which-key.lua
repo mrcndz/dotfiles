@@ -69,6 +69,9 @@ return {
       { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'Lazygit', mode = 'n', icon = ' ' },
       { '<leader>gp', '<cmd>LazyGitFilter<cr>', desc = 'Project Commits', mode = 'n', icon = ' ' },
       { '<leader>gf', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Current File Commits', mode = 'n', icon = ' ' },
+      { '<leader>gl', '<cmd>:DiffviewFileHistory --base=LOCAL<cr>', desc = 'Git Diff Local File', mode = 'n', icon = '' },
+      { '<leader>gd', '<cmd>:DiffviewFileHistory<cr>', desc = 'Git Diff History File<cr>', mode = 'n', icon = '' },
+      { '<leader>gq', '<cmd>:DiffviewClose<cr>', desc = 'Close Diff View', mode = 'n', icon = '' },
     })
   end,
   opts = {
