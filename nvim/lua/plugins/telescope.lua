@@ -16,10 +16,10 @@ return {
       require('telescope').setup({
         extensions = {
           fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
           },
           ['ui-select'] = { require('telescope.themes').get_dropdown({}) },
@@ -33,60 +33,16 @@ return {
               ['<C-u>'] = actions.preview_scrolling_up,
               ['<C-d>'] = actions.preview_scrolling_down,
             },
+            n = { ['q'] = actions.close },
           },
-        },
-        pickers = {
-          git_commits = {
-            mappings = {
-              i = {
-                ['<C-o>'] = function() -- show diffview for the selected commit
-                  -- Open in diffview
-                  local entry = action_state.get_selected_entry()
-                  -- close Telescope window properly prior to switching windows
-                  actions.close(vim.api.nvim_get_current_buf())
-                  vim.cmd(('DiffviewOpen %s^!'):format(entry.value))
-                end,
-              },
-            },
-          },
-          git_status = {
-            mappings = {
-              i = {
-                ['<C-o>'] = function() -- show diffview for the selected file
-                  -- Open in diffview
-                  local entry = action_state.get_selected_entry()
-                  -- close Telescope window properly prior to switching windows
-                  actions.close(vim.api.nvim_get_current_buf())
-                  print(entry.value)
-                  local dotgitpath = vim.fn.finddir('.git', '.;')
-                  vim.cmd(('DiffviewFileHistory ' .. vim.fn.fnamemodify(dotgitpath, ':h') .. '/' .. entry.value))
-                end,
-              },
-            },
-          },
-          git_bcommits = {
-            mappings = {
-              i = {
-                ['<C-o>'] = function() -- DiffviewOpen
-                  -- Open in diffview
-                  local entry = action_state.get_selected_entry()
-                  -- close Telescope window properly prior to switching windows
-                  actions.close(vim.api.nvim_get_current_buf())
-                  vim.cmd(('DiffviewOpen %s^!'):format(entry.value))
-                end,
-              },
-            },
-          },
-          git_branches = {
-            mappings = {
-              i = {
-                ['<C-o>'] = function() -- show diffview comparing the selected branch with the current branch
-                  -- Open in diffview
-                  local entry = action_state.get_selected_entry()
-                  -- close Telescope window properly prior to switching windows
-                  actions.close(vim.api.nvim_get_current_buf())
-                  vim.cmd(('DiffviewOpen %s..'):format(entry.value))
-                end,
+          pickers = {
+            buffers = {
+              initial_mode = 'normal',
+              sort_lastused = true,
+              sort_mru = true,
+              mappings = {
+                i = { ['<C-x>'] = actions.delete_buffer },
+                n = { ['x'] = actions.delete_buffer },
               },
             },
           },
