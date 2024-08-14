@@ -39,7 +39,6 @@ return {
       { '<leader>f', find_file_and_update_nvim_tree, desc = 'Files', mode = 'n', icon = '' },
       { '<leader>F', '<cmd>Telescope live_grep theme=dropdown<cr>', desc = 'Grep', mode = 'n', icon = '' },
       { '<leader><leader>', '<cmd>Telescope buffers<CR>', desc = 'Buffers', mode = 'n', icon = '' },
-      { '<leader>C', ':%bd|e#<cr>', desc = 'Clear Buffers', mode = 'n', icon = '󰃢' },
       { '<leader>c', '<cmd>Telescope commands<CR>', desc = 'Commands', mode = 'n', icon = '' },
       { '<leader>s', '<cmd>Telescope session-lens<CR>', desc = 'Session Lens', mode = 'n', icon = '' },
       { '<leader>h', '<cmd>Telescope oldfiles theme=dropdown<cr>', desc = 'Recents', mode = 'n', icon = '' },
@@ -77,9 +76,8 @@ return {
     -- Utils
     -- Clear Buffers
     wk.add({
-      { '<leader>b', group = 'Buffers...', icon = '' },
-      { '<leader>bQ', '<cmd>%bd|e#<cr>', desc = 'Clear', mode = 'n', icon = '󰃢' },
-      { '<leader>bq', '<cmd>:bd<CR>', desc = 'Close', mode = 'n', icon = '' },
+      { '<leader>Q', '<cmd>%bd|e#<cr>', desc = 'Clear Buffers', mode = 'n', icon = '󰃢' },
+      { '<leader>q', '<cmd>:bd<CR>', desc = 'Close Buffer', mode = 'n', icon = '' },
     })
   end,
   opts = {
