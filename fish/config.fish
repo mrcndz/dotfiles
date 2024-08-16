@@ -1,19 +1,21 @@
-# Variables
-ulimit -n 10240
+# Local env variables must be defined in env.fish
+set -gx FISH_CONFIG $DOTFILES/fish
 set -gx EDITOR nvim
-set -gx DOTFILES $HOME/.dotfiles
+set -gx GOPATH $HOME/.go
 
 # Source
-source $DOTFILES/fish/theme.fish
-source $DOTFILES/fish/fzf.fish
-source $DOTFILES/fish/keybindings.fish
-source $DOTFILES/fish/local.fish
-source $DOTFILES/fish/scripts.fish
+source $DOTFILES/env.fish
+source $FISH_CONFIG/functions/execute.fish
+execute source $FISH_CONFIG/plugins
+execute source $FISH_CONFIG/functions
 
 # Paths
 fish_add_path /opt/homebrew/sbin
 fish_add_path /opt/homebrew/bin
 fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/.go/bin
+fish_add_path /usr/local/go/bin
+fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.local/share/nvim/mason/bin
 fish_add_path $DOTFILES/scripts
 
@@ -28,11 +30,29 @@ alias cg="chatgpt"
 alias bat="batcat"
 alias dot="cd $DOTFILES"
 
+# Enable Vi key bindings
+fish_vi_key_bindings
+
+# Binds
+bind -M insert \ce nvim
+bind -M default \ce nvim
+bind -M insert \co zi
+bind -M default \co zi
+bind -M insert \cg lazygit
+bind -M default \cg lazygit
+bind -M insert \t accept-autosuggestion
+bind -M insert --sets-mode default jj repaint
+bind yy fish_clipboard_copy
+bind Y fish_clipboard_copy
+bind p fish_clipboard_paste
+
 # Autorun Tmux
 if status is-interactive
     and not set -q TMUX
     exec tmux -f $DOTFILES/tmux/tmux.conf
 end
 
-chatgpt --set-completions fish | source
-jump shell fish | source
+# Completions
+if type -q zoxide
+    zoxide init fish | source
+end

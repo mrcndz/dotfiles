@@ -1,9 +1,15 @@
+git
 fish
+neovim
 fzf
 fd
 bat
 fisher
 xsel
 ripgrep
-jump
+zoxide
 nodejs
+yg
+go
+rust
+lazygit
