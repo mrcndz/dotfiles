@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [ -z "$REPOS" ]; then
+    echo "REPOS environment variable not set"
+    exit 1
+fi
+
+if [ ! -d "$REPOS/lazygit" ]; then
+    git clone https://github.com/jesseduffield/lazygit.git $REPOS/lazygit
+fi
+
+cd $REPOS/lazygit
+git fetch && git pull
+go install

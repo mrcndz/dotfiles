@@ -1,15 +1,67 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
-set -e
+# Check if yq is installed
+if not command -v yq >/dev/null
+    echo "yq is not installed. Please install yq to proceed."
+    exit 1
+end
 
-CONFIG="install.conf.yaml"
-DOTBOT_DIR="dotbot"
+# Define the directory where this script is located
+set dir (dirname (realpath (status --current-filename)))
+set -U DOTFILES $dir
+echo "DOTFILES is set to $DOTFILES"
 
-DOTBOT_BIN="bin/dotbot"
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Read config file
+set config_file "$DOTFILES/install.yaml"
+function execute_commands -a commands
+    for command in (string split "\n" $commands)
+        eval $command
+        echo "Running $command"
+        if test $status -ne 0
+            echo "Error executing previous command"
+            exit
+        end
+    end
+end
 
-cd "${BASEDIR}"
-git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
-git submodule update --init --recursive "${DOTBOT_DIR}"
+# Read and execute the list of pre-commands listed in $DOTFILES/install.yaml
+set pre_commands (yq eval '.pre_commands[]' $config_file)
+echo "Executing pre-commands..."
+execute_commands $pre_commands
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
+# Create the symbolic links
+set symlinks (yq eval '.symlinks' $config_file | string split "\n")
+echo "Creating symbolic links..."
+
+function create_symlink -a source -a dest
+    # Check if the symlink already exists
+    if test -L $dest
+        echo "Removing existing symlink: $dest"
+        rm $dest
+    else if test -e $dest
+        echo "Warning: $dest already exists and is not a symlink, backup"
+        mv $dest $dest.backup
+        echo "$dest -> $dest.backup"
+    end
+
+    eval "ln -sf $source $dest"
+    if not test $status -ne 0
+        echo "Symbolic link created: $dest -> $source"
+    end
+
+end
+
+for symlink in $symlinks
+    set key_value (string split ":" $symlink)
+    set dest (string trim -c " " $key_value[2])
+    set source (string trim -c " " $key_value[1])
+    # Replace $DOTFILES in the source path with the actual path
+    set source (string replace '$DOTFILES' $DOTFILES $source)
+    set dest (string replace '$DOTFILES' $DOTFILES $dest)
+    create_symlink $dest $source
+end
+
+# Same but post
+set post_commands (yq eval '.post_commands[]' $config_file)
+echo "Executing post-commands..."
+execute_commands $post_commands

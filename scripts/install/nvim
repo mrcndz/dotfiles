@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+if [ -n "$REPOS" ]; then
+	if [ -d "$REPOS/neovim" ]; then
+		cd $REPOS/neovim && git fetch && git pull
+        else
+		cd $REPOS && git clone https://github.com/neovim/neovim && cd neovim
+	fi
+	make CMAKE_BUILD_TYPE=Release
+	sudo make install
+	rm -rf build/  # clear the CMake cache
+else
+    echo "error: REPOS not defined"
+fi
