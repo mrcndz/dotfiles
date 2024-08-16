@@ -1,0 +1,11 @@
+#/usr/bin/env bash
+if [ -n "$REPOS" ]; then
+	if [ -d "$REPOS/fish-shell" ]; then
+		cd $REPOS/fish-shell && git fetch && git pull
+        else
+		cd $REPOS && git clone https://github.com/fish-shell/fish-shell.git
+	fi
+	cd fish-shell; cmake .; make; sudo make install
+else
+    echo "error: REPOS not defined"
+fi

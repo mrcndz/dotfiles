@@ -1,0 +1,13 @@
+#/usr/bin/env bash
+
+if [ ! -d "$REPOS" ]; then
+    echo "Variable REPOS is not set"
+    exit 1
+fi
+
+cd $REPOS
+if [ ! -d "fzf" ]; then
+    git clone https://github.com/junegunn/fzf.git
+fi
+
+cd fzf && git fetch && git pull && ./install
