@@ -53,11 +53,13 @@ end
 
 for symlink in $symlinks
     set key_value (string split ":" $symlink)
-    set dest (string trim -c " " $key_value[2])
+
     set source (string trim -c " " $key_value[1])
-    # Replace $DOTFILES in the source path with the actual path
-    set source (string replace '$DOTFILES' $DOTFILES $source)
-    set dest (string replace '$DOTFILES' $DOTFILES $dest)
+    set source (eval "echo $source")
+
+    set dest (string trim -c " " $key_value[2])
+    set dest (eval "echo $dest")
+
     create_symlink $dest $source
 end
 
