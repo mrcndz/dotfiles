@@ -59,3 +59,8 @@ end
 if type -q zoxide
     zoxide init fish | source
 end
+
+if type -q pyenv
+    pyenv init - | source
+    status --is-interactive; and source (pyenv virtualenv-init - | psub)
+end
