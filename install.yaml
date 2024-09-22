@@ -1,11 +1,21 @@
 pre_commands:
+ - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm # Install tmux
 
 symlinks:
-  ~/.config/lazygit/config.yml: $DOTFILES/lazygit/config.yml 
-  ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
-  ~/.config/fish/config.fish: $DOTFILES/fish/config.fish 
-  ~/.tmux.conf: $DOTFILES/tmux/tmux.conf 
-  ~/.config/nvim: $DOTFILES/nvim
+  - ~/.config/lazygit/config.yml: $DOTFILES/lazygit/config.yml 
+  - ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
+  - ~/.config/fish/config.fish: $DOTFILES/fish/config.fish 
+  - ~/.tmux.conf: $DOTFILES/tmux/tmux.conf 
+  - ~/.config/nvim: $DOTFILES/nvim
+  - ~/.zshrc: $DOTFILES/zsh/zshrc
+
+symlinks-linux:
+  - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
+
+symlinks-darwin:
+  - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-darwin.toml
+  - ~/.hammerspoon/init.lua: $DOTFILES/hammerspoon/init.lua
 
 post_commands:
+  - exec ~/.tmux/plugins/tpm/bin/install_plugins
   - source $DOTFILES/fish/config.fish
