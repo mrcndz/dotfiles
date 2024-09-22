@@ -33,6 +33,9 @@ alias dot="cd $DOTFILES"
 # Enable Vi key bindings
 fish_vi_key_bindings
 
+# Disable fish greeting
+set -g fish_greeting
+
 # Binds
 bind -M insert \ce nvim
 bind -M default \ce nvim
