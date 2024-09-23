@@ -1,8 +1,6 @@
 -- Visual
 -- vim.o.guicursor = 'n-v-c-i:'
 vim.opt.guicursor = {
-  'n-c-v-sm:block-Cursor/lCursor-blinkon0',
-  'i-ci-ve:ver10',
 }
 vim.o.conceallevel = 0 -- Don't hide quotes in markdown
 vim.o.cmdheight = 1
@@ -23,18 +21,6 @@ vim.o.smarttab = true
 vim.o.smartindent = true
 vim.o.expandtab = true -- Convert tabs to spaces.
 vim.o.clipboard = 'unnamedplus'
-vim.g.clipboard = {
-  name = "xclip",
-  copy = {
-    ["+"] = "xclip -selection clipboard",
-    ["*"] = "xclip -selection primary",
-  },
-  paste = {
-    ["+"] = "xclip -selection clipboard -o",
-    ["*"] = "xclip -selection primary -o",
-  },
-  cache_enabled = 1,
-}
 vim.o.tabstop = 4
 -- vim.o.nocursorline       = false
 -- vim.o.nocursorcolumn     = false
