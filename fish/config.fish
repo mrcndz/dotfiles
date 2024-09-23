@@ -33,6 +33,9 @@ alias dot="cd $DOTFILES"
 # Enable Vi key bindings
 fish_vi_key_bindings
 
+# Disable fish greeting
+set -g fish_greeting
+
 # Binds
 bind -M insert \ce nvim
 bind -M default \ce nvim
@@ -55,4 +58,9 @@ end
 # Completions
 if type -q zoxide
     zoxide init fish | source
+end
+
+if type -q pyenv
+    pyenv init - | source
+    status --is-interactive; and source (pyenv virtualenv-init - | psub)
 end
