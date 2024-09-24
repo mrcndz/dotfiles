@@ -19,3 +19,4 @@ symlinks-darwin:
 post_commands:
   - exec ~/.tmux/plugins/tpm/bin/install_plugins
   - source $DOTFILES/fish/config.fish
+  - curl -sL https://git.io/fisher | source && fisher update
