@@ -7,20 +7,29 @@ end
 
 # Define the directory where this script is located
 set dir (dirname (realpath (status --current-filename)))
-set -U DOTFILES $dir
+set -Ux DOTFILES $dir
+set config_file "$DOTFILES/install.yaml"
 echo "-> DOTFILES is set to $DOTFILES"
 
-# Read config file
-set config_file "$DOTFILES/install.yaml"
 function execute_commands -a commands
-    for command in (string split "\n" $commands)
+    for command in $commands
+        echo $command
+    end
+
+    for command in $commands
+        set_color green
         echo "  | $command"
-        eval $command
+        set_color normal
+
+        set_color red
+        fish -c "$command" 2>&1 | sed "s/^/  | /"
+        set_color normal
 
         if test $status -ne 0
+            set_color red
             echo "Error executing previous command, continuing..."
+            set_color normal
         end
-
     end
 end
 
@@ -34,13 +43,13 @@ set symlinks (yq eval '.symlinks[]' $config_file)
 set symlinks_darwin (yq eval '.symlinks-darwin[]' $config_file)
 set symlinks_linux (yq eval '.symlinks-linux[]' $config_file)
 
-if uname -s | string match -r 'Darwin'
-    echo "-> ! Detected macOS, adding macOS symlinks"
+if uname -s | string match -r Darwin
+    echo "  | ! Detected macOS, adding macOS symlinks"
     set symlinks $symlinks_darwin $symlinks
 end
 
-if uname -s | string match -r 'Linux'
-    echo "-> ! Detected Linux, adding Linux symlinks..."
+if uname -s | string match -r Linux
+    echo "  | ! Detected Linux, adding Linux symlinks..."
     set symlinks $symlinks_linux $symlinks
 end
 
@@ -49,19 +58,27 @@ echo "-> Creating symbolic links..."
 function create_symlink -a source -a dest
     # Check if the symlink already exists
     if test -L $dest
-        echo "Removing existing symlink: $dest"
+        set_color yellow
+        echo "  | ! Removing existing symlink: $dest"
+        set_color normal
         rm $dest
     else if test -e $dest
-        echo "Warning: $dest already exists and is not a symlink, backup"
+        set_color yellow
+        echo "  | ! Warning: $dest already exists and is not a symlink, backup"
         mv $dest $dest.backup
         echo "$dest -> $dest.backup"
+        set_color normal
     end
 
-    eval "ln -sf $source $dest"
+    set_color red
+    ln -sf $source $dest | sed "s/^/  |  /"
     if not test $status -ne 0
-        echo "  | $dest -> $source"
+        set_color green
+        echo "  | @ $dest -> $source"
+        set_color normal
     end
 end
+
 
 for symlink in $symlinks
     set key_value (string split ":" $symlink)
@@ -77,5 +94,9 @@ end
 
 # Same but post
 set post_commands (yq eval '.post_commands[]' $config_file)
+for command in $post_commands
+    echo $command
+end
+
 echo "-> Executing post-commands..."
 execute_commands $post_commands

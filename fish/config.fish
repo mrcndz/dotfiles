@@ -3,24 +3,21 @@ set -gx FISH_CONFIG $DOTFILES/fish
 set -gx EDITOR nvim
 set -gx GOPATH $HOME/.go
 
+# go
+
 # Source
 source $DOTFILES/env.fish
 source $FISH_CONFIG/functions/execute.fish
 execute source $FISH_CONFIG/plugins
 execute source $FISH_CONFIG/functions
 
-# Paths
-fish_add_path /opt/homebrew/sbin
-fish_add_path /opt/homebrew/bin
-fish_add_path $HOME/.cargo/bin
-fish_add_path $HOME/.go/bin
-fish_add_path /usr/local/go/bin
-fish_add_path $HOME/.local/bin
-fish_add_path $HOME/.local/share/nvim/mason/bin
+# Paths ----------------------------------------------------------------------
+fish_add_path $HOME/.go/bin /usr/local/go/bin
+fish_add_path /opt/homebrew/sbin /opt/homebrew/bin
+fish_add_path $HOME/.cargo/bin $HOME/.local/bin $HOME/.local/share/nvim/mason/bin
 fish_add_path $DOTFILES/scripts
 
 # Alias
-alias j="jump"
 alias v="nvim"
 alias g="git"
 alias cdr="cd (ls -t | head -n 1)"
@@ -61,6 +58,8 @@ if type -q zoxide
 end
 
 if type -q pyenv
+    set -gx PYENV_ROOT $HOME/.pyenv
+    fish_add_path $PYENV_ROOT/bin
     pyenv init - | source
     status --is-interactive; and source (pyenv virtualenv-init - | psub)
 end
