@@ -15,6 +15,10 @@ return {
         end,
         config = function()
             require('auto-session').setup({
+                auto_create = function()
+                    local cmd = 'git rev-parse --is-inside-work-tree'
+                    return vim.fn.system(cmd) == 'true\n'
+                end,
                 auto_save_enabled = true,
                 auto_restore_enabled = true,
                 log_level = 'error',

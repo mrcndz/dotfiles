@@ -6,7 +6,6 @@ return {
     dependencies = {
       'nvim-telescope/telescope.nvim',
       'nvim-tree/nvim-web-devicons',
-      -- Gitsigns
       'lewis6991/gitsigns.nvim',
       'nvim-telescope/telescope.nvim',
     },
@@ -18,8 +17,16 @@ return {
 
     config = function()
       local ntree = require('nvim-tree')
+      local api = require('nvim-tree.api')
 
       -- Autocmds
+      -- Auto focus file in nvim tree when buffer entered
+      vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+        callback = function()
+          local filepath = vim.fn.expand('%:p')
+          api.tree.find_file(filepath)
+        end,
+      })
       -- Autoclose
       vim.api.nvim_create_autocmd('QuitPre', {
         callback = function()
@@ -44,32 +51,7 @@ return {
         end,
       })
 
-      -- Find directory using telescope
-      local function find_directory_and_focus()
-        local actions = require('telescope.actions')
-        local action_state = require('telescope.actions.state')
-        local themes = require('telescope.themes')
-
-        local function open_nvim_tree(prompt_bufnr, _)
-          actions.select_default:replace(function()
-            local api = require('nvim-tree.api')
-
-            actions.close(prompt_bufnr)
-            local selection = action_state.get_selected_entry()
-            local filepath = selection.cwd .. '/' .. selection.value
-            api.tree.open()
-            api.tree.find_file(filepath)
-            vim.cmd('edit ' .. filepath)
-          end)
-
-          return true
-        end
-
-        require('telescope.builtin').find_files(themes.get_dropdown({ attach_mappings = open_nvim_tree }))
-      end
-
       local function my_on_attach(bufnr)
-        local api = require('nvim-tree.api')
         local oil = require('oil')
 
         local function get_node_dirname()
@@ -88,9 +70,9 @@ return {
         end
 
         -- api.config.mappings.default_on_attach(bufnr)
-        vim.keymap.set('n', 'y', api.fs.copy.node, opts('Copy'))
         vim.keymap.set('n', 'd', api.fs.remove, opts('Delete'))
-        vim.keymap.set('n', 'V', api.fs.copy.filename, opts('Copy filename'))
+        vim.keymap.set('n', 'y', api.fs.copy.filename, opts('Copy filename'))
+        vim.keymap.set('n', 'Y', api.fs.copy.node, opts('Copy'))
         vim.keymap.set('n', 'r', api.fs.rename, opts('Rename'))
         vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
         vim.keymap.set('n', '|', api.node.open.vertical, opts('Open: Vertical Split'))
@@ -99,10 +81,9 @@ return {
         vim.keymap.set('n', '<', api.tree.change_root_to_parent, opts('CD'))
         vim.keymap.set('n', 'l', api.node.open.edit, opts('Open'))
         vim.keymap.set('n', '<CR>', api.node.open.edit, opts('Open'))
-        vim.keymap.set('n', 'h', api.tree.toggle_hidden_filter, opts('Toggle hidden'))
+        vim.keymap.set('n', 't', api.tree.toggle_hidden_filter, opts('Toggle hidden'))
         vim.keymap.set('n', 'i', get_node_dirname, opts('Edit'))
-        vim.keymap.set('n', 'f', find_directory_and_focus, opts('Find directory'))
-        vim.keymap.set('n', '/', find_directory_and_focus, opts('Find directory'))
+        vim.keymap.set('n', 'f', require('telescope.builtin').find_files, opts('Find directory'))
       end
 
       ntree.setup({
@@ -129,7 +110,7 @@ return {
           enable = false,
         },
         diagnostics = {
-          enable = true,
+          enable = false,
           show_on_dirs = false,
         },
       })
@@ -161,8 +142,8 @@ return {
           ['<'] = 'actions.parent',
           ['gs'] = 'actions.change_sort',
           ['gx'] = 'actions.open_external',
-          ['h'] = 'actions.toggle_hidden',
-          ['H'] = 'actions.toggle_trash',
+          ['t'] = 'actions.toggle_hidden',
+          ['T'] = 'actions.toggle_trash',
           ['<C-p>'] = 'actions.preview',
         },
         use_default_keymaps = false,
