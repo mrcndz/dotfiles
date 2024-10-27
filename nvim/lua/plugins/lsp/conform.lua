@@ -15,7 +15,7 @@ return {
   opts = {
     formatters_by_ft = {
       lua = { 'stylua' },
-      python = { 'blue' },
+      python = { 'isort', 'black' },
       javascript = { { 'prettierd', 'prettier' } },
       json = { { 'prettierd', 'prettier' } },
       fish = { 'fish_indent' },
@@ -25,9 +25,6 @@ return {
     formatters = {
       shfmt = {
         prepend_args = { '-i', '2' },
-      },
-      blue = {
-        args = { '--line-length', '120' },
       },
     },
   },
