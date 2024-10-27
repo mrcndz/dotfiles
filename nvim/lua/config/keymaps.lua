@@ -1,15 +1,15 @@
-local Utils    = require('utils')
-local noremap  = Utils.noremap
+local Utils = require('utils')
+local noremap = Utils.noremap
 local nnoremap = Utils.nnoremap
 local vnoremap = Utils.vnoremap
 local xnoremap = Utils.xnoremap
 local inoremap = Utils.inoremap
 local tnoremap = Utils.tnoremap
-local nmap     = Utils.nmap
-local xmap     = Utils.xmap
-local vmap     = Utils.vmap
-local map      = Utils.map
-local imap     = Utils.imap
+local nmap = Utils.nmap
+local xmap = Utils.xmap
+local vmap = Utils.vmap
+local map = Utils.map
+local imap = Utils.imap
 
 nmap('<space>', '<Nop>')
 -- map leader to space
@@ -25,11 +25,8 @@ nnoremap('n', 'nzzzv')
 nnoremap('N', 'Nzzzv')
 
 -- Buffer
-nnoremap('<A-l>', '<cmd>BufferNext<CR>')
-nnoremap('<A-h>', '<cmd>BufferPrevious<CR>')
-nnoremap('<A-<>', '<cmd>BufferMovePrevious<CR>')
-nnoremap('<A->>', '<cmd>BufferMoveNext<CR>')
-nnoremap('<C-p>', '<cmd>BufferPin<cr>')
+nnoremap('<Tab>', ':bprevious<CR>')
+nnoremap('<S-Tab>', ':bnext<CR>')
 
 -- Macro over visual
 vim.cmd([[
@@ -57,7 +54,6 @@ nnoremap('x', '"_x')
 vnoremap('p', '"_dP')
 nnoremap('P', '"_d')
 vnoremap('<LeftRelease>', '"+y<LeftRelease>')
-
 
 -- Copy to system clippboard
 nnoremap('y', '"+y')
