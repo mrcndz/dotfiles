@@ -18,7 +18,6 @@ return {
       dashboard.button('f', ' Find File', ':Telescope find_files<CR>'),
       dashboard.button('r', ' Find Recents', ':Telescope oldfiles<CR>'),
       dashboard.button('s', '  > Settings', ':cd $DOTFILES/nvim'),
-      dashboard.button('q', '  > Quit NVIM', ':qa<CR>'),
     }
 
     alpha.setup(dashboard.opts)
