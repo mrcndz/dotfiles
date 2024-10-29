@@ -38,8 +38,6 @@ bind -M insert \ce nvim
 bind -M default \ce nvim
 bind -M insert \co zi
 bind -M default \co zi
-bind -M insert \cg lazygit
-bind -M default \cg lazygit
 bind -M insert \t accept-autosuggestion
 bind -M insert --sets-mode default jj repaint
 bind yy fish_clipboard_copy
