@@ -7,6 +7,7 @@ return {
   init = function()
     local wk = require('which-key')
     local wkicon = require('which-key.icons')
+    local telescope_pickers = require('telescope.pickers')
 
     -- Telescope
     wk.add({
@@ -42,9 +43,9 @@ return {
       { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'Lazygit', mode = 'n', icon = ' ' },
       { '<leader>gp', '<cmd>LazyGitFilter<cr>', desc = 'Project Commits', mode = 'n', icon = ' ' },
       { '<leader>gf', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Current File Commits', mode = 'n', icon = ' ' },
-      { '<leader>gs', "<cmd>Telescope git_status<cr>", desc = 'Status', mode = 'n', icon = '' },
-      { '<leader>gS', "<cmd>Telescope git_stash<cr>", desc = 'Stash', mode = 'n', icon = '' },
-      { '<leader>gc', "<cmd>Telescope git_commits<cr>", desc = 'Commits', mode = 'n', icon = '' },
+      { '<leader>gs', '<cmd>Telescope git_status<cr>', desc = 'Status', mode = 'n', icon = '' },
+      { '<leader>gS', '<cmd>Telescope git_stash<cr>', desc = 'Stash', mode = 'n', icon = '' },
+      { '<leader>gc', '<cmd>Telescope git_commits<cr>', desc = 'Commits', mode = 'n', icon = '' },
     })
     -- Utils
     -- Clear Buffers
