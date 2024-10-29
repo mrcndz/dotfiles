@@ -21,7 +21,7 @@ return {
         'javascript',
         'json',
         'python',
-        "toml",
+        'toml',
         'rust',
         'jsdoc',
         'fish',

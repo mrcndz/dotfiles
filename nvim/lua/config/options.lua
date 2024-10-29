@@ -1,12 +1,12 @@
 -- Visual
 -- vim.o.guicursor = 'n-v-c-i:'
-vim.opt.guicursor = {
-}
+vim.opt.guicursor = {}
+vim.opt.pumblend = 0
 vim.o.conceallevel = 0 -- Don't hide quotes in markdown
 vim.o.cmdheight = 1
 vim.o.pumheight = 10
 vim.o.showmode = false
-vim.o.showtabline = 0      -- Always show tabline
+vim.o.showtabline = 0 -- Always show tabline
 vim.o.title = true
 vim.o.termguicolors = true -- Use true colors, required for some plugins
 vim.wo.number = true
@@ -16,7 +16,7 @@ vim.wo.cursorline = true
 -- Behavior
 vim.o.hlsearch = false
 vim.o.ignorecase = true -- Ignore case when using lowercase in search
-vim.o.smartcase = true  -- But don't ignore it when using upper case
+vim.o.smartcase = true -- But don't ignore it when using upper case
 vim.o.smarttab = true
 vim.o.smartindent = true
 vim.o.expandtab = true -- Convert tabs to spaces.
@@ -43,7 +43,7 @@ vim.o.spell = false -- As of v0.8.0 it only checks comments
 vim.o.spelllang = 'en_us'
 vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.o.wildmode = 'longest,full' -- Display auto-complete in Command Mode
-vim.o.updatetime = 300          -- Delay until write to Swap and HoldCommand event
+vim.o.updatetime = 300 -- Delay until write to Swap and HoldCommand event
 vim.g.do_file_type_lua = 1
 -- Disable default plugins
 -- vim.g.loaded_netrwPlugin = false                     -- I can't remember what the issue was with this option
