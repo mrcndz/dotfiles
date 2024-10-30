@@ -143,7 +143,7 @@ return {
         keymaps = {
           ['?'] = 'actions.show_help',
           ['q'] = quit_and_save,
-          ['<CR>'] = quit_and_save,
+          ['<CR>'] = 'actions.select',
           ['<'] = 'actions.parent',
           ['gs'] = 'actions.change_sort',
           ['gx'] = 'actions.open_external',

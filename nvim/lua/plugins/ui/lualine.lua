@@ -12,7 +12,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       local bg = '#' .. vim.api.nvim_get_hl_by_name('Normal', true).background
-      local utils = require('lualine.utils.utils')
+      local utils = require 'lualine.utils.utils'
       local colors = {
         insert = utils.extract_color_from_hllist('fg', { 'Removed' }, '#000000'),
         normal = utils.extract_color_from_hllist('fg', { 'Normal' }, '#000000'),
@@ -56,13 +56,13 @@ return {
         return ''
       end
 
-      require('lualine').setup({
+      require('lualine').setup {
         options = {
           icons_enabled = true,
           globalstatus = true,
           theme = theme,
-          component_separators = { left = '', right = '' },
-          section_separators = { left = '', right = '' },
+          component_separators = { left = '|', right = '|' },
+          section_separators = { left = '|', right = '|' },
           disabled_filetypes = { 'NvimTree', 'DiffviewPanel' },
         },
         sections = {
@@ -73,7 +73,14 @@ return {
             { 'mode' },
           },
           lualine_c = {
-            { 'filename', icon = { '', color = { fg = 'white' } }, filestatus = true, symbols = { modified = '', readonly = '', unnamed = '󰡯', newfile = '' }, path = 1, color = { fg = 'gray' } },
+            {
+              'filename',
+              icon = { '', color = { fg = 'white' } },
+              filestatus = true,
+              symbols = { modified = '', readonly = '', unnamed = '󰡯', newfile = '' },
+              path = 1,
+              color = { fg = 'gray' },
+            },
             { 'filetype', icon_only = true, color = { bg = bg }, padding = { left = 1, right = 1 } },
             { 'branch', icon = '', color = { fg = colors.git } },
           },
@@ -98,7 +105,7 @@ return {
           lualine_y = {},
           lualine_z = {},
         },
-      })
+      }
 
       vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
       vim.api.nvim_create_autocmd('User', {
