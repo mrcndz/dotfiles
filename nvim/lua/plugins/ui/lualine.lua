@@ -14,14 +14,15 @@ return {
       local bg = '#' .. vim.api.nvim_get_hl_by_name('Normal', true).background
       local utils = require 'lualine.utils.utils'
       local colors = {
-        insert = utils.extract_color_from_hllist('fg', { 'Removed' }, '#000000'),
-        normal = utils.extract_color_from_hllist('fg', { 'Normal' }, '#000000'),
-        replace = utils.extract_color_from_hllist('fg', { 'Number', 'Type' }, '#000000'),
-        visual = utils.extract_color_from_hllist('fg', { 'Special', 'Boolean', 'Constant' }, '#000000'),
-        command = utils.extract_color_from_hllist('fg', { 'Identifier' }, '#000000'),
-        icon = utils.extract_color_from_hllist('fg', { '@string' }, '#000000'),
-        git = utils.extract_color_from_hllist('fg', { 'Added' }, '#000000'),
-        line = utils.extract_color_from_hllist('fg', { '@variable.builtin' }, '#000000'),
+        insert = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, '#000000'),
+        normal = utils.extract_color_from_hllist('fg', { 'MiniIconsGrey' }, '#000000'),
+        replace = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, '#000000'),
+        visual = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, '#000000'),
+        command = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, '#000000'),
+        icon = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, '#000000'),
+        git = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, '#000000'),
+        line = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, '#000000'),
+        lsp_progress = utils.extract_color_from_hllist('fg', { 'MiniIconsPurple' }, '#000000'),
       }
 
       local theme = {
@@ -61,9 +62,9 @@ return {
           icons_enabled = true,
           globalstatus = true,
           theme = theme,
-          component_separators = { left = '|', right = '|' },
-          section_separators = { left = '|', right = '|' },
-          disabled_filetypes = { 'NvimTree', 'DiffviewPanel' },
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
+          disabled_filetypes = { 'NvimTree', 'oil' },
         },
         sections = {
           lualine_a = {
@@ -75,11 +76,11 @@ return {
           lualine_c = {
             {
               'filename',
-              icon = { '', color = { fg = 'white' } },
+              icon = { '', color = { fg = 'grey' } },
               filestatus = true,
               symbols = { modified = '', readonly = '', unnamed = '󰡯', newfile = '' },
               path = 1,
-              color = { fg = 'gray' },
+              color = { fg = colors.normal },
             },
             { 'filetype', icon_only = true, color = { bg = bg }, padding = { left = 1, right = 1 } },
             { 'branch', icon = '', color = { fg = colors.git } },
@@ -90,6 +91,7 @@ return {
               function()
                 return require('lsp-progress').progress()
               end,
+              color = { fg = 'gray' },
             },
           },
           lualine_y = {},
