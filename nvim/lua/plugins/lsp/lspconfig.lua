@@ -35,18 +35,19 @@ return {
     },
     config = function()
       -- Setup diagnostics
-      local signs = { Error = ' ', Warn = ' ', Hint = '󰠠 ', Info = ' ' }
+      local signs = { Error = '󱔷', Warn = '󰾕', Hint = '', Info = '󰾚' }
       for type, icon in pairs(signs) do
         local hl = 'DiagnosticSign' .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
       end
 
-      vim.diagnostic.config({
+      vim.diagnostic.config {
         float = { border = 'single' },
         virtual_text = { severity = vim.diagnostic.severity.ERROR },
-      })
+      }
 
-      local lspconfig = require('lspconfig')
+      local lspconfig = require 'lspconfig'
+
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -67,7 +68,7 @@ return {
         })
       end
 
-      lspconfig['pyright'].setup({
+      lspconfig['pyright'].setup {
         capabilities = capabilities,
         on_attach = on_attach,
         settings = {
@@ -79,16 +80,16 @@ return {
             },
           },
         },
-      })
+      }
 
-      lspconfig['ruff'].setup({
+      lspconfig['ruff'].setup {
         settings = {
           organizeImports = false,
         },
         on_attach = function(client)
           client.server_capabilities.hoverProvider = false
         end,
-      })
+      }
 
       local servers = {
         'lua_ls',
@@ -100,11 +101,25 @@ return {
       }
 
       for _, server in ipairs(servers) do
-        lspconfig[server].setup({
+        lspconfig[server].setup {
           capabilities = capabilities,
           on_attach = on_attach,
-        })
+        }
       end
+
+      -- Diagnostics
+      vim.diagnostic.config {
+        underline = false,
+        virtual_text = {
+          severity = vim.diagnostic.severity.ERROR,
+          spacing = 4,
+        },
+        signs = true,
+        float = {
+          border = 'rounded',
+          source = true,
+        },
+      }
     end,
   },
   {
@@ -117,14 +132,9 @@ return {
         'LazyVim',
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
       },
-      -- always enable unless `vim.g.lazydev_enabled = false`
-      -- This is the default
+
       enabled = function(root_dir)
         return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled
-      end,
-      -- disable when a .luarc.json file is found
-      enabled = function(root_dir)
-        return not vim.uv.fs_stat(root_dir .. '/.luarc.json')
       end,
     },
   },
@@ -137,7 +147,7 @@ return {
       {
         '<F2>',
         function()
-          require('conform').format({ async = true, lsp_fallback = true })
+          require('conform').format { async = true, lsp_fallback = true }
         end,
         mode = '',
         desc = 'Format buffer',
