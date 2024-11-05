@@ -11,25 +11,25 @@ set -Ux DOTFILES $dir
 set config_file "$DOTFILES/install.yaml"
 echo "-> DOTFILES is set to $DOTFILES"
 
-function execute_commands -a commands
-    for command in $commands
+function execute_commands
+    for command in $argv
         echo $command
     end
 
-    for command in $commands
+    for command in $argv
         set_color green
         echo "  | $command"
         set_color normal
 
         set_color red
-        # fish -c "$command" 2>&1 | sed "s/^/  | /"
+        fish -c "$command" 2>&1 | sed "s/^/  | /"
         set_color normal
 
-        # if test $status -ne 0
-        #     set_color red
-        #     echo "Error executing previous command, continuing..."
-        #     set_color normal
-        # end
+        if test $status -ne 0
+            set_color red
+            echo "Error executing previous command, continuing..."
+            set_color normal
+        end
     end
 end
 
@@ -92,11 +92,7 @@ for symlink in $symlinks
     create_symlink $dest $source
 end
 
-# Same but post
 set post_commands (yq eval '.post_commands[]' $config_file)
-# for command in $post_commands
-#     echo $command
-# end
 
 echo "-> Executing post-commands..."
 execute_commands $post_commands
