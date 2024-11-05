@@ -1,5 +1,5 @@
 pre_commands:
- - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm # Install tmux
+ - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm # Install tpm tmux
 
 symlinks:
   - ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
