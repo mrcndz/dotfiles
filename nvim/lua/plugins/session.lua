@@ -17,6 +17,9 @@ return {
           return (is_git_repo and is_top_level)
         end,
         auto_save_enabled = true,
+        bypass_save_filetypes = {
+          'alpha',
+        },
         auto_restore_enabled = true,
         log_level = 'error',
         post_restore_cmd = {
@@ -26,6 +29,13 @@ return {
           'EnableHLChunk',
           'EnableHLIdent',
           'EnableHLLineNum',
+          function()
+            local filepath = vim.fn.expand '%'
+            local git_root = vim.fn.system 'git rev-parse --show-toplevel'
+            if git_root ~= '' or git_root:match '^fatal:' then
+              vim.api.nvim_cmd({ cmd = 'cd', args = { git_root } }, {})
+            end
+          end,
         },
         auto_session_suppress_dirs = {
           '~/',
