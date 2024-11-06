@@ -2,14 +2,14 @@ return {
   {
     'nmac427/guess-indent.nvim',
     config = function()
-      require('guess-indent').setup({})
+      require('guess-indent').setup {}
     end,
   },
   {
     'shellRaining/hlchunk.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      require('hlchunk').setup({
+      require('hlchunk').setup {
         chunk = {
           enable = true,
           chars = {
@@ -27,9 +27,6 @@ return {
           use_treesitter = true,
           chars = {
             '│',
-            '¦',
-            '┆',
-            '┊',
           },
         },
         line_num = {
@@ -40,7 +37,7 @@ return {
         blank = {
           enable = false,
         },
-      })
+      }
     end,
   },
 }
