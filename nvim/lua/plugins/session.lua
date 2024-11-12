@@ -10,8 +10,8 @@ return {
     config = function()
       require('auto-session').setup {
         auto_create = function()
-          local is_git_repo = vim.fn.system 'git rev-parse --is-inside-work-tree' == 'true\n'
           local cwd = vim.loop.cwd()
+          local is_git_repo = vim.fn.system 'git rev-parse --is-inside-work-tree' == 'true\n'
           local is_top_level = vim.fn.system 'git rev-parse --show-toplevel' == cwd .. '\n'
 
           return (is_git_repo and is_top_level)
@@ -31,6 +31,11 @@ return {
           'EnableHLLineNum',
           function()
             local filepath = vim.fn.expand '%'
+
+            if not vim.fn.filereadable(filepath) then
+              vim.cmd 'Alpha'
+            end
+
             local git_root = vim.fn.system 'git rev-parse --show-toplevel'
             if git_root ~= '' or git_root:match '^fatal:' then
               vim.api.nvim_cmd({ cmd = 'cd', args = { git_root } }, {})
