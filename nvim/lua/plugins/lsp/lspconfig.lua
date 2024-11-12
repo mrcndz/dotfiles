@@ -43,7 +43,7 @@ return {
 
       local lspconfig = require 'lspconfig'
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
       local on_attach = function(client, bufnr)
         local function buf_set_option(...)
@@ -84,7 +84,6 @@ return {
           client.server_capabilities.hoverProvider = false
         end,
       }
-
       local servers = {
         'lua_ls',
         'jsonls',
