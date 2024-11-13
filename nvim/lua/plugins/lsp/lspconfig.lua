@@ -102,6 +102,7 @@ return {
 
       -- Diagnostics
       vim.diagnostic.config {
+        update_in_insert = true,
         underline = false,
         virtual_text = {
           severity = vim.diagnostic.severity.ERROR,
