@@ -1,4 +1,5 @@
 local Utils = require 'utils'
+local noremap = Utils.noremap
 local nnoremap = Utils.nnoremap
 local vnoremap = Utils.vnoremap
 local inoremap = Utils.inoremap
@@ -6,6 +7,7 @@ local nmap = Utils.nmap
 
 nmap('<space>', '<Nop>')
 nmap(';', ':')
+
 -- map leader to space
 inoremap('jj', '<Esc>')
 inoremap('<Esc>', '<Esc>')
