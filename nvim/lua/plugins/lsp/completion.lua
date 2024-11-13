@@ -1,27 +1,29 @@
 return {
+  { 'saghen/blink.compat' },
   {
     'saghen/blink.cmp',
     lazy = false,
     dependencies = {
       'rafamadriz/friendly-snippets',
-      'supermaven-inc/supermaven-nvim',
     },
     version = 'v0.*',
     opts = {
       keymap = {
-        ['<C-Space>'] = { 'show', 'show-documentation', 'hide-documentation' },
         ['<Tab>'] = {
           function(cmp)
             local suggestion = require 'supermaven-nvim.completion_preview'
-            if cmp.is_in_snippet() then
-              return cmp.accept()
-            elseif suggestion.has_suggestion() then
-              suggestion.on_accept_suggestion()
+            if suggestion.has_suggestion() then
+              return vim.schedule(suggestion.on_accept_suggestion)
             end
           end,
-          'snippet_foward',
+          function(cmp)
+            if cmp.is_in_snippet() then
+              return cmp.accept()
+            end
+          end,
           'fallback',
         },
+        ['<C-Space>'] = { 'show', 'hide' },
         ['<C-j>'] = { 'select_next', 'fallback' },
         ['<C-k>'] = { 'select_prev', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
@@ -35,9 +37,27 @@ return {
       },
       nerd_font_variant = 'mono',
       accept = { auto_brackets = { enabled = true } },
-      trigger = { signature_help = { enabled = true } },
+      trigger = { signature_help = { enabled = true }, completion = { show_in_snippet = false } },
+      windows = {
+        documentation = {
+          border = vim.g.borderStyle,
+          min_width = 15,
+          max_width = 45,
+          max_height = 10,
+          auto_show = true,
+          auto_show_delay_ms = 250,
+        },
+        autocomplete = {
+          auto_show = true,
+          selection = 'manual',
+        },
+        sources = {
+          completion = {
+            enabled_providers = { 'lsp', 'path', 'buffer', 'snippets' },
+          },
+        },
+      },
     },
-    opts_extend = { 'sources.completion.enabled_providers' },
   },
   {
     'supermaven-inc/supermaven-nvim',
@@ -45,6 +65,15 @@ return {
       require('supermaven-nvim').setup {
         disable_keymaps = true,
       }
+
+      local suggestion = require 'supermaven-nvim.completion_preview'
+      local accept_suggestion = function()
+        if suggestion.has_suggestion() then
+          suggestion.on_accept_suggestion()
+          return true
+        end
+        return false
+      end
     end,
   },
   {
