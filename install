@@ -13,10 +13,6 @@ echo "-> DOTFILES is set to $DOTFILES"
 
 function execute_commands
     for command in $argv
-        echo $command
-    end
-
-    for command in $argv
         set_color green
         echo "  | $command"
         set_color normal
