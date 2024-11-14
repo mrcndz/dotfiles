@@ -16,8 +16,7 @@ return {
 
             if item == nil and suggestion.has_suggestion() then
               vim.schedule(function()
-                -- LOL IT WORKED
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<S-Tab>', true, false, true), 'i', true)
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-@>', true, false, true), 'i', true)
               end)
               return
             elseif item == nil then
@@ -75,7 +74,7 @@ return {
     'supermaven-inc/supermaven-nvim',
     config = function()
       require('supermaven-nvim').setup {
-        accept_suggestion = '<S-Tab>',
+        accept_suggestion = '<C-@>',
       }
     end,
   },
