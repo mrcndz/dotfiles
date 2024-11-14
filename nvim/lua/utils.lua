@@ -1,4 +1,8 @@
--- Keymap functions
+function _G.dump(...)
+  local objects = vim.tbl_map(vim.inspect, { ... })
+  print(unpack(objects))
+end
+
 local M = {}
 
 function M.get_bufnr(name)
@@ -8,6 +12,18 @@ function M.get_bufnr(name)
     end
   end
   return nil
+end
+
+function M.is_git_repo()
+  return vim.fn.system 'git rev-parse --is-inside-work-tree' == 'true\n'
+end
+
+function M.git_top_level()
+  return vim.fn.trim(vim.fn.system 'git rev-parse --show-toplevel')
+end
+
+function M.is_git_top_level()
+  return M.git_top_level() == vim.loop.cwd()
 end
 
 function M.map(mode, lhs, rhs)
