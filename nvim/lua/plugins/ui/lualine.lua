@@ -115,6 +115,9 @@ return {
         pattern = 'LspProgressStatusUpdated',
         callback = require('lualine').refresh,
       })
+      -- NVIM -.11
+      vim.api.nvim_set_hl(0, 'StatusLine', { reverse = false })
+      vim.api.nvim_set_hl(0, 'StatusLineNC', { reverse = false })
     end,
   },
 }
