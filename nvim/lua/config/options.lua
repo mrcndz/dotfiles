@@ -4,6 +4,8 @@ vim.g.do_file_type_lua = 1
 local opt = vim.opt
 
 opt.autowrite = true
+opt.autoread = true
+opt.swapfile = false
 opt.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus'
 opt.completeopt = 'menu,menuone,noselect'
 opt.cursorline = true
