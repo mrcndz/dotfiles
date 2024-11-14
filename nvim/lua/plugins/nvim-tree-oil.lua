@@ -32,9 +32,10 @@ return {
       -- When opening nvim, open the tree in the git root
       vim.api.nvim_create_autocmd({ 'VimEnter' }, {
         callback = function()
-          local git_root = vim.fn.trim(vim.fn.system 'git rev-parse --show-toplevel')
+          utils = require 'utils'
+          local git_root = utils.git_top_level()
 
-          if git_root ~= '' and not git_root:match '^fatal:' then
+          if utils.is_git_repo() then
             vim.api.nvim_cmd({ cmd = 'cd', args = { git_root } }, {})
             api.tree.change_root(git_root)
             api.tree.reload()

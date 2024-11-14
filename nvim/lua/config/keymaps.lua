@@ -1,17 +1,13 @@
-local Utils = require('utils')
+local Utils = require 'utils'
 local noremap = Utils.noremap
 local nnoremap = Utils.nnoremap
 local vnoremap = Utils.vnoremap
-local xnoremap = Utils.xnoremap
 local inoremap = Utils.inoremap
-local tnoremap = Utils.tnoremap
 local nmap = Utils.nmap
-local xmap = Utils.xmap
-local vmap = Utils.vmap
-local map = Utils.map
-local imap = Utils.imap
 
 nmap('<space>', '<Nop>')
+nmap(';', ':')
+
 -- map leader to space
 inoremap('jj', '<Esc>')
 inoremap('<Esc>', '<Esc>')
@@ -29,7 +25,7 @@ nnoremap('<Tab>', ':bprevious<CR>')
 nnoremap('<S-Tab>', ':bnext<CR>')
 
 -- Macro over visual
-vim.cmd([[
+vim.cmd [[
   xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
   function! ExecuteMacroOverVisualRange()
@@ -37,7 +33,7 @@ vim.cmd([[
     execute ":'<,'>normal @".nr2char(getchar())
   endfunction
 
-]])
+]]
 
 nnoremap('<C-s>', ':w<CR>')
 nnoremap('<C-q>', ':q<CR>')
@@ -64,13 +60,3 @@ vnoremap('<C-c>', '"+y') -- Windows behavior
 nnoremap('p', '"+p')
 vnoremap('p', '"+p')
 vnoremap('<C-v>', '"+p') -- Windows behavior
-
--- Easy motion for begin and end lines
-nnoremap('L', '$')
-nnoremap('H', '^')
-vnoremap('L', '$')
-vnoremap('H', '^')
-
--- Select ocurrence and replace
-nnoremap('R', '*``cgn')
-vim.cmd([[xnoremap R y<cmd>let @/=escape(@", '/')<cr>"_cgn]])
