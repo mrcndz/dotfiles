@@ -11,14 +11,13 @@ return {
       keymap = {
         ['<Tab>'] = {
           function(cmp)
-            local suggestion = require 'supermaven-nvim.completion_preview'
             local item = cmp.windows.autocomplete.get_selected_item()
+            local supermaven_has_suggestion = require('supermaven-nvim.completion_preview').has_suggestion
 
-            if item == nil and suggestion.has_suggestion() then
+            if item == nil and supermaven_has_suggestion() then
               vim.schedule(function()
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-@>', true, false, true), 'i', true)
+                vim.api.nvim_command 'lua require "supermaven-nvim.completion_preview".on_accept_suggestion()'
               end)
-              return
             elseif item == nil then
               return
             end
@@ -74,7 +73,7 @@ return {
     'supermaven-inc/supermaven-nvim',
     config = function()
       require('supermaven-nvim').setup {
-        accept_suggestion = '<C-@>',
+        disable_keymaps = true,
       }
     end,
   },
