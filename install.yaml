@@ -3,6 +3,7 @@ pre_commands:
  - git update-index --assume-unchanged $DOTFILES/env.fish
 
 symlinks:
+  - ~/.config/lazygit/config.yml: $DOTFILES/lazygit/config.yml
   - ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
   - ~/.config/fish/config.fish: $DOTFILES/fish/config.fish 
   - ~/.tmux.conf: $DOTFILES/tmux/tmux.conf 
