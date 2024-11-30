@@ -6,7 +6,7 @@ return {
     {
       '<F2>',
       function()
-        require('conform').format({ async = true, lsp_fallback = true })
+        require('conform').format { async = true, lsp_fallback = true }
       end,
       mode = '',
       desc = 'Format buffer',
@@ -21,7 +21,7 @@ return {
       fish = { 'fish_indent' },
       rust = { 'rustfmt' },
     },
-    format_on_save = { timeout_ms = 500, lsp_fallback = true },
+    format_on_save = { timeout_ms = 1000, lsp_fallback = true },
     formatters = {
       shfmt = {
         prepend_args = { '-i', '2' },

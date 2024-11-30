@@ -34,16 +34,10 @@ return {
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      -- Setup diagnostics
-      local signs = { Error = '󱔷', Warn = '󰾕', Hint = '', Info = '󰾚' }
-      for type, icon in pairs(signs) do
-        local hl = 'DiagnosticSign' .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
-      end
-
       local lspconfig = require 'lspconfig'
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+      capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
       local on_attach = function(client, bufnr)
         local function buf_set_option(...)
@@ -102,7 +96,6 @@ return {
 
       -- Diagnostics
       vim.diagnostic.config {
-        update_in_insert = true,
         underline = false,
         virtual_text = {
           severity = vim.diagnostic.severity.ERROR,
