@@ -86,7 +86,6 @@ return {
             { 'branch', icon = '', color = { fg = colors.git } },
           },
           lualine_x = {
-            { 'diagnostics', color = { bg = bg } },
             {
               function()
                 return require('lsp-progress').progress {
@@ -109,9 +108,10 @@ return {
               icon = { ' ', align = 'right' },
               color = { fg = 'gray' },
             },
+            { 'diagnostics', color = { bg = bg } },
           },
           lualine_y = {},
-          lualine_z = { { 'location', icon = { '', align = 'right' }, color = { fg = colors.line } } },
+          lualine_z = { { 'location', icon = { '', align = 'left' }, color = { fg = colors.line } } },
         },
         inactive_sections = {
           lualine_a = {

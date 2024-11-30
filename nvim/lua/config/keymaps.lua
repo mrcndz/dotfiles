@@ -6,23 +6,21 @@ local inoremap = Utils.inoremap
 local nmap = Utils.nmap
 
 nmap('<space>', '<Nop>')
-nmap(';', ':')
 
 -- map leader to space
-inoremap('jj', '<Esc>')
-inoremap('<Esc>', '<Esc>')
+inoremap('jj', '<Esc>l')
 
 -- Move text
 vnoremap('J', ":m '>+1<CR>gv=gv")
 vnoremap('K', ":m '<-2<CR>gv=gv")
 
+-- Quickly move to end and beginning of line
+nnoremap('H', '_')
+nnoremap('L', '$')
+
 -- search centering
 nnoremap('n', 'nzzzv')
 nnoremap('N', 'Nzzzv')
-
--- Buffer
-nnoremap('<Tab>', ':bprevious<CR>')
-nnoremap('<S-Tab>', ':bnext<CR>')
 
 -- Macro over visual
 vim.cmd [[
@@ -50,6 +48,7 @@ nnoremap('x', '"_x')
 vnoremap('p', '"_dP')
 nnoremap('P', '"_d')
 vnoremap('<LeftRelease>', '"+y<LeftRelease>')
+nnoremap('gp', 'i<C-r><C-o>+<ESC>l=`[`]$')
 
 -- Copy to system clippboard
 nnoremap('y', '"+y')
