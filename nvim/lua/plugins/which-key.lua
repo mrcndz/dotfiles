@@ -2,6 +2,7 @@ return {
   'folke/which-key.nvim',
   dependencies = {
     'nvim-telescope/telescope.nvim',
+    'nvim-dev/lspsaga.nvim',
   },
   event = 'VeryLazy',
   init = function()
@@ -30,8 +31,9 @@ return {
     wk.add {
       { '<leader>l', group = 'LSP', icon = '󰀏 ' },
       { '<leader>lr', '<cmd>Telescope lsp_references theme=cursor<cr>', desc = 'References', mode = 'n', icon = '󰁨 ' },
-      { '<leader>lR', '<cmd>lua vim.lsp.buf.rename()<CR>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
-      { '<leader>ld', '<cmd>lua vim.diagnostic.open_float()<CR>', desc = 'Diagnostics', mode = 'n', icon = '󰒭 ' },
+      -- { '<leader>lR', '<cmd>lua vim.lsp.buf.rename()<CR>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
+      { '<leader>lR', '<cmd>Lspsaga rename<cr>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
+      { '<leader>ld', '<cmd>lua vim.diagnostic.open_float()<cr>', desc = 'Diagnostics', mode = 'n', icon = '󰒭 ' },
       { '<leader>lD', '<cmd>Telescope lsp_definitions theme=cursor<cr>', desc = 'Definitions', mode = 'n', icon = '󰋗 ' },
       { '<leader>ls', '<cmd>Telescope lsp_document_symbols theme=ivy<cr>', desc = 'Document Symbols', mode = 'n', icon = '󰮗 ' },
       { '<leader>lS', '<cmd>Telescope lsp_workspace_symbols theme=ivy<cr>', desc = 'Workspace Symbols', mode = 'n', icon = '󰙅 ' },
@@ -39,16 +41,7 @@ return {
       { '<leader>lI', '<cmd>Telescope lsp_incoming_calls theme=cursor<cr>', desc = 'Incoming calls', mode = 'n', icon = '󰛿 ' },
       { '<leader>lt', '<cmd>Telescope lsp_type_definitions theme=cursor<cr>', desc = 'Type Definitions', mode = 'n', icon = '󰋫 ' },
       { '<leader>lO', '<cmd>Telescope lsp_outgoing_calls theme=cursor<cr>', desc = 'Outgoing calls', mode = 'n', icon = '󰚉 ' },
-    }
-    -- LazyGit
-    wk.add {
-      { '<leader>g', group = 'Git' },
-      { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'Lazygit', mode = 'n', icon = ' ' },
-      { '<leader>gp', '<cmd>LazyGitFilter<cr>', desc = 'Project Commits', mode = 'n', icon = ' ' },
-      { '<leader>gf', '<cmd>LazyGitFilterCurrentFile<cr>', desc = 'Current File Commits', mode = 'n', icon = ' ' },
-      { '<leader>gs', '<cmd>Telescope git_status<cr>', desc = 'Status', mode = 'n', icon = '' },
-      { '<leader>gS', '<cmd>Telescope git_stash<cr>', desc = 'Stash', mode = 'n', icon = '' },
-      { '<leader>gc', '<cmd>Telescope git_commits<cr>', desc = 'Commits', mode = 'n', icon = '' },
+      { '<leader>lw', '<cmd>lua require"boo".boo()<cr>', desc = 'Word definition', mode = 'n', icon = ' ' },
     }
     -- Utils
     -- Clear Buffers
