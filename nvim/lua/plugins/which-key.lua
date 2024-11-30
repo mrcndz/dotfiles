@@ -2,7 +2,6 @@ return {
   'folke/which-key.nvim',
   dependencies = {
     'nvim-telescope/telescope.nvim',
-    'nvim-dev/lspsaga.nvim',
   },
   event = 'VeryLazy',
   init = function()
@@ -31,8 +30,7 @@ return {
     wk.add {
       { '<leader>l', group = 'LSP', icon = '󰀏 ' },
       { '<leader>lr', '<cmd>Telescope lsp_references theme=cursor<cr>', desc = 'References', mode = 'n', icon = '󰁨 ' },
-      -- { '<leader>lR', '<cmd>lua vim.lsp.buf.rename()<CR>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
-      { '<leader>lR', '<cmd>Lspsaga rename<cr>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
+      { '<leader>lR', '<cmd>lua vim.lsp.buf.rename()<CR>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
       { '<leader>ld', '<cmd>lua vim.diagnostic.open_float()<cr>', desc = 'Diagnostics', mode = 'n', icon = '󰒭 ' },
       { '<leader>lD', '<cmd>Telescope lsp_definitions theme=cursor<cr>', desc = 'Definitions', mode = 'n', icon = '󰋗 ' },
       { '<leader>ls', '<cmd>Telescope lsp_document_symbols theme=ivy<cr>', desc = 'Document Symbols', mode = 'n', icon = '󰮗 ' },
