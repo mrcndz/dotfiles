@@ -11,12 +11,12 @@ return {
         'lua_ls',
         'stylua',
         -- Python
-        'pyright',
-        'ruff',
-        'debugpy',
-        'black',
-        'isort',
-        'taplo',
+        -- 'pyright',
+        -- 'ruff',
+        -- 'debugpy',
+        -- 'black',
+        -- 'isort',
+        -- 'taplo',
         -- Rust
         'rust_analyzer',
         -- Markdown

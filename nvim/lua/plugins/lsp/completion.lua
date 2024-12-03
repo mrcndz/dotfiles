@@ -1,17 +1,18 @@
 return {
-  { 'saghen/blink.compat' },
   {
     'saghen/blink.cmp',
     lazy = false,
+    version = 'v0.*',
     dependencies = {
       'rafamadriz/friendly-snippets',
+      { 'saghen/blink.compat', version = '*', opts = { impersonate_nvim_cmp = true } },
     },
-    version = 'v0.*',
     opts = {
       keymap = {
         ['<Tab>'] = {
           function(cmp)
-            local item = cmp.windows.autocomplete.get_selected_item()
+            local completion_list = require 'blink.cmp.completion.list'
+            local item = completion_list.get_selected_item()
             local supermaven_has_suggestion = require('supermaven-nvim.completion_preview').has_suggestion
 
             if item == nil and supermaven_has_suggestion() then
@@ -22,7 +23,7 @@ return {
               return
             end
             vim.schedule(function()
-              cmp.windows.autocomplete.accept()
+              completion_list.accept()
             end)
             return true
           end,
@@ -38,33 +39,48 @@ return {
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
       },
-      highlight = {
-        use_nvim_cmp_as_default = false,
-      },
-      nerd_font_variant = 'mono',
-      accept = { auto_brackets = { enabled = true } },
-      trigger = { signature_help = { enabled = true }, completion = { show_in_snippet = false } },
-      windows = {
-        documentation = {
-          border = vim.g.borderStyle,
-          min_width = 15,
-          max_width = 45,
-          max_height = 10,
-          auto_show = true,
-          auto_show_delay_ms = 250,
+      completion = {
+        menu = {
+          draw = {
+            columns = { { 'item_idx' }, { 'kind_icon' }, { 'label', 'label_description', gap = 1 } },
+            components = {
+              item_idx = {
+                text = function(ctx)
+                  return tostring(ctx.idx)
+                end,
+                highlight = 'BlinkCmpItemIdx',
+              },
+            },
+          },
         },
-        autocomplete = {
-          auto_show = true,
+        list = {
+          max_items = 200,
           selection = 'manual',
         },
-        sources = {
-          completion = {
-            enabled_providers = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+        accept = {
+          create_undo_point = true,
+          auto_brackets = {
+            enabled = false,
+            default_brackets = { '(', ')' },
+            override_brackets_for_filetypes = {},
           },
-          providers = {
-            lsp = { fallback_for = { 'lazydev' } },
-            lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
-          },
+        },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 400,
+          update_delay_ms = 50,
+          treesitter_highlighting = true,
+        },
+        ghost_text = {
+          enabled = false,
+        },
+      },
+      signature = {
+        enabled = true,
+      },
+      sources = {
+        completion = {
+          enabled_providers = { 'lsp', 'path', 'snippets', 'buffer' },
         },
       },
     },
