@@ -6,7 +6,7 @@ return {
     dependencies = {
       'rafamadriz/friendly-snippets',
     },
-    version = 'v0.*',
+    version = '*',
     opts = {
       keymap = {
         ['<Tab>'] = {
@@ -44,7 +44,7 @@ return {
         accept = { auto_brackets = { enabled = false } },
         list = { selection = { preselect = false, auto_insert = true } },
         menu = {
-          auto_show = false,
+          auto_show = true,
           draw = {
             columns = {
               { 'label', 'label_description', gap = 1 },
@@ -62,7 +62,6 @@ return {
           lazydev = {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
-            -- make lazydev completions top priority (see `:h blink.cmp`)
             score_offset = 100,
           },
         },
