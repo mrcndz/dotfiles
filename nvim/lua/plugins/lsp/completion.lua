@@ -11,7 +11,7 @@ return {
       keymap = {
         ['<Tab>'] = {
           function(cmp)
-            local item = cmp.windows.autocomplete.get_selected_item()
+            local item = cmp.get_selected_item()
             local supermaven_has_suggestion = require('supermaven-nvim.completion_preview').has_suggestion
 
             if item == nil and supermaven_has_suggestion() then
@@ -22,7 +22,7 @@ return {
               return
             end
             vim.schedule(function()
-              cmp.windows.autocomplete.accept()
+              cmp.accept()
             end)
             return true
           end,
@@ -38,35 +38,37 @@ return {
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
       },
-      highlight = {
-        use_nvim_cmp_as_default = false,
-      },
-      nerd_font_variant = 'mono',
-      accept = { auto_brackets = { enabled = true } },
-      trigger = { signature_help = { enabled = true }, completion = { show_in_snippet = false } },
-      windows = {
-        documentation = {
-          border = vim.g.borderStyle,
-          min_width = 15,
-          max_width = 45,
-          max_height = 10,
-          auto_show = true,
-          auto_show_delay_ms = 250,
-        },
-        autocomplete = {
-          auto_show = true,
-          selection = 'manual',
-        },
-        sources = {
-          completion = {
-            enabled_providers = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
-          },
-          providers = {
-            lsp = { fallback_for = { 'lazydev' } },
-            lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
+      --
+      completion = {
+        keyword = { range = 'full' },
+        accept = { auto_brackets = { enabled = false } },
+        list = { selection = { preselect = false, auto_insert = true } },
+        menu = {
+          auto_show = false,
+          draw = {
+            columns = {
+              { 'label', 'label_description', gap = 1 },
+              { 'kind_icon', 'kind' },
+            },
           },
         },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
+        ghost_text = { enabled = true },
       },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+        cmdline = {},
+        providers = {
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            -- make lazydev completions top priority (see `:h blink.cmp`)
+            score_offset = 100,
+          },
+        },
+      },
+      snippets = { preset = 'default' },
+      signature = { enabled = true },
     },
   },
   {

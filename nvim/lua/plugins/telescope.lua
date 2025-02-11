@@ -9,10 +9,10 @@ return {
       'nvim-telescope/telescope-ui-select.nvim',
     },
     config = function()
-      local builtin = require('telescope.builtin')
-      local actions = require('telescope.actions')
-      local action_state = require('telescope.actions.state')
-      local utils = require('utils')
+      local builtin = require 'telescope.builtin'
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+      local utils = require 'utils'
 
       local open_buffer_vsplit = function(prompt_bufnr)
         local selection = action_state.get_selected_entry()
@@ -49,10 +49,10 @@ return {
           vim.api.nvim_command('edit ' .. selection.value)
         end
 
-        vim.api.nvim_command('only')
+        vim.api.nvim_command 'only'
       end
 
-      require('telescope').setup({
+      require('telescope').setup {
         defaults = {
           file_ignore_patterns = {},
           mappings = {
@@ -95,13 +95,13 @@ return {
             case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
           },
-          ['ui-select'] = { require('telescope.themes').get_dropdown({}) },
+          ['ui-select'] = { require('telescope.themes').get_dropdown {} },
         },
-      })
+      }
 
-      require('telescope').load_extension('emoji')
-      require('telescope').load_extension('ui-select')
-      require('telescope').load_extension('fzf')
+      require('telescope').load_extension 'emoji'
+      require('telescope').load_extension 'ui-select'
+      require('telescope').load_extension 'fzf'
     end,
   },
 }
