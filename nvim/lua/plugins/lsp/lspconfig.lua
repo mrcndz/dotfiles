@@ -1,3 +1,43 @@
+vim.lsp.config('*', {
+  root_markers = { '.git' },
+})
+
+vim.lsp.enable {
+  'luals',
+  'jsonls',
+  'marksman',
+  'pyright',
+}
+
+vim.diagnostic.config {
+  update_in_insert = true,
+  underline = false,
+  virtual_text = {
+    severity = vim.diagnostic.severity.ERROR,
+    spacing = 4,
+  },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '󱔷',
+      [vim.diagnostic.severity.WARN] = '󰾕',
+      [vim.diagnostic.severity.HINT] = '',
+      [vim.diagnostic.severity.INFO] = '󰾚',
+    },
+    line_hl = {
+      [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+      [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+      [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+      [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+      [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+      [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+      [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+    },
+  },
+}
+
 return {
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
@@ -25,59 +65,6 @@ return {
         'yamlls',
       },
     },
-  },
-  {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-    },
-    config = function()
-      -- Diagnostics
-      vim.diagnostic.config {
-        update_in_insert = true,
-        underline = false,
-        virtual_text = {
-          severity = vim.diagnostic.severity.ERROR,
-          spacing = 4,
-        },
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '󱔷',
-            [vim.diagnostic.severity.WARN] = '󰾕',
-            [vim.diagnostic.severity.HINT] = '',
-            [vim.diagnostic.severity.INFO] = '󰾚',
-          },
-          line_hl = {
-            [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
-            [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
-            [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
-            [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
-          },
-          numhl = {
-            [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
-            [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
-            [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
-            [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
-          },
-        },
-        float = {
-          border = 'rounded',
-          source = true,
-        },
-      }
-
-      vim.lsp.config('*', {
-        capabilities = require('blink.cmp').get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        root_markers = { '.git' },
-      })
-
-      vim.lsp.enable {
-        'luals',
-        'jsonls',
-        'marksman',
-        'pyright',
-      }
-    end,
   },
   {
     'folke/lazydev.nvim',
