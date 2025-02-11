@@ -17,8 +17,6 @@ return {
         'black',
         'isort',
         'taplo',
-        -- Rust
-        'rust_analyzer',
         -- Markdown
         'marksman',
         -- Json
@@ -34,72 +32,6 @@ return {
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      -- Setup diagnostics
-      local signs = { Error = '󱔷', Warn = '󰾕', Hint = '', Info = '󰾚' }
-      for type, icon in pairs(signs) do
-        local hl = 'DiagnosticSign' .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
-      end
-
-      local lspconfig = require 'lspconfig'
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-
-      local on_attach = function(client, bufnr)
-        local function buf_set_option(...)
-          vim.api.nvim_buf_set_option(bufnr, ...)
-        end
-
-        buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-        local opts = { noremap = true, silent = true }
-
-        vim.api.nvim_create_user_command('LspAddWorkspace', function(args)
-          vim.lsp.buf.add_workspace_folder(args.args)
-        end, {
-          nargs = 1,
-          complete = 'dir',
-          desc = 'add a workspace folder',
-        })
-      end
-
-      lspconfig['pyright'].setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = {
-          python = {
-            analysis = {
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-              diagnosticMode = 'workspace',
-            },
-          },
-        },
-      }
-
-      lspconfig['ruff'].setup {
-        settings = {
-          organizeImports = false,
-        },
-        on_attach = function(client)
-          client.server_capabilities.hoverProvider = false
-        end,
-      }
-      local servers = {
-        'lua_ls',
-        'jsonls',
-        'marksman',
-        'yamlls',
-        'jsonls',
-        'rust_analyzer',
-      }
-
-      for _, server in ipairs(servers) do
-        lspconfig[server].setup {
-          capabilities = capabilities,
-          on_attach = on_attach,
-        }
-      end
-
       -- Diagnostics
       vim.diagnostic.config {
         update_in_insert = true,
@@ -133,6 +65,18 @@ return {
           source = true,
         },
       }
+
+      vim.lsp.config('*', {
+        capabilities = require('blink.cmp').get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
+        root_markers = { '.git' },
+      })
+
+      vim.lsp.enable {
+        'luals',
+        'jsonls',
+        'marksman',
+        'pyright',
+      }
     end,
   },
   {
@@ -151,7 +95,6 @@ return {
       end,
     },
   },
-
   {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -175,7 +118,7 @@ return {
         fish = { 'fish_indent' },
         rust = { 'rustfmt' },
       },
-      format_on_save = { timeout_ms = 500, lsp_fallback = true },
+      format_on_save = { timeout_ms = 1500, lsp_fallback = true },
       formatters = {
         shfmt = {
           prepend_args = { '-i', '2' },

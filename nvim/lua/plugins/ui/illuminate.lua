@@ -1,8 +1,11 @@
 return {
-    'RRethy/vim-illuminate',
-    config = function()
-        require('illuminate').configure({
-            delay = 50,
-        })
+  {
+    'rockyzhang24/vim-illuminate',
+    branch = 'fix-encoding',
+    lazy = true,
+    event = 'BufReadPost',
+    config = function(_, opts)
+      require('illuminate').configure(opts)
     end,
+  },
 }
