@@ -40,6 +40,11 @@ vim.diagnostic.config {
 
 return {
   {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
+  },
+  {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     dependencies = {
       { 'williamboman/mason.nvim', opts = true },
@@ -63,6 +68,10 @@ return {
         'jsonls',
         -- Yaml
         'yamlls',
+        -- Javascript
+        'eslint',
+        'prettier',
+        'prettierd',
       },
     },
   },
@@ -74,12 +83,8 @@ return {
         'lazy.nvim',
         'luvit-meta/library',
         'LazyVim',
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
-
-      enabled = function(root_dir)
-        return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled
-      end,
     },
   },
   {
