@@ -120,6 +120,13 @@ return {
       end,
       desc = 'Buffers',
     },
+    {
+      '<leader>%',
+      function()
+        Snacks.scope.jump()
+      end,
+      desc = 'Jump scope',
+    },
   },
   opts = {
     bigfile = { enabled = true },
