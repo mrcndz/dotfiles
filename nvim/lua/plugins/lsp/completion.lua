@@ -9,7 +9,7 @@ return {
     version = '*',
     opts = {
       keymap = {
-        ['<Enter>'] = { 'select_and_accept', 'fallback' },
+        ['<C-l>'] = { 'select_and_accept', 'fallback' },
         ['<C-Space>'] = { 'show', 'hide' },
         ['<C-j>'] = { 'select_next', 'fallback' },
         ['<C-k>'] = { 'select_prev', 'fallback' },
@@ -20,6 +20,12 @@ return {
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
       },
       --
+      cmdline = {
+        keymap = {
+          ['<Tab>'] = { 'show', 'accept' },
+        },
+        completion = { menu = { auto_show = true } },
+      },
       completion = {
         keyword = { range = 'full' },
         accept = { auto_brackets = { enabled = false } },
@@ -35,10 +41,10 @@ return {
           },
         },
         documentation = { window = { border = 'single' }, auto_show = true, auto_show_delay_ms = 500 },
-        ghost_text = { enabled = true },
+        ghost_text = { enabled = false },
       },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
         providers = {
           buffer = {
             opts = {

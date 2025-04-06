@@ -1,13 +1,95 @@
-local esc = vim.api.nvim_replace_termcodes('<esc>', true, false, true)
-vim.api.nvim_feedkeys(esc, 'n', false)
-
 return {
   'folke/snacks.nvim',
   priority = 1000,
   lazy = false,
-  ---@type snacks.Config
-  ---
   keys = {
+    {
+      '<leader>c',
+      function()
+        Snacks.picker.commands()
+      end,
+      desc = 'Commands',
+    },
+    {
+      'gj',
+      function()
+        Snacks.picker.lines()
+      end,
+      desc = 'Buffer Lines',
+    },
+    -- Git
+    {
+      '<leader>go',
+      function()
+        Snacks.gitbrowse()
+      end,
+      desc = 'Open Git in Browser',
+    },
+    {
+      '<leader>gl',
+      function()
+        Snacks.lazygit.open()
+      end,
+      desc = 'Lazygit',
+    },
+    -- LSP
+    {
+      '<leader>ls',
+      function()
+        Snacks.picker.lsp_symbols()
+      end,
+      desc = 'LSP Symbols',
+    },
+    {
+      '<leader>lS',
+      function()
+        Snacks.picker.lsp_workspace_symbols()
+      end,
+      desc = 'LSP Workspace Symbols',
+    },
+    {
+      '<leader>lf',
+      function()
+        Snacks.picker.diagnostics()
+      end,
+      desc = 'Diagnostics',
+    },
+    {
+      '<leader>lD',
+      function()
+        Snacks.picker.lsp_definitions()
+      end,
+      desc = 'Goto Definition',
+    },
+    {
+      '<leader>le',
+      function()
+        Snacks.picker.lsp_declarations()
+      end,
+      desc = 'Goto Declaration',
+    },
+    {
+      '<leader>lr',
+      function()
+        Snacks.picker.lsp_references()
+      end,
+      nowait = true,
+      desc = 'References',
+    },
+    {
+      '<leader>li',
+      function()
+        Snacks.picker.lsp_implementations()
+      end,
+      desc = 'Goto Implementation',
+    },
+    {
+      '<leader>u',
+      function()
+        Snacks.picker.undo()
+      end,
+      desc = 'Undo History',
+    },
     {
       '<leader>F',
       function()
@@ -18,7 +100,7 @@ return {
     {
       '<leader>e',
       function()
-        Snacks.explorer.toggle()
+        Snacks.explorer()
       end,
       desc = 'File Explorer',
     },
@@ -53,4 +135,8 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
   },
+  config = function()
+    Snacks.indent.enable()
+    Snacks.scroll.enable()
+  end,
 }
