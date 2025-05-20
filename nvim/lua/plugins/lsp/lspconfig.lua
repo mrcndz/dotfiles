@@ -5,9 +5,13 @@ vim.lsp.config('*', {
 vim.lsp.enable {
   'luals',
   'jsonls',
-  'marksman',
   'pyright',
+  'marksman',
 }
+
+vim.keymap.set('n', '<leader>ld', function()
+  vim.diagnostic.open_float(nil, { focusable = false, source = 'if_many' })
+end, { desc = 'Show diagnostics' })
 
 vim.diagnostic.config {
   update_in_insert = true,
@@ -39,11 +43,6 @@ vim.diagnostic.config {
 }
 
 return {
-  {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
-  },
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     dependencies = {
