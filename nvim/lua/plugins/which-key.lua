@@ -4,7 +4,6 @@ return {
   init = function()
     local wk = require 'which-key'
     local wkicon = require 'which-key.icons'
-    local telescope_pickers = require 'telescope.pickers'
 
     -- Telescope
     wk.add {
