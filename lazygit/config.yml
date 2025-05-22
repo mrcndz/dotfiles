@@ -1,6 +1,13 @@
 git: 
     paging:
         colorArg: always
-        pager: delta --dark --paging=never --syntax-theme base16-256 -s
+        pager: delta --dark --paging=never base16-256 -s
 gui:
     showIcons: true
+customCommands:
+    - key: <c-a>
+      description: Pick AI commit
+      command: aicommit2 && clear
+      context: files
+      subprocess: true
+      showOutput: true
