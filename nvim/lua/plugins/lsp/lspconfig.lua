@@ -10,7 +10,7 @@ vim.lsp.enable {
 }
 
 vim.keymap.set('n', '<leader>ld', function()
-  vim.diagnostic.open_float(nil, { focusable = false, source = 'if_many' })
+  vim.diagnostic.open_float(nil, { focusable = true, source = 'if_many' })
 end, { desc = 'Show diagnostics' })
 
 vim.diagnostic.config {
