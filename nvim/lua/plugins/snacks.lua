@@ -50,7 +50,16 @@ return {
     {
       '<leader>lf',
       function()
+        Snacks.picker.diagnostics_buffer()
+        feed_esc()
+      end,
+      desc = 'Buffer Diagnostics',
+    },
+    {
+      '<leader>lF',
+      function()
         Snacks.picker.diagnostics()
+        feed_esc()
       end,
       desc = 'Diagnostics',
     },
@@ -60,6 +69,13 @@ return {
         Snacks.picker.lsp_definitions()
       end,
       desc = 'Goto Definition',
+    },
+    {
+      '<leader>h',
+      function()
+        Snacks.picker.search_history()
+      end,
+      desc = 'Goto Declaration',
     },
     {
       '<leader>le',
@@ -87,6 +103,7 @@ return {
       '<leader>u',
       function()
         Snacks.picker.undo()
+        feed_esc()
       end,
       desc = 'Undo History',
     },
