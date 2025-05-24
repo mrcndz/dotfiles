@@ -26,6 +26,10 @@ alias lg="lazygit"
 alias cg="chatgpt"
 alias bat="batcat"
 alias dot="cd $DOTFILES"
+alias dcd="docker-compose down"
+alias dcu="docker-compose up -d"
+alias dcr="docker-compose down; docker-compose up -d"
+alias dcl="docker-compose logs -f"
 
 # Enable Vi key bindings
 fish_vi_key_bindings

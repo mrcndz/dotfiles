@@ -1,8 +1,3 @@
-function _G.dump(...)
-  local objects = vim.tbl_map(vim.inspect, { ... })
-  print(unpack(objects))
-end
-
 local M = {}
 
 function M.get_bufnr(name)
