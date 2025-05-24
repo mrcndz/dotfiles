@@ -5,9 +5,13 @@ vim.lsp.config('*', {
 vim.lsp.enable {
   'luals',
   'jsonls',
-  'marksman',
   'pyright',
+  'marksman',
 }
+
+vim.keymap.set('n', '<leader>ld', function()
+  vim.diagnostic.open_float(nil, { focusable = true, source = 'if_many' })
+end, { desc = 'Show diagnostics' })
 
 vim.diagnostic.config {
   update_in_insert = true,
@@ -63,6 +67,10 @@ return {
         'jsonls',
         -- Yaml
         'yamlls',
+        -- Javascript
+        'eslint',
+        'prettier',
+        'prettierd',
       },
     },
   },
@@ -74,12 +82,8 @@ return {
         'lazy.nvim',
         'luvit-meta/library',
         'LazyVim',
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
-
-      enabled = function(root_dir)
-        return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled
-      end,
     },
   },
   {

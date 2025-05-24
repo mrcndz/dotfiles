@@ -9,6 +9,8 @@ return {
         text = { 'vale' },
         python = { 'pylint' },
         zsh = { 'shellcheck' },
+        typescript = { 'eslint' },
+        javascript = { 'eslint' },
       }
 
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
