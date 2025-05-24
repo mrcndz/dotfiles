@@ -9,26 +9,7 @@ return {
     version = '*',
     opts = {
       keymap = {
-        ['<Tab>'] = {
-          function(cmp)
-            local item = cmp.get_selected_item()
-            local supermaven_has_suggestion = require('supermaven-nvim.completion_preview').has_suggestion
-
-            if item == nil and supermaven_has_suggestion() then
-              vim.schedule(function()
-                vim.api.nvim_command 'lua require "supermaven-nvim.completion_preview".on_accept_suggestion()'
-              end)
-            elseif item == nil then
-              return
-            end
-            vim.schedule(function()
-              cmp.accept()
-            end)
-            return true
-          end,
-          'snippet_forward',
-          'fallback',
-        },
+        ['<C-l>'] = { 'select_and_accept', 'fallback' },
         ['<C-Space>'] = { 'show', 'hide' },
         ['<C-j>'] = { 'select_next', 'fallback' },
         ['<C-k>'] = { 'select_prev', 'fallback' },
@@ -39,11 +20,18 @@ return {
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
       },
       --
+      cmdline = {
+        keymap = {
+          ['<Tab>'] = { 'show', 'accept' },
+        },
+        completion = { menu = { auto_show = true } },
+      },
       completion = {
         keyword = { range = 'full' },
         accept = { auto_brackets = { enabled = false } },
-        list = { selection = { preselect = false, auto_insert = true } },
+        list = { selection = { preselect = true, auto_insert = true } },
         menu = {
+          border = 'single',
           auto_show = true,
           draw = {
             columns = {
@@ -52,13 +40,21 @@ return {
             },
           },
         },
-        documentation = { auto_show = true, auto_show_delay_ms = 500 },
-        ghost_text = { enabled = true },
+        documentation = { window = { border = 'single' }, auto_show = true, auto_show_delay_ms = 500 },
+        ghost_text = { enabled = false },
       },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
-        cmdline = {},
+        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
         providers = {
+          buffer = {
+            opts = {
+              get_bufnrs = function()
+                return vim.tbl_filter(function(bufnr)
+                  return vim.bo[bufnr].buftype == ''
+                end, vim.api.nvim_list_bufs())
+              end,
+            },
+          },
           lazydev = {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
@@ -67,14 +63,22 @@ return {
         },
       },
       snippets = { preset = 'default' },
-      signature = { enabled = true },
+      signature = {
+        window = { border = 'single' },
+        enabled = true,
+      },
     },
   },
   {
     'supermaven-inc/supermaven-nvim',
     config = function()
       require('supermaven-nvim').setup {
-        disable_keymaps = true,
+        keymaps = {
+          accept_suggestion = '<Tab>',
+          clear_suggestion = '<C-]>',
+          accept_word = '<A-l>',
+        },
+        ignore_filetypes = {},
       }
     end,
   },
