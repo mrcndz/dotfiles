@@ -4,6 +4,8 @@ return {
   dependencies = {
     'windwp/nvim-ts-autotag',
     'RRethy/nvim-treesitter-endwise',
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    'nvim-treesitter/nvim-treesitter-context',
   },
 
   build = ':TSUpdate',
@@ -11,6 +13,10 @@ return {
 
   config = function()
     local treesitter = require 'nvim-treesitter.configs'
+    local context = require 'treesitter-context'
+
+    context.setup {}
+
     treesitter.setup {
       ensure_installed = {
         'bash',
@@ -48,6 +54,25 @@ return {
       },
       indent = {
         enable = false,
+      },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+          },
+          selection_modes = {
+            ['@function.outer'] = 'V',
+            ['@function.inner'] = 'V',
+            ['@class.outer'] = '<c-v>',
+            ['@class.inner'] = 'V',
+          },
+          include_surrounding_whitespace = true,
+        },
       },
     }
   end,
