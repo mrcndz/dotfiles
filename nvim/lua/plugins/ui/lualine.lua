@@ -2,27 +2,26 @@ return {
   {
     'linrongbin16/lsp-progress.nvim',
     config = function()
-      require('lsp-progress').setup()
+      require('lsp-progress').setup {}
     end,
   },
   {
     'nvim-lualine/lualine.nvim',
-
     lazy = false,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      local bg = '#' .. vim.api.nvim_get_hl_by_name('Normal', true).background
       local utils = require 'lualine.utils.utils'
+      local bg = utils.extract_color_from_hllist('bg', { 'Normal' }, '')
       local colors = {
-        insert = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, '#000000'),
-        normal = utils.extract_color_from_hllist('fg', { 'MiniIconsGrey' }, '#000000'),
-        replace = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, '#000000'),
-        visual = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, '#000000'),
-        command = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, '#000000'),
-        icon = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, '#000000'),
-        git = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, '#000000'),
-        line = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, '#000000'),
-        lsp_progress = utils.extract_color_from_hllist('fg', { 'MiniIconsPurple' }, '#000000'),
+        insert = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
+        normal = utils.extract_color_from_hllist('fg', { 'MiniIconsGrey' }, ''),
+        replace = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
+        visual = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
+        command = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
+        icon = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
+        git = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
+        line = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
+        lsp_progress = utils.extract_color_from_hllist('fg', { 'MiniIconsPurple' }, ''),
       }
 
       local theme = {
