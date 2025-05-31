@@ -84,9 +84,9 @@ return {
         'LazyVim',
         { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
         { path = vim.fn.stdpath 'data' .. '/lazy' },
       },
+      enabled = true,
     },
   },
   {
