@@ -1,3 +1,5 @@
+local last_grep = ''
+
 return {
   'folke/snacks.nvim',
   priority = 1000,
@@ -71,13 +73,6 @@ return {
       desc = 'Goto Definition',
     },
     {
-      '<leader>h',
-      function()
-        Snacks.picker.search_history()
-      end,
-      desc = 'Goto Declaration',
-    },
-    {
       '<leader>le',
       function()
         Snacks.picker.lsp_declarations()
@@ -110,7 +105,21 @@ return {
     {
       '<leader>F',
       function()
-        Snacks.picker.grep()
+        -- If we're in a grep, resume it
+        -- Otherwise, start a new one
+        local last = require('snacks.picker.core.picker').last
+
+        if last == nil or next(last) == nil then
+          Snacks.picker.grep()
+          return
+        end
+
+        if last.opts.source == 'grep' then
+          Snacks.picker.resume()
+          feed_esc()
+        else
+          Snacks.picker.grep()
+        end
       end,
       desc = 'Grep',
     },
@@ -137,21 +146,12 @@ return {
       end,
       desc = 'Buffers',
     },
-    {
-      '<leader>%',
-      function()
-        Snacks.scope.jump()
-      end,
-      desc = 'Jump scope',
-    },
   },
   opts = {
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
-    explorer = { enabled = true },
+    picker = { enabled = true },
     indent = { enabled = true },
     input = { enabled = true },
-    picker = { enabled = true },
     notifier = { enabled = false },
     quickfile = { enabled = true },
     scope = { enabled = true },
