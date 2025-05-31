@@ -5,7 +5,6 @@ return {
     'windwp/nvim-ts-autotag',
     'RRethy/nvim-treesitter-endwise',
     'nvim-treesitter/nvim-treesitter-textobjects',
-    'nvim-treesitter/nvim-treesitter-context',
   },
 
   build = ':TSUpdate',
@@ -13,9 +12,6 @@ return {
 
   config = function()
     local treesitter = require 'nvim-treesitter.configs'
-    local context = require 'treesitter-context'
-
-    context.setup {}
 
     treesitter.setup {
       ensure_installed = {
