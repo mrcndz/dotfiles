@@ -83,6 +83,13 @@ return {
             },
             { 'filetype', icon_only = true, color = { bg = bg }, padding = { left = 1, right = 1 } },
             { 'branch', icon = '', color = { fg = colors.git } },
+            {
+              function()
+                local reg = vim.fn.reg_recording()
+                return reg ~= '' and 'REC @' .. reg or ''
+              end,
+              color = { fg = '#ff0000' },
+            },
           },
           lualine_x = {
             { 'diagnostics', color = { bg = bg } },

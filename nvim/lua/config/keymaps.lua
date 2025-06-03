@@ -7,6 +7,7 @@ local nmap = Utils.nmap
 
 nmap('<space>', '<Nop>')
 nmap(';', ':')
+nmap('q;', 'q:')
 
 -- map leader to space
 inoremap('jj', '<Esc>')
