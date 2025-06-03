@@ -12,7 +12,7 @@ return {
 
     -- LSP
     wk.add {
-      { '<leader>l', group = 'LSP', icon = '󰀏 ' },
+      { '<leader>l', group = 'LSP' },
       { '<leader>lR', '<cmd>lua vim.lsp.buf.rename()<CR>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
     }
     -- LazyGit
@@ -22,7 +22,7 @@ return {
     -- Utils
     -- Clear Buffers
     wk.add {
-      { '<leader>b', group = 'Actions', icon = ' ' },
+      { '<leader>b', group = 'Actions' },
       { '<leader>bD', '<cmd>%bd|e#<cr>', desc = 'Clear Buffers', mode = 'n', icon = '󰃢' },
       { '<leader>bd', '<cmd>:bd<CR>', desc = 'Close Buffer', mode = 'n', icon = ' x' },
     }

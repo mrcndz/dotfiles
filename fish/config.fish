@@ -21,9 +21,7 @@ fish_add_path $DOTFILES/scripts
 alias v="nvim"
 alias g="git"
 alias cdr="cd (ls -t | head -n 1)"
-alias b __cd_back_to
 alias lg="lazygit"
-alias cg="chatgpt"
 alias bat="batcat"
 alias dot="cd $DOTFILES"
 alias dcd="docker-compose down"
