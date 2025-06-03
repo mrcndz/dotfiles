@@ -126,7 +126,17 @@ return {
     {
       '<leader>e',
       function()
-        Snacks.explorer()
+        Snacks.explorer {
+          win = {
+            list = {
+              keys = {
+                ['i'] = '',
+                ['<c-c>'] = '',
+                ['<c-t>'] = 'terminal',
+              },
+            },
+          },
+        }
       end,
       desc = 'File Explorer',
     },

@@ -3,6 +3,7 @@ vim.g.do_file_type_lua = 1
 
 local opt = vim.opt
 
+opt.cmdheight = 0
 opt.autowrite = true
 opt.autoread = true
 opt.swapfile = false
@@ -10,7 +11,7 @@ opt.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus'
 opt.completeopt = 'menu,menuone,noselect'
 opt.cursorline = true
 opt.grepformat = '%f:%l:%c:%m'
-opt.grepprg = 'rg --vimgrep'
+opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
 opt.ignorecase = true
 opt.inccommand = 'nosplit'
 opt.jumpoptions = 'view'
