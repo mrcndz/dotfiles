@@ -2,3 +2,4 @@
 dotbot/
 .gitconfig
 .gp.md
+node_modules
