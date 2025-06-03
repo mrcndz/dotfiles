@@ -29,17 +29,12 @@ return {
             local filepath = vim.fn.expand '%'
             local utils = require 'utils'
 
-            if not vim.fn.filereadable(filepath) then
-              vim.cmd 'Alpha'
-            end
-
             if utils.is_git_repo() then
               vim.api.nvim_cmd({ cmd = 'cd', args = { utils.git_top_level() } }, {})
             end
           end,
         },
         auto_session_suppress_dirs = {
-          '~/',
           '~/.temp/',
           '~/temp',
           '~/Downloads',
