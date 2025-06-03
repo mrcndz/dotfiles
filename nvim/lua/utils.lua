@@ -33,12 +33,6 @@ function M.exprnoremap(mode, lhs, rhs)
   vim.api.nvim_set_keymap(mode, lhs, rhs, { noremap = true, silent = true, expr = true })
 end
 
--- Useful mode-specific shortcuts
--- nomenclature: "<expr?><mode><nore?>map(lhs, rhs)" where:
---      "expr?" optional expr option
---      "nore?" optional no-remap option
---      modes -> 'n' = NORMAL, 'i' = INSERT, 'x' = 'VISUAL', 'v' = VISUAL + SELECT, 't' = TERMINAL
-
 function M.imap(lhs, rhs)
   M.map('i', lhs, rhs)
 end
