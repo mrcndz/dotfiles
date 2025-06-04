@@ -26,9 +26,6 @@ return {
           'EnableHLIdent',
           'EnableHLLineNum',
           function()
-            local filepath = vim.fn.expand '%'
-            local utils = require 'utils'
-
             if utils.is_git_repo() then
               vim.api.nvim_cmd({ cmd = 'cd', args = { utils.git_top_level() } }, {})
             end

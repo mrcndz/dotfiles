@@ -1,5 +1,18 @@
 return {
   {
+    'Bekaboo/dropbar.nvim',
+    event = 'BufReadPost',
+    config = function()
+      require('dropbar').setup { enable = true }
+    end,
+  },
+  {
+    'nmac427/guess-indent.nvim',
+    config = function()
+      require('guess-indent').setup {}
+    end,
+  },
+  {
     'linrongbin16/lsp-progress.nvim',
     config = function()
       require('lsp-progress').setup {}
@@ -119,11 +132,19 @@ return {
       vim.api.nvim_create_autocmd('User', {
         group = 'lualine_augroup',
         pattern = 'LspProgressStatusUpdated',
-        callback = require('lualine').refresh,
+        callback = function()
+          require('lualine').refresh {}
+        end,
       })
       -- NVIM -.11
       vim.api.nvim_set_hl(0, 'StatusLine', { reverse = false })
       vim.api.nvim_set_hl(0, 'StatusLineNC', { reverse = false })
+    end,
+  },
+  {
+    'Koalhack/darcubox-nvim',
+    config = function()
+      vim.cmd 'colorscheme darcubox'
     end,
   },
 }
