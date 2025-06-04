@@ -1,5 +1,3 @@
-local last_grep = ''
-
 return {
   'folke/snacks.nvim',
   priority = 1000,
