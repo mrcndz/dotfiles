@@ -11,6 +11,14 @@ return {
         vim.keymap.set('n', 'q', function()
           require('quicker').close()
         end, { buffer = bufnr, nowait = true, silent = true })
+
+        vim.keymap.set('n', '>', function()
+          require('quicker').expand { before = 2, after = 2, add_to_existing = true }
+        end, { buffer = bufnr, nowait = true, silent = true })
+
+        vim.keymap.set('n', '<', function()
+          require('quicker').collapse()
+        end, { buffer = bufnr, nowait = true, silent = true })
       end,
     }
   end,
@@ -22,26 +30,12 @@ return {
       end,
       desc = 'Quickfix',
     },
-    {
-      '<leader>l',
-      function()
-        require('quicker').toggle { loclist = true, focus = true }
-      end,
-      desc = 'Location List',
-    },
-    {
-      '>',
-      function()
-        require('quicker').expand { before = 2, after = 2, add_to_existing = true }
-      end,
-      desc = 'Expand quickfix context',
-    },
-    {
-      '<',
-      function()
-        require('quicker').collapse()
-      end,
-      desc = 'Collapse quickfix context',
-    },
+    -- {
+    --   '<leader>l',
+    --   function()
+    --     require('quicker').toggle { loclist = true, focus = true }
+    --   end,
+    --   desc = 'Location List',
+    -- },
   },
 }
