@@ -13,3 +13,4 @@ yg
 go
 rust
 lazygit
+ripgrep

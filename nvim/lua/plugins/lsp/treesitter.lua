@@ -65,7 +65,7 @@ return {
           selection_modes = {
             ['@function.outer'] = 'V',
             ['@function.inner'] = 'V',
-            ['@class.outer'] = '<c-v>',
+            ['@class.outer'] = 'V',
             ['@class.inner'] = 'V',
           },
           include_surrounding_whitespace = true,
