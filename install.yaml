@@ -8,6 +8,8 @@ symlinks:
   - ~/.tmux.conf: $DOTFILES/tmux/tmux.conf 
   - ~/.config/nvim: $DOTFILES/nvim
   - ~/.zshrc: $DOTFILES/zsh/zshrc
+  - ~/.config/lazygit: $DOTFILES/lazygit
+
 
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
