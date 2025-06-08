@@ -142,9 +142,20 @@ return {
     end,
   },
   {
-    'Koalhack/darcubox-nvim',
+    'zenbones-theme/zenbones.nvim',
+    dependencies = 'rktjmp/lush.nvim',
+    lazy = false,
+    priority = 1000,
     config = function()
-      vim.cmd 'colorscheme darcubox'
+      vim.g.zenbones_darken_comments = 45
+      vim.cmd [[set background=dark]]
+      vim.cmd.colorscheme 'kanagawabones'
+    end,
+  },
+  {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup {}
     end,
   },
 }

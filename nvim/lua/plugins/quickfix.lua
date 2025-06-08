@@ -26,7 +26,7 @@ return {
     {
       '<leader>q',
       function()
-        require('quicker').toggle { focus = true }
+        require('quicker').toggle { focus = true, height = 20 }
       end,
       desc = 'Quickfix',
     },

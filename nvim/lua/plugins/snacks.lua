@@ -1,3 +1,5 @@
+local last_picker = {}
+
 return {
   'folke/snacks.nvim',
   priority = 1000,
@@ -5,7 +7,12 @@ return {
   keys = {
     {
       '<leader>c',
-      function() end,
+      function()
+        Snacks.picker.commands {
+          layout = 'vscode',
+          on_show = feed_esc,
+        }
+      end,
       desc = 'Commands',
     },
     {
@@ -34,51 +41,69 @@ return {
     {
       '<leader>ls',
       function()
-        Snacks.picker.lsp_symbols()
+        Snacks.picker.lsp_symbols {
+          layout = 'right',
+          jump = {
+            close = false,
+          },
+          on_show = feed_esc,
+        }
       end,
-      desc = 'LSP Symbols',
+      desc = 'Symbols',
     },
     {
       '<leader>lS',
       function()
-        Snacks.picker.lsp_workspace_symbols()
+        Snacks.picker.lsp_workspace_symbols {
+          on_show = feed_esc,
+        }
       end,
-      desc = 'LSP Workspace Symbols',
+      desc = 'Workspace Symbols',
     },
     {
-      '<leader>lf',
+      '<leader>d',
       function()
-        Snacks.picker.diagnostics_buffer()
-        feed_esc()
+        Snacks.picker.diagnostics_buffer {
+          layout = 'ivy_split',
+          on_show = feed_esc,
+        }
       end,
       desc = 'Buffer Diagnostics',
     },
     {
-      '<leader>lF',
+      '<leader>D',
       function()
-        Snacks.picker.diagnostics()
-        feed_esc()
+        Snacks.picker.diagnostics {
+          layout = 'ivy_split',
+          on_show = feed_esc,
+        }
       end,
-      desc = 'Diagnostics',
+      desc = 'Workspace Diagnostics',
     },
     {
       '<leader>lD',
       function()
-        Snacks.picker.lsp_definitions()
+        Snacks.picker.lsp_definitions {
+          on_show = feed_esc,
+        }
       end,
-      desc = 'Goto Definition',
+      desc = 'Definitions',
     },
     {
       '<leader>le',
       function()
-        Snacks.picker.lsp_declarations()
+        Snacks.picker.lsp_declarations {
+          on_show = feed_esc,
+        }
       end,
-      desc = 'Goto Declaration',
+      desc = 'Declarations',
     },
     {
       '<leader>lr',
       function()
-        Snacks.picker.lsp_references()
+        Snacks.picker.lsp_references {
+          on_show = feed_esc,
+        }
       end,
       nowait = true,
       desc = 'References',
@@ -86,36 +111,25 @@ return {
     {
       '<leader>li',
       function()
-        Snacks.picker.lsp_implementations()
+        Snacks.picker.lsp_implementations {
+          on_show = feed_esc,
+        }
       end,
-      desc = 'Goto Implementation',
+      desc = 'Implementations',
     },
     {
       '<leader>u',
       function()
-        Snacks.picker.undo()
-        feed_esc()
+        Snacks.picker.undo {
+          on_show = feed_esc,
+        }
       end,
       desc = 'Undo History',
     },
     {
       '<leader>F',
       function()
-        -- If we're in a grep, resume it
-        -- Otherwise, start a new one
-        local last = require('snacks.picker.core.picker').last
-
-        if last == nil or next(last) == nil then
-          Snacks.picker.grep()
-          return
-        end
-
-        if last.opts.source == 'grep' then
-          Snacks.picker.resume()
-          feed_esc()
-        else
-          Snacks.picker.grep()
-        end
+        Snacks.picker.grep {}
       end,
       desc = 'Grep',
     },
@@ -128,45 +142,67 @@ return {
               keys = {
                 ['i'] = '',
                 ['<c-c>'] = '',
-                ['<c-t>'] = 'terminal',
               },
             },
           },
         }
       end,
-      desc = 'File Explorer',
+      desc = 'Explorer',
     },
     {
       '<leader><leader>',
       function()
-        Snacks.picker.buffers()
-        feed_esc()
+        Snacks.picker.buffers {
+          layout = 'select',
+          on_show = feed_esc,
+          win = {
+            input = {
+              keys = {
+                ['dd'] = { 'bufdelete', mode = { 'n' }, nowait = true, noremap = true },
+              },
+            },
+          },
+        }
       end,
       desc = 'Buffers',
     },
     {
       '<leader>f',
       function()
-        Snacks.picker.files()
-        feed_esc()
+        Snacks.picker.files {}
       end,
-      desc = 'Buffers',
+      desc = 'Files',
     },
   },
-  opts = {
-    bigfile = { enabled = true },
-    picker = { enabled = true },
-    indent = { enabled = true },
-    input = { enabled = true },
-    notifier = { enabled = false },
-    quickfile = { enabled = true },
-    scope = { enabled = true },
-    scroll = { enabled = true },
-    statuscolumn = { enabled = true },
-    words = { enabled = true },
-  },
   config = function()
-    Snacks.indent.enable()
-    Snacks.scroll.enable()
+    Snacks.setup {
+      picker = {
+        layouts = vim.tbl_deep_extend('force', require 'snacks.picker.config.layouts', {
+          ['bottom_no_preview'] = {
+            layout = 'bottom',
+          },
+        }),
+
+        win = {
+          input = {
+            keys = {
+              ['qqq'] = { { 'cancel', 'cancel' }, mode = 'i', noremap = true, nowait = true },
+              ['['] = { 'history_back', mode = { 'n' }, nowait = true },
+              [']'] = { 'history_forward', mode = { 'n' }, nowait = true },
+              ['[['] = { 'history_back', mode = { 'i' }, nowait = true, noremap = true },
+              [']]'] = { 'history_forward', mode = { 'i' }, nowait = true, noremap = true },
+            },
+          },
+        },
+      },
+      indent = { enabled = true },
+      input = { enabled = true },
+      notifier = { enabled = false },
+      quickfile = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
+    }
   end,
 }
