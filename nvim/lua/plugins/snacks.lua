@@ -5,9 +5,7 @@ return {
   keys = {
     {
       '<leader>c',
-      function()
-        Snacks.picker.commands()
-      end,
+      function() end,
       desc = 'Commands',
     },
     {

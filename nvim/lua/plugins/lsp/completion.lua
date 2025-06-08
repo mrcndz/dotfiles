@@ -9,20 +9,29 @@ return {
     version = '*',
     opts = {
       keymap = {
+        ['<CR>'] = { 'accept', 'fallback' },
         ['<C-l>'] = { 'select_and_accept', 'fallback' },
         ['<C-Space>'] = { 'show', 'hide' },
         ['<C-j>'] = { 'select_next', 'fallback' },
         ['<C-k>'] = { 'select_prev', 'fallback' },
+        ['<C-s>'] = { 'show_signature', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
         ['<Up>'] = { 'select_prev', 'fallback' },
-        ['<CR>'] = { 'accept', 'fallback' },
         ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
         ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
       },
-      --
       cmdline = {
         keymap = {
           ['<Tab>'] = { 'show', 'accept' },
+          ['<C-l>'] = { 'select_and_accept', 'fallback' },
+          ['<C-Space>'] = { 'show', 'hide' },
+          ['<C-j>'] = { 'select_next', 'fallback' },
+          ['<C-k>'] = { 'select_prev', 'fallback' },
+          ['<C-w>?'] = { 'show_signature', 'fallback' },
+          ['<Down>'] = { 'select_next', 'fallback' },
+          ['<Up>'] = { 'select_prev', 'fallback' },
+          ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
+          ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
         },
         completion = { menu = { auto_show = true } },
       },
@@ -44,7 +53,7 @@ return {
         ghost_text = { enabled = false },
       },
       sources = {
-        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
         providers = {
           buffer = {
             opts = {
@@ -55,16 +64,16 @@ return {
               end,
             },
           },
-          lazydev = {
-            name = 'LazyDev',
-            module = 'lazydev.integrations.blink',
-            score_offset = 100,
-          },
+          -- lazydev = {
+          --   name = 'LazyDev',
+          --   module = 'lazydev.integrations.blink',
+          --   score_offset = 100,
+          -- },
         },
       },
       snippets = { preset = 'default' },
       signature = {
-        window = { border = 'single' },
+        window = { border = 'single', show_documentation = true },
         enabled = true,
       },
     },
@@ -80,6 +89,23 @@ return {
         },
         ignore_filetypes = {},
       }
+
+      -- Show signature when cursor is in function call
+      vim.api.nvim_create_augroup('CursorHoldSignature', {})
+      vim.api.nvim_create_autocmd({ 'TextChangedI', 'CursorHold' }, {
+        group = 'CursorHoldSignature',
+        callback = function()
+          local cmp = require 'blink.cmp'
+          local node = vim.treesitter.get_node()
+
+          if not node or node:type() ~= 'arguments' or node:parent():type() ~= 'function_call' and cmp.is_signature_visible() then
+            cmp.hide_signature()
+            return
+          end
+
+          cmp.show_signature()
+        end,
+      })
     end,
   },
 }

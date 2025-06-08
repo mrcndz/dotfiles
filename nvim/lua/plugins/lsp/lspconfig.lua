@@ -9,12 +9,6 @@ vim.lsp.enable {
   'marksman',
 }
 
--- Show signature help on cursor hold
-vim.api.nvim_create_autocmd('CursorHold', {
-  callback = function()
-    vim.lsp.buf.signature_help()
-  end,
-})
 
 vim.keymap.set('n', '<leader>ld', function()
   vim.diagnostic.open_float(nil, { focusable = true, source = 'if_many' })
@@ -79,21 +73,6 @@ return {
         'prettier',
         'prettierd',
       },
-    },
-  },
-  {
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        'lazy.nvim',
-        'luvit-meta/library',
-        'LazyVim',
-        vim.env.VIMRUNTIME,
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-        { path = vim.fn.stdpath 'data' .. '/lazy' },
-      },
-      enabled = true,
     },
   },
 }
