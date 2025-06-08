@@ -2,6 +2,7 @@
 set -gx FISH_CONFIG $DOTFILES/fish
 set -gx EDITOR nvim
 set -gx GOPATH $HOME/.go
+set -gx XDG_CONFIG_HOME $HOME/.config
 
 # go
 
