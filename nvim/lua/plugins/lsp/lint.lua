@@ -18,6 +18,8 @@ return {
           lint.try_lint()
         end,
       })
+      local pylint = lint.linters.pylint
+      pylint.args = vim.list_extend({ '--rcfile', vim.fs.find('pyproject.toml', {})[1] }, pylint.args)
     end,
   },
 }

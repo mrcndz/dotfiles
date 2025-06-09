@@ -12,11 +12,4 @@ return {
       },
     },
   },
-  on_attach = function(client, bufnr)
-    local pylint = require('lint').linters.pylint
-    pylint.args {
-      '--rcfile',
-      vim.fs.find('pyproject.toml', {})[1],
-    }
-  end,
 }
