@@ -64,3 +64,7 @@ if type -q pyenv
     pyenv init - | source
     status --is-interactive; and source (pyenv virtualenv-init - | psub)
 end
+
+if type -q direnv
+    direnv hook fish | source
+end
