@@ -9,8 +9,8 @@ symlinks:
   - ~/.config/nvim: $DOTFILES/nvim
   - ~/.zshrc: $DOTFILES/zsh/zshrc
   - ~/.config/lazygit: $DOTFILES/lazygit
-
-
+  - ~/.direnvrc: $DOTFILES/direnv/direnvrc
+  
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
 
