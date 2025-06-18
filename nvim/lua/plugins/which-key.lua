@@ -5,9 +5,8 @@ return {
     local wk = require 'which-key'
     local wkicon = require 'which-key.icons'
 
-    -- Telescope
     wk.add {
-      icon = wkicon.get { pattern = 'search', icon = ' ', color = 'green' },
+      { '<leader>a', group = 'AI' },
     }
 
     -- LSP
@@ -23,7 +22,7 @@ return {
     -- Clear Buffers
     wk.add {
       { '<leader>b', group = 'Actions' },
-      { '<leader>bD', '<cmd>%bd|e#<cr>', desc = 'Clear Buffers', mode = 'n', icon = '󰃢' },
+      { '<leader>bD', "<cmd>bufdo if bufnr('%') != bufnr('#') | bdelete | endif<cr>", desc = 'Clear Buffers', mode = 'n', icon = '󰃢' },
       { '<leader>bd', '<cmd>:bd<CR>', desc = 'Close Buffer', mode = 'n', icon = ' x' },
     }
   end,

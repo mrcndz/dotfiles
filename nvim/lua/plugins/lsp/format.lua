@@ -16,8 +16,8 @@ return {
     formatters_by_ft = {
       lua = { 'stylua' },
       python = { 'isort', 'black' },
-      javascript = { { 'prettierd', 'prettier' } },
-      json = { { 'prettierd', 'prettier' } },
+      javascript = { 'prettierd', 'prettier' },
+      json = { 'prettierd', 'prettier' },
       fish = { 'fish_indent' },
       rust = { 'rustfmt' },
     },
