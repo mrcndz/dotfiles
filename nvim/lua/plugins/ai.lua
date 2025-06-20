@@ -17,6 +17,8 @@ return {
         vim.keymap.set('t', 'jj', '<C-\\><C-n>', opts)
         vim.keymap.set('t', '<C-h>', '<cmd>NvimTmuxNavigateLeft<cr>', opts)
         vim.keymap.set('t', '<C-l>', '<cmd>NvimTmuxNavigateRight<cr>', opts)
+        vim.keymap.set('t', '<C-k>', '<Up>', opts)
+        vim.keymap.set('t', '<C-j>', '<Down>', opts)
       end,
     })
 
