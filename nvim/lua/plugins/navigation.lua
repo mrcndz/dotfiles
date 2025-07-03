@@ -26,11 +26,12 @@ return {
     'alexghergh/nvim-tmux-navigation',
     config = function()
       require('nvim-tmux-navigation').setup {}
-      local nnoremap = require('utils').nnoremap
-      nnoremap('<C-h>', ':NvimTmuxNavigateLeft<CR>')
-      nnoremap('<C-l>', ':NvimTmuxNavigateRight<CR>')
-      nnoremap('<C-j>', ':NvimTmuxNavigateDown<CR>')
-      nnoremap('<C-k>', ':NvimTmuxNavigateUp<CR>')
+      local keymap = vim.keymap.set
+
+      keymap({ 'n' }, '<C-h>', ':NvimTmuxNavigateLeft<CR>', { noremap = true, silent = true })
+      keymap({ 'n' }, '<C-l>', ':NvimTmuxNavigateRight<CR>', { noremap = true, silent = true })
+      keymap({ 'n' }, '<C-j>', ':NvimTmuxNavigateDown<CR>', { noremap = true, silent = true })
+      keymap({ 'n' }, '<C-k>', ':NvimTmuxNavigateUp<CR>', { noremap = true, silent = true })
     end,
   },
 }

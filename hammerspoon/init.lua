@@ -62,14 +62,14 @@ hs.hotkey.bind({ "cmd" }, "t", function()
 end)
 
 -- Switch Edge
-hs.hotkey.bind({ "cmd" }, "e", function()
-	hs.application.launchOrFocus("Microsoft Edge")
-end)
+-- hs.hotkey.bind({ "cmd" }, "e", function()
+-- 	hs.application.launchOrFocus("Microsoft Edge")
+-- end)
 
 -- Switch claude
-hs.hotkey.bind({ "cmd" }, "i", function()
-	hs.application.launchOrFocus("Claude")
-end)
+-- hs.hotkey.bind({ "cmd" }, "i", function()
+-- 	hs.application.launchOrFocus("Claude")
+-- end)
 
 -- Hide alacritty if not in focus
 -- hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(window, appName)
