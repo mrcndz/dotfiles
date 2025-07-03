@@ -1,5 +1,5 @@
 -- Set up cmdwin with live update
-local main_augroup = vim.api.nvim_create_augroup('CustomCmdwinSetup', { clear = true })
+local main_augroup = vim.api.nvim_create_augroup('MainSetup', { clear = true })
 
 vim.api.nvim_create_autocmd('CmdwinEnter', {
   group = main_augroup,
@@ -32,4 +32,18 @@ vim.api.nvim_create_autocmd('CmdwinEnter', {
       end,
     })
   end,
+})
+
+-- Auto reload files
+vim.api.nvim_create_autocmd('FocusGained', {
+  desc = 'Reload files from disk when we focus vim',
+  pattern = '*',
+  command = "if getcmdwintype() == '' | checktime | endif",
+  group = main_augroup,
+})
+vim.api.nvim_create_autocmd('BufEnter', {
+  desc = 'Every time we enter an unmodified buffer, check if it changed on disk',
+  pattern = '*',
+  command = "if &buftype == '' && !&modified && expand('%') != '' | exec 'checktime ' . expand('<abuf>') | endif",
+  group = main_augroup,
 })
