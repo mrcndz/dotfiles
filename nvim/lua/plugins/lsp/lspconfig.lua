@@ -7,8 +7,8 @@ vim.lsp.enable {
   'jsonls',
   'pyright',
   'marksman',
+  'vtsls',
 }
-
 
 vim.keymap.set('n', '<leader>ld', function()
   vim.diagnostic.open_float(nil, { focusable = true, source = 'if_many' })
@@ -68,10 +68,11 @@ return {
         'jsonls',
         -- Yaml
         'yamlls',
-        -- Javascript
+        -- Javascript / Typescript
         'eslint',
         'prettier',
         'prettierd',
+        'vtsls',
       },
     },
   },

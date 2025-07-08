@@ -20,7 +20,7 @@ return {
         library = {
           vim.env.VIMRUNTIME,
           '${3rd}/luv/library',
-          vim.fn.stdpath 'data' .. '/lazy',
+          -- vim.fn.stdpath 'data' .. '/lazy',
         },
       },
       completion = { callSnippet = 'Replace' },

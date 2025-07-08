@@ -14,6 +14,7 @@ vim.keymap.set('n', 'N', 'Nzzzv', { noremap = true, silent = true, desc = 'Previ
 
 vim.keymap.set('n', '<Tab>', ':bprevious<CR>', { noremap = true, silent = true, desc = 'Previous buffer' })
 vim.keymap.set('n', '<S-Tab>', ':bnext<CR>', { noremap = true, silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select pasted text' })
 
 -- Macro over visual
 vim.cmd [[

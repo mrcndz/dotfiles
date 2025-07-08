@@ -19,7 +19,6 @@ fish_add_path $HOME/.cargo/bin $HOME/.local/bin $HOME/.local/share/nvim/mason/bi
 fish_add_path $DOTFILES/scripts
 
 # Alias
-alias v="nvim"
 alias g="git"
 alias cdr="cd (ls -t | head -n 1)"
 alias lg="lazygit"
