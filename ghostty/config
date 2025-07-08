@@ -1,0 +1,3 @@
+keybind = global:cmd+t=toggle_quick_terminal
+initial-window = false
+custom-shader = shaders/cursor_smear_fade.glsl
