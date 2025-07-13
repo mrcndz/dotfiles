@@ -3,3 +3,4 @@ dotbot/
 .gitconfig
 .gp.md
 node_modules
+.DS_Store
