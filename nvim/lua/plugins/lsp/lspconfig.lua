@@ -70,8 +70,8 @@ return {
         'yamlls',
         -- Javascript / Typescript
         'eslint',
-        'prettier',
-        'prettierd',
+        -- 'prettier',
+        -- 'prettierd',
         'vtsls',
       },
     },
