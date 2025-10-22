@@ -3,18 +3,17 @@ set -gx FISH_CONFIG $DOTFILES/fish
 set -gx EDITOR nvim
 set -gx GOPATH $HOME/.go
 set -gx XDG_CONFIG_HOME $HOME/.config
-
-# go
+set -gx CPPFLAGS -I/opt/homebrew/opt/openjdk/include
 
 # Source
 source $DOTFILES/env.fish
 source $FISH_CONFIG/functions/execute.fish
-execute source $FISH_CONFIG/plugins
 execute source $FISH_CONFIG/functions
 
-# Paths ----------------------------------------------------------------------
+# Paths
 fish_add_path $HOME/.go/bin /usr/local/go/bin
 fish_add_path /opt/homebrew/sbin /opt/homebrew/bin
+fish_add_path /opt/homebrew/opt/openjdk/bin
 fish_add_path $HOME/.cargo/bin $HOME/.local/bin $HOME/.local/share/nvim/mason/bin
 fish_add_path $DOTFILES/scripts
 
@@ -28,6 +27,7 @@ alias dcd="docker-compose down"
 alias dcu="docker-compose up -d"
 alias dcr="docker-compose down; docker-compose up -d"
 alias dcl="docker-compose logs -f"
+alias mux="tmuxinator"
 
 # Enable Vi key bindings
 fish_vi_key_bindings

@@ -1,25 +1,30 @@
 pre_commands:
- - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm # Install tpm tmux
+ - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
  - git update-index --assume-unchanged $DOTFILES/env.fish
 
 symlinks:
   - ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
   - ~/.config/fish/config.fish: $DOTFILES/fish/config.fish 
+  - ~/.config/fish/completions/just.fish: $DOTFILES/fish/completions/just.fish
   - ~/.tmux.conf: $DOTFILES/tmux/tmux.conf 
+  - ~/.config/tmuxinator: $DOTFILES/tmux/tmuxinator/
   - ~/.config/nvim: $DOTFILES/nvim
   - ~/.zshrc: $DOTFILES/zsh/zshrc
+  - ~/.bashrc: $DOTFILES/bash/bashrc
   - ~/.config/lazygit: $DOTFILES/lazygit
-  - ~/.direnvrc: $DOTFILES/direnv/direnvrc
+  - ~/.config/just: $DOTFILES/just
+
   
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
 
 symlinks-darwin:
   - ~/.config/ghostty: $DOTFILES/ghostty
-  - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-darwin.toml
-  - ~/.hammerspoon/init.lua: $DOTFILES/hammerspoon/init.lua
+  # - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-darwin.toml
+  # - ~/.hammerspoon/init.lua: $DOTFILES/hammerspoon/init.lua
 
 post_commands:
   - curl -sL https://git.io/fisher | source && fisher update
   - source $DOTFILES/fish/config.fish
   - ~/.tmux/plugins/tpm/bin/install_plugins
+  - sed -i 's/"credsStore"/"credStore"/g' ~/.docker/config.json

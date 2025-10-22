@@ -1,1 +1,0 @@
-sudo bash -c "bash <(curl -sL https://git.io/go-installer)"

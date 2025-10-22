@@ -76,7 +76,7 @@ return {
           theme = theme,
           component_separators = { left = '', right = '' },
           section_separators = { left = '', right = '' },
-          disabled_filetypes = { 'NvimTree', 'oil' },
+          disabled_filetypes = { 'NvimTree' },
         },
         sections = {
           lualine_a = {
@@ -142,14 +142,13 @@ return {
     end,
   },
   {
-    'zenbones-theme/zenbones.nvim',
-    dependencies = 'rktjmp/lush.nvim',
+    'akinsho/horizon.nvim',
+    version = '*',
     lazy = false,
     priority = 1000,
     config = function()
-      vim.g.zenbones_darken_comments = 45
+      vim.cmd.colorscheme 'horizon'
       vim.cmd [[set background=dark]]
-      vim.cmd.colorscheme 'kanagawabones'
     end,
   },
   {

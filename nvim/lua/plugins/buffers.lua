@@ -2,7 +2,7 @@ return {
   'axkirillov/hbac.nvim',
   config = function()
     require('hbac').setup {
-      threshold = 5,
+      threshold = 6,
     }
   end,
 }

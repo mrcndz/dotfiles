@@ -16,14 +16,6 @@ return {
       desc = 'Commands',
     },
     {
-      'gj',
-      function()
-        Snacks.picker.lines()
-      end,
-      desc = 'Buffer Lines',
-    },
-    -- Git
-    {
       '<leader>go',
       function()
         Snacks.gitbrowse()
@@ -132,22 +124,6 @@ return {
         Snacks.picker.grep {}
       end,
       desc = 'Grep',
-    },
-    {
-      '<leader>e',
-      function()
-        Snacks.explorer {
-          win = {
-            list = {
-              keys = {
-                ['i'] = '',
-                ['<c-c>'] = '',
-              },
-            },
-          },
-        }
-      end,
-      desc = 'Explorer',
     },
     {
       '<leader><leader>',
