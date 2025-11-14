@@ -4,6 +4,7 @@ set -gx EDITOR nvim
 set -gx GOPATH $HOME/.go
 set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx CPPFLAGS -I/opt/homebrew/opt/openjdk/include
+set -g async_prompt_functions _pure_prompt_git
 
 # Source
 source $DOTFILES/env.fish
