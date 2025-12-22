@@ -23,19 +23,20 @@ return {
     lazy = false,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      local utils = require 'lualine.utils.utils'
-      local bg = utils.extract_color_from_hllist('bg', { 'Normal' }, '')
-      local colors = {
-        insert = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
-        normal = utils.extract_color_from_hllist('fg', { 'MiniIconsGrey' }, ''),
-        replace = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
-        visual = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
-        command = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
-        icon = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
-        git = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
-        line = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
-        lsp_progress = utils.extract_color_from_hllist('fg', { 'MiniIconsPurple' }, ''),
-      }
+      local function setup_lualine()
+        local utils = require 'lualine.utils.utils'
+        local bg = utils.extract_color_from_hllist('bg', { 'Normal' }, '')
+        local colors = {
+          insert = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
+          normal = utils.extract_color_from_hllist('fg', { 'MiniIconsGrey' }, ''),
+          replace = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
+          visual = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
+          command = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
+          icon = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
+          git = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
+          line = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
+          lsp_progress = utils.extract_color_from_hllist('fg', { 'MiniIconsPurple' }, ''),
+        }
 
       local theme = {
         normal = {
@@ -128,6 +129,21 @@ return {
         },
       }
 
+        -- NVIM 0.11
+        vim.api.nvim_set_hl(0, 'StatusLine', { reverse = false })
+        vim.api.nvim_set_hl(0, 'StatusLineNC', { reverse = false })
+      end
+
+      setup_lualine()
+
+      -- Refresh lualine on colorscheme change
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        pattern = '*',
+        callback = function()
+          setup_lualine()
+        end,
+      })
+
       vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
       vim.api.nvim_create_autocmd('User', {
         group = 'lualine_augroup',
@@ -136,20 +152,37 @@ return {
           require('lualine').refresh {}
         end,
       })
-      -- NVIM -.11
-      vim.api.nvim_set_hl(0, 'StatusLine', { reverse = false })
-      vim.api.nvim_set_hl(0, 'StatusLineNC', { reverse = false })
     end,
   },
+  -- Dark theme
   {
     'akinsho/horizon.nvim',
     version = '*',
     lazy = false,
     priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'horizon'
-      vim.cmd [[set background=dark]]
-    end,
+  },
+  -- Light theme
+  {
+    'yorik1984/newpaper.nvim',
+    lazy = false,
+    priority = 1000,
+  },
+  -- Auto theme switcher based on macOS appearance
+  {
+    'f-person/auto-dark-mode.nvim',
+    lazy = false,
+    priority = 999,
+    opts = {
+      update_interval = 1000,
+      set_dark_mode = function()
+        vim.api.nvim_set_option_value('background', 'dark', {})
+        vim.cmd.colorscheme 'horizon'
+      end,
+      set_light_mode = function()
+        vim.api.nvim_set_option_value('background', 'light', {})
+        vim.cmd.colorscheme 'newpaper'
+      end,
+    },
   },
   {
     'lewis6991/gitsigns.nvim',

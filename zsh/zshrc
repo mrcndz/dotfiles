@@ -1,1 +1,2 @@
 exec fish
+export PATH="$HOME/.local/bin:$PATH"

@@ -13,14 +13,15 @@ symlinks:
   - ~/.bashrc: $DOTFILES/bash/bashrc
   - ~/.config/lazygit: $DOTFILES/lazygit
   - ~/.config/just: $DOTFILES/just
-
+  - ~/.config/television: $DOTFILES/tv
   
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
 
 symlinks-darwin:
   - ~/.config/ghostty: $DOTFILES/ghostty
-  # - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-darwin.toml
+  - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-darwin.toml
+  - ~/.local/bin/ovim-tmux-edit: $DOTFILES/tmux/ovim-tmux-edit
   # - ~/.hammerspoon/init.lua: $DOTFILES/hammerspoon/init.lua
 
 post_commands:
