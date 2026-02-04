@@ -49,6 +49,12 @@ return {
       on_attach = my_on_attach,
       disable_netrw = true,
       hijack_netrw = true,
+      sync_root_with_cwd = true,
+      respect_buf_cwd = true,
+      update_focused_file = {
+        enable = true,
+        update_root = false,
+      },
       view = {
         width = 30,
         side = 'left',
