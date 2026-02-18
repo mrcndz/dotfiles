@@ -25,8 +25,8 @@ if status is-interactive
     type -q tv && tv init fish | source
 
     # Binds
-    bind -M insert \ce nvim
-    bind -M default \ce nvim
+    bind -M insert \ce "tvp \$(pwd) | xargs nvim"
+    bind -M default \ce "tvp \$(pwd) | xargs nvim"
     bind -M insert \co zi
     bind -M default \co zi
     bind -M insert \t accept-autosuggestion
@@ -36,6 +36,7 @@ if status is-interactive
     bind p fish_clipboard_paste
 
     # Alias
+    alias tvp="$DOTFILES/tmux/popup-capture.fish tv"
     alias g="git"
     alias cdr="cd (ls -t | head -n 1)"
     alias lg="lazygit"
