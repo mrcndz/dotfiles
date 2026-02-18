@@ -14,6 +14,7 @@ symlinks:
   - ~/.config/lazygit: $DOTFILES/lazygit
   - ~/.config/just: $DOTFILES/just
   - ~/.config/television: $DOTFILES/tv
+  - ~/.claude/hooks: $DOTFILES/claude/hooks
   
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
