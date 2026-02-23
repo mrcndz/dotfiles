@@ -43,7 +43,21 @@ return {
       vim.keymap.set('n', 'R', api.tree.reload, opts('Refresh'))
       vim.keymap.set('n', 'q', api.tree.close, opts('Close'))
       vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+      vim.keymap.set('n', '<leader>g', function()
+        api.tree.collapse_all()
+        api.tree.toggle_git_clean_filter()
+        api.tree.expand_all()
+      end, opts('Toggle git changes view'))
     end
+
+    local function open_nvim_tree(data)
+      local directory = vim.fn.isdirectory(data.file) == 1
+      local no_name = data.file == '' and vim.bo[data.buf].buftype == ''
+      if not directory and not no_name then return end
+      if directory then vim.cmd.cd(data.file) end
+      require('nvim-tree.api').tree.open()
+    end
+    vim.api.nvim_create_autocmd('VimEnter', { callback = open_nvim_tree })
 
     require('nvim-tree').setup {
       on_attach = my_on_attach,

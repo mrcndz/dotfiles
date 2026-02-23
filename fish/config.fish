@@ -3,6 +3,7 @@ source $DOTFILES/env.fish
 # Variables
 set -gx EDITOR nvim
 set -gx XDG_CONFIG_HOME $HOME/.config
+defaults read -g AppleInterfaceStyle &>/dev/null; and set -gx DARK_MODE 1; or set -gx DARK_MODE 0
 
 set -gx PYENV_ROOT $HOME/.pyenv
 set -gx CPPFLAGS -I/opt/homebrew/opt/openjdk/include
@@ -20,13 +21,15 @@ fish_add_path $DOTFILES/scripts
 if status is-interactive
     set -g fish_greeting # Disable fish greeting
 
-    not set -q TMUX && exec tmux -f $DOTFILES/tmux/tmux.conf
+    not set -q TMUX && exec sh -c "tmux -f $DOTFILES/tmux/tmux.conf attach 2>/dev/null || tmux -f $DOTFILES/tmux/tmux.conf new"
     type -q zoxide && zoxide init fish | source
-    type -q tv && tv init fish | source
+
 
     # Binds
-    bind -M insert \ce "tvp \$(pwd) | xargs nvim"
-    bind -M default \ce "tvp \$(pwd) | xargs nvim"
+    bind -M insert \ce "fzf-files-popup | xargs nvim"
+    bind -M default \ce "fzf-files-popup | xargs nvim"
+    bind -M insert \cg "tmux display-popup -d (pwd) -xC -yC -w80% -h80% -E lazygit"
+    bind -M default \cg "tmux display-popup -d (pwd) -xC -yC -w80% -h80% -E lazygit"
     bind -M insert \co zi
     bind -M default \co zi
     bind -M insert \t accept-autosuggestion
@@ -36,7 +39,10 @@ if status is-interactive
     bind p fish_clipboard_paste
 
     # Alias
-    alias tvp="$DOTFILES/tmux/popup-capture.fish tv"
+    # Source fzf functions
+    for f in $DOTFILES/fzf/*.fish
+        source $f
+    end
     alias g="git"
     alias cdr="cd (ls -t | head -n 1)"
     alias lg="lazygit"

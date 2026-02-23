@@ -4,3 +4,4 @@ dotbot/
 .gp.md
 node_modules
 .DS_Store
+.claude
