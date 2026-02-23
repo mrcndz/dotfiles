@@ -22,8 +22,6 @@ symlinks-linux:
 symlinks-darwin:
   - ~/.config/ghostty: $DOTFILES/ghostty
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-darwin.toml
-  - ~/.local/bin/ovim-tmux-edit: $DOTFILES/tmux/ovim-tmux-edit
-  # - ~/.hammerspoon/init.lua: $DOTFILES/hammerspoon/init.lua
 
 post_commands:
   - curl -sL https://git.io/fisher | source && fisher update
