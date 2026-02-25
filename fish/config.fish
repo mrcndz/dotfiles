@@ -43,15 +43,16 @@ if status is-interactive
     for f in $DOTFILES/fzf/*.fish
         source $f
     end
+    alias cl="claude --dangerously-skip-permissions --continue || claude"
     alias g="git"
     alias cdr="cd (ls -t | head -n 1)"
     alias lg="lazygit"
     alias bat="batcat"
     alias dot="cd $DOTFILES"
-    alias dcd="docker-compose down"
-    alias dcu="docker-compose up -d"
-    alias dcr="docker-compose down; docker-compose up -d"
-    alias dcl="docker-compose logs -f"
+    alias dcd="docker compose down"
+    alias dcu="docker compose up -d"
+    alias dcr="docker compose down; docker-compose up -d"
+    alias dcl="docker compose logs -f"
     alias mux="tmuxinator"
     alias rc="redis-cli -h localhost -p 6379"
 

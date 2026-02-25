@@ -1,3 +1,7 @@
 gui:
   showIcons: true
   screenMode: half
+  showCommandLog: false
+
+notARepository: quit
+promptToReturnFromSubprocess: false
