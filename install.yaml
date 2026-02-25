@@ -13,7 +13,6 @@ symlinks:
   - ~/.bashrc: $DOTFILES/bash/bashrc
   - ~/.config/lazygit: $DOTFILES/lazygit
   - ~/.config/just: $DOTFILES/just
-  - ~/.config/television: $DOTFILES/tv
   - ~/.claude/hooks: $DOTFILES/claude/hooks
   
 symlinks-linux:
