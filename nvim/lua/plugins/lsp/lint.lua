@@ -5,7 +5,7 @@ return {
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
-        python = { 'pylint' },
+        python = { 'ruff' },
         typescript = { 'eslint' },
         javascript = { 'eslint' },
       }
@@ -19,7 +19,8 @@ return {
         end,
       })
       local pylint = lint.linters.pylint
-      pylint.args = vim.list_extend({ '--rcfile', vim.fs.find('pyproject.toml', {})[1] }, pylint.args)
+      pylint.cmd = 'uv'
+      pylint.args = vim.list_extend({ 'run', 'pylint', '--rcfile', vim.fs.find('pyproject.toml', {})[1] }, pylint.args)
     end,
   },
 }

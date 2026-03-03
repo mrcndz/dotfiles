@@ -5,7 +5,7 @@ local function get_capabilities()
 end
 
 return {
-  cmd = { 'pyright-langserver', '--stdio' },
+  cmd = { 'uv', 'run', 'pyright-langserver', '--stdio' },
   filetypes = { 'python' },
   root_markers = { 'pyrightconfig.json', '.venv', 'pyproject.toml', 'setup.py', '.git' },
   capabilities = get_capabilities(),
