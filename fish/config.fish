@@ -10,6 +10,19 @@ set -gx CPPFLAGS -I/opt/homebrew/opt/openjdk/include
 set -gx GOPATH $HOME/.go
 
 set -g async_prompt_functions _pure_prompt_git
+begin
+    set -l ignore (string join , (for k in a b c d e f g h l m n o p r s t u v w x y z 0 1 2 3 4 5 6 7 8 9; printf '%s:ignore\n' $k; end))
+    set -l all a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,5,6,7,8,9
+    set -gx FZF_DEFAULT_OPTS (string join -- ' ' \
+        '--bind "start:disable-search"' \
+        '--bind "j:down"' \
+        '--bind "k:up"' \
+        '--bind "q:abort"' \
+        "--bind \"$ignore\"" \
+        "--bind \"i:enable-search+unbind($all)\"" \
+        "--bind \"esc:disable-search+rebind($all)\"" \
+    )
+end
 
 # Paths
 fish_add_path $HOME/.go/bin /usr/local/go/bin
@@ -24,7 +37,6 @@ if status is-interactive
     not set -q TMUX && exec sh -c "tmux -f $DOTFILES/tmux/tmux.conf attach 2>/dev/null || tmux -f $DOTFILES/tmux/tmux.conf new"
     type -q zoxide && zoxide init fish | source
 
-
     # Binds
     bind -M insert \ce "fzf-files-popup | xargs nvim"
     bind -M default \ce "fzf-files-popup | xargs nvim"
@@ -38,12 +50,14 @@ if status is-interactive
     bind Y fish_clipboard_copy
     bind p fish_clipboard_paste
 
-    # Alias
     # Source fzf functions
     for f in $DOTFILES/fzf/*.fish
         source $f
     end
-    alias cl="claude --dangerously-skip-permissions --continue || claude"
+
+    # Alias
+
+    alias claude="claude --dangerously-skip-permissions"
     alias g="git"
     alias cdr="cd (ls -t | head -n 1)"
     alias lg="lazygit"

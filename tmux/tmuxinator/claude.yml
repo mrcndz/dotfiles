@@ -1,0 +1,27 @@
+name: <%= @settings["name"] || "claude-#{@settings["repo"]}" %>
+root: <%= @settings["dir"] %>
+
+startup_window: claude
+startup_pane: 2
+
+windows:
+  - claude:
+      layout: "7b2b,212x51,0,0[212x38,0,0{106x38,0,0,0,105x38,107,0,1},212x12,0,39,2]"
+      panes:
+        - editor:
+          - nvim .
+        - claude:
+          - claude <%= @settings["claude_args"] %>
+        - terminal:
+          - fish
+  - commands:
+      layout: even-horizontal
+      panes:
+        - cmd1:
+          - <%= @settings["cmd1"] || "exit" %>
+        - cmd2:
+          - <%= @settings["cmd2"] || "exit" %>
+        - cmd3:
+          - <%= @settings["cmd3"] || "exit" %>
+        - cmd4:
+          - <%= @settings["cmd4"] || "exit" %>
