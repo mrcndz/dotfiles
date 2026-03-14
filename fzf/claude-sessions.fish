@@ -27,24 +27,21 @@ function claude-sessions --argument-names dir
         end
 
         set -l preview "$DOTFILES/claude/_scripts/session-preview.sh {1} {5}"
-        set -l result (printf '%s\n' $items | \
+        set -l selected (printf '%s\n' $items | \
             fzf --prompt="Claude> " --height=100% --reverse \
                 --ansi \
                 --delimiter='\t' \
                 --with-nth='2' \
                 --header='enter: open | ctrl-n: new' \
-                --expect='ctrl-n' \
+                --bind='ctrl-n:become(echo __NEW__)' \
                 --preview="$preview" \
                 --preview-window='down:40%:wrap')
 
-        set -l key $result[1]
-        set -l selected $result[2]
-
-        if test "$key" = ctrl-n
+        if test -z "$selected"
+            return 1
+        else if test "$selected" = __NEW__
             echo "create $target"
             return 0
-        else if test -z "$selected"
-            return 1
         end
 
         set -l parts (string split \t $selected)
@@ -54,7 +51,7 @@ function claude-sessions --argument-names dir
         set -l project_path $parts[5]
 
         if test -n "$tmux_pane"
-            echo "focus $tmux_sess $tmux_pane"
+            echo "focus $tmux_pane"
             return 0
         end
 
@@ -75,10 +72,8 @@ function claude-sessions-exec --argument-names action_str
             tmux send-keys -t "$name" "claude" Enter
             tmux switch-client -t "$name"
         case focus
-            set -l tmux_sess $parts[2]
-            set -l tmux_pane $parts[3]
-            tmux switch-client -t "$tmux_sess"
-            tmux select-pane -t "$tmux_pane"
+            set -l tmux_pane $parts[2]
+            tmux switch-client -t "$tmux_pane"
         case resume
             set -l target $parts[2]
             set -l session_id $parts[3]
