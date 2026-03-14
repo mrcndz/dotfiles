@@ -25,6 +25,9 @@ return {
       { '<leader>bD', "<cmd>bufdo if bufnr('%') != bufnr('#') | bdelete | endif<cr>", desc = 'Clear Buffers', mode = 'n', icon = '󰃢' },
       { '<leader>bd', '<cmd>:bd<CR>', desc = 'Close Buffer', mode = 'n', icon = ' x' },
     }
+    wk.add {
+      { '<leader>Q', '<cmd>qa!<CR>', desc = 'Quit All', mode = 'n', icon = '󰩈' },
+    }
   end,
   opts = {
     preset = 'helix',
