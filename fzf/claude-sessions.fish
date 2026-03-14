@@ -1,8 +1,5 @@
-set -g CLAUDE_PANE ":claude.2"
-
-function _claude_next_name --argument-names repo
+function _claude_next_name --argument-names base
     set -l sessions (tmux list-sessions -F '#{session_name}' 2>/dev/null | grep '^claude-')
-    set -l base "claude-$repo"
     if not contains "$base" $sessions
         echo $base
         return
@@ -14,45 +11,56 @@ function _claude_next_name --argument-names repo
     echo "$base-$i"
 end
 
-# Outputs an action string, does NOT execute it
+function _claude_session_list
+    lua "$DOTFILES/claude/scripts/session-list.lua"
+end
+
 function claude-sessions --argument-names dir
     set -l target (test -n "$dir"; and echo $dir; or pwd)
 
     while true
-        set -l sessions (tmux list-sessions -F '#{session_name}' 2>/dev/null | grep '^claude-')
+        set -l items (_claude_session_list)
 
-        if test -z "$sessions"
-            echo "create $target --continue"
+        if test -z "$items"
+            echo "create $target"
             return 0
         end
 
-        set -l result (printf '%s\n' $sessions | \
-            fzf --prompt="Claude session> " --height=40% --reverse \
-                --header='enter: switch | ctrl-x: kill | ctrl-n: new' \
-                --expect='ctrl-x,ctrl-n')
+        set -l result (printf '%s\n' $items | \
+            fzf --prompt="Claude> " --height=100% --reverse \
+                --ansi \
+                --delimiter='\t' \
+                --with-nth='2' \
+                --header='enter: open | ctrl-n: new' \
+                --expect='ctrl-n' \
+                --preview-window='hidden')
 
         set -l key $result[1]
-        set -l session $result[2]
+        set -l selected $result[2]
 
         if test "$key" = ctrl-n
             echo "create $target"
             return 0
-        else if test -z "$session"
+        else if test -z "$selected"
             return 1
-        else if test "$key" = ctrl-x
-            set -l confirm (printf "yes\nno" | fzf --prompt="Kill $session? " --height=40% --reverse)
-            if test "$confirm" = yes
-                tmux kill-session -t "$session"
-            end
-            # Loop back to session list
-        else
-            echo "switch $session"
+        end
+
+        set -l parts (string split \t $selected)
+        set -l sid $parts[1]
+        set -l tmux_sess $parts[3]
+        set -l tmux_pane $parts[4]
+        set -l project_path $parts[5]
+
+        if test -n "$tmux_pane"
+            echo "focus $tmux_sess $tmux_pane"
             return 0
         end
+
+        echo "resume $project_path $sid"
+        return 0
     end
 end
 
-# Executes an action string from claude-sessions
 function claude-sessions-exec --argument-names action_str
     set -l parts (string split ' ' $action_str)
     set -l cmd $parts[1]
@@ -60,11 +68,21 @@ function claude-sessions-exec --argument-names action_str
     switch $cmd
         case create
             set -l target $parts[2]
-            set -l claude_args $parts[3]
-            set -l name (_claude_next_name (basename "$target"))
-            tmuxinator start claude dir="$target" repo=(basename "$target") name="$name" claude_args="$claude_args" --no-attach
-            tmux switch-client -t "$name$CLAUDE_PANE" 2>/dev/null; or tmux switch-client -t "$name:claude"
-        case switch
-            tmux switch-client -t "$parts[2]$CLAUDE_PANE" 2>/dev/null; or tmux switch-client -t "$parts[2]:claude"
+            set -l name (_claude_next_name "claude-"(basename "$target"))
+            tmux new-session -d -s "$name" -c "$target"
+            tmux send-keys -t "$name" "claude" Enter
+            tmux switch-client -t "$name"
+        case focus
+            set -l tmux_sess $parts[2]
+            set -l tmux_pane $parts[3]
+            tmux switch-client -t "$tmux_sess"
+            tmux select-pane -t "$tmux_pane"
+        case resume
+            set -l target $parts[2]
+            set -l session_id $parts[3]
+            set -l name (_claude_next_name "claude-"(basename "$target"))
+            tmux new-session -d -s "$name" -c "$target"
+            tmux send-keys -t "$name" "claude --resume $session_id" Enter
+            tmux switch-client -t "$name"
     end
 end
