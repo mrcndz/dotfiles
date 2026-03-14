@@ -14,6 +14,8 @@ symlinks:
   - ~/.config/lazygit: $DOTFILES/lazygit
   - ~/.config/just: $DOTFILES/just
   - ~/.claude/hooks: $DOTFILES/claude/hooks
+  - ~/.claude/settings.json: $DOTFILES/claude/settings.json
+  - ~/.claude/CLAUDE.md: $DOTFILES/claude/CLAUDE.md
   
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
