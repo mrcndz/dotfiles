@@ -7,7 +7,9 @@ opt.cmdheight = 0
 opt.autowrite = true
 opt.autoread = true
 opt.swapfile = false
-opt.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus'
+vim.schedule(function()
+  opt.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus'
+end)
 opt.completeopt = 'menu,menuone,noselect'
 opt.cursorline = true
 opt.grepformat = '%f:%l:%c:%m'

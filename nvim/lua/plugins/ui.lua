@@ -8,12 +8,14 @@ return {
   },
   {
     'nmac427/guess-indent.nvim',
+    event = 'BufReadPost',
     config = function()
       require('guess-indent').setup {}
     end,
   },
   {
     'linrongbin16/lsp-progress.nvim',
+    event = 'LspAttach',
     config = function()
       require('lsp-progress').setup {}
     end,
@@ -21,21 +23,25 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     lazy = false,
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      { 'echasnovski/mini.icons', config = function() require('mini.icons').setup() end },
+    },
     config = function()
       local function setup_lualine()
         local utils = require 'lualine.utils.utils'
-        local bg = utils.extract_color_from_hllist('bg', { 'Normal' }, '')
+        local extracted_bg = utils.extract_color_from_hllist('bg', { 'Normal' }, '')
+        local bg = (extracted_bg ~= '' and extracted_bg ~= nil) and extracted_bg or nil
         local colors = {
-          insert = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
-          normal = utils.extract_color_from_hllist('fg', { 'MiniIconsGrey' }, ''),
-          replace = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
-          visual = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
-          command = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue' }, ''),
-          icon = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen' }, ''),
-          git = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
-          line = utils.extract_color_from_hllist('fg', { 'MiniIconsRed' }, ''),
-          lsp_progress = utils.extract_color_from_hllist('fg', { 'MiniIconsPurple' }, ''),
+          insert = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen', 'String' }, '#98c379'),
+          normal = utils.extract_color_from_hllist('fg', { 'MiniIconsGrey', 'Comment' }, '#808080'),
+          replace = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue', 'Function' }, '#61afef'),
+          visual = utils.extract_color_from_hllist('fg', { 'MiniIconsRed', 'Error' }, '#e06c75'),
+          command = utils.extract_color_from_hllist('fg', { 'MiniIconsBlue', 'Function' }, '#61afef'),
+          icon = utils.extract_color_from_hllist('fg', { 'MiniIconsGreen', 'String' }, '#98c379'),
+          git = utils.extract_color_from_hllist('fg', { 'MiniIconsRed', 'Error' }, '#e06c75'),
+          line = utils.extract_color_from_hllist('fg', { 'MiniIconsRed', 'Error' }, '#e06c75'),
+          lsp_progress = utils.extract_color_from_hllist('fg', { 'MiniIconsPurple', 'Statement' }, '#c678dd'),
         }
 
       local theme = {
@@ -134,10 +140,10 @@ return {
         vim.api.nvim_set_hl(0, 'StatusLineNC', { reverse = false })
       end
 
-      setup_lualine()
+      vim.schedule(setup_lualine)
 
-      -- Refresh lualine on colorscheme change
-      vim.api.nvim_create_autocmd('ColorScheme', {
+      -- Refresh lualine on colorscheme change or session restore
+      vim.api.nvim_create_autocmd({ 'ColorScheme', 'SessionLoadPost', 'VimEnter' }, {
         pattern = '*',
         callback = function()
           setup_lualine()
@@ -186,6 +192,7 @@ return {
   },
   {
     'lewis6991/gitsigns.nvim',
+    event = 'BufReadPost',
     config = function()
       require('gitsigns').setup {}
     end,

@@ -22,23 +22,21 @@ require('lazy').setup({
     { import = 'plugins.lsp' },
   },
   defaults = {
-    lazy = false,
-    version = false, -- always use the latest git commit
+    lazy = true,
+    version = false,
   },
-  -- install = { colorscheme = { 'tokyonight', 'habamax' } },
-  checker = { enabled = true, notify = false },
+  checker = { enabled = true, notify = false, frequency = 86400 },
   performance = {
     rtp = {
-      -- disable some rtp plugins
       disabled_plugins = {
         'gzip',
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
+        'matchit',
+        'netrwPlugin',
         'tarPlugin',
         'tohtml',
         'tutor',
         'zipPlugin',
+        'rplugin',
       },
     },
   },

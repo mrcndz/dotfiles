@@ -2,7 +2,7 @@ return {
   {
     'smoka7/hop.nvim',
     version = '*',
-    opts = {},
+    event = 'BufReadPost',
     config = function()
       local hop = require 'hop'
       local directions = require('hop.hint').HintDirection
@@ -24,14 +24,14 @@ return {
   },
   {
     'alexghergh/nvim-tmux-navigation',
+    keys = {
+      { '<C-h>', '<cmd>NvimTmuxNavigateLeft<CR>', desc = 'Navigate Left' },
+      { '<C-l>', '<cmd>NvimTmuxNavigateRight<CR>', desc = 'Navigate Right' },
+      { '<C-j>', '<cmd>NvimTmuxNavigateDown<CR>', desc = 'Navigate Down' },
+      { '<C-k>', '<cmd>NvimTmuxNavigateUp<CR>', desc = 'Navigate Up' },
+    },
     config = function()
       require('nvim-tmux-navigation').setup {}
-      local keymap = vim.keymap.set
-
-      keymap({ 'n' }, '<C-h>', ':NvimTmuxNavigateLeft<CR>', { noremap = true, silent = true })
-      keymap({ 'n' }, '<C-l>', ':NvimTmuxNavigateRight<CR>', { noremap = true, silent = true })
-      keymap({ 'n' }, '<C-j>', ':NvimTmuxNavigateDown<CR>', { noremap = true, silent = true })
-      keymap({ 'n' }, '<C-k>', ':NvimTmuxNavigateUp<CR>', { noremap = true, silent = true })
     end,
   },
 }

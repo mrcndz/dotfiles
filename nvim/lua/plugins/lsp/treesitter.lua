@@ -8,7 +8,7 @@ return {
   },
 
   build = ':TSUpdate',
-  event = 'bufWinEnter',
+  event = { 'BufReadPost', 'BufNewFile' },
 
   config = function()
     local treesitter = require 'nvim-treesitter.configs'

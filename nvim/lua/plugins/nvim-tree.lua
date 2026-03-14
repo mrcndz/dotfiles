@@ -1,7 +1,7 @@
 return {
   'nvim-tree/nvim-tree.lua',
   version = '*',
-  lazy = false,
+  lazy = true,
   dependencies = {
     'nvim-tree/nvim-web-devicons',
   },
@@ -52,7 +52,8 @@ return {
 
     local function open_nvim_tree(data)
       local directory = vim.fn.isdirectory(data.file) == 1
-      local no_name = data.file == '' and vim.bo[data.buf].buftype == ''
+      local buf_valid = vim.api.nvim_buf_is_valid(data.buf)
+      local no_name = data.file == '' and buf_valid and vim.bo[data.buf].buftype == ''
       if not directory and not no_name then return end
       if directory then vim.cmd.cd(data.file) end
       require('nvim-tree.api').tree.open()
