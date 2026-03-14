@@ -1,37 +1,37 @@
 return {
   {
     'rmagatti/auto-session',
+    lazy = false,
     dependencies = {},
     init = function()
       vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
     end,
     config = function()
-      local utils = require 'utils'
+      local function git_root()
+        local root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+        if vim.v.shell_error ~= 0 then return nil end
+        return root
+      end
+
+      -- cd to git root early so auto-session keys sessions by repo root
+      local root = git_root()
+      if root then vim.cmd.cd(root) end
 
       require('auto-session').setup {
         auto_create = function()
-          return (utils.is_git_top_level() and utils.is_git_repo())
+          return git_root() ~= nil
         end,
-        auto_save_enabled = true,
+        auto_save = true,
+        auto_restore = true,
+        close_unsupported_windows = true,
+        pre_save_cmds = { 'NvimTreeClose' },
         bypass_save_filetypes = {
           'alpha',
+          'NvimTree',
         },
-        auto_restore_enabled = true,
         log_level = 'error',
-        post_restore_cmd = {
-          'DisableHLChunk',
-          'DisableHLIdent',
-          'DisableHLLineNum',
-          'EnableHLChunk',
-          'EnableHLIdent',
-          'EnableHLLineNum',
-          function()
-            if utils.is_git_repo() then
-              vim.api.nvim_cmd({ cmd = 'cd', args = { utils.git_top_level() } }, {})
-            end
-          end,
-        },
-        auto_session_suppress_dirs = {
+        post_restore_cmds = {},
+        suppressed_dirs = {
           '~/.temp/',
           '~/temp',
           '~/Downloads',

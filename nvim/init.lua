@@ -11,7 +11,10 @@ function _G.feed_esc(...)
   end)
 end
 
-require 'config.lazy'
 require 'config.options'
-require 'config.keymaps'
-require 'config.autocmd'
+require 'config.lazy'
+
+vim.schedule(function()
+  require 'config.keymaps'
+  require 'config.autocmd'
+end)

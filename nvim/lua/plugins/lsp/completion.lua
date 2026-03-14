@@ -1,8 +1,8 @@
 return {
-  { 'saghen/blink.compat' },
+  { 'saghen/blink.compat', lazy = true },
   {
     'saghen/blink.cmp',
-    lazy = false,
+    event = { 'InsertEnter', 'CmdlineEnter' },
     dependencies = {
       'rafamadriz/friendly-snippets',
     },
@@ -80,6 +80,7 @@ return {
   },
   {
     'supermaven-inc/supermaven-nvim',
+    event = 'InsertEnter',
     config = function()
       require('supermaven-nvim').setup {
         keymaps = {

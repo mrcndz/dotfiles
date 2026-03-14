@@ -46,6 +46,7 @@ vim.diagnostic.config {
 return {
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
+    event = 'VeryLazy',
     dependencies = {
       { 'williamboman/mason.nvim', opts = true },
       { 'williamboman/mason-lspconfig.nvim', opts = true },
