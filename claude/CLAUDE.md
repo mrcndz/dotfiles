@@ -72,7 +72,7 @@ DO:
 When you complete a big task, send a push notification:
 
 ```bash
-~/.claude/hooks/notify.sh "Title" "Brief summary of what was done"
+~/.claude/_scripts/notify.sh "Title" "Brief summary of what was done"
 ```
 
 Do not send notifications for every command. Only for big tasks.
