@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notify.sh 'Waiting for approval' 'Claude needs your permission to continue'"
+            "command": "~/.claude/_scripts/notify.sh 'Waiting for approval' 'Claude needs your permission to continue'"
           }
         ]
       }
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo -e '\\a' && afplay /System/Library/Sounds/Hero.aiff &"
+            "command": "~/.claude/_scripts/notify-sound.sh"
           }
         ]
       }
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/session-track.sh"
+            "command": "~/.claude/_scripts/session-track.sh"
           }
         ]
       }
@@ -49,7 +49,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/session-track.sh"
+            "command": "~/.claude/_scripts/session-track.sh"
           }
         ]
       }

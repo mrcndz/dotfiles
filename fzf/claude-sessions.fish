@@ -12,7 +12,7 @@ function _claude_next_name --argument-names base
 end
 
 function _claude_session_list
-    lua "$DOTFILES/claude/scripts/session-list.lua"
+    lua "$DOTFILES/claude/_scripts/session-list.lua"
 end
 
 function claude-sessions --argument-names dir
@@ -26,6 +26,7 @@ function claude-sessions --argument-names dir
             return 0
         end
 
+        set -l preview "$DOTFILES/claude/_scripts/session-preview.sh {1} {5}"
         set -l result (printf '%s\n' $items | \
             fzf --prompt="Claude> " --height=100% --reverse \
                 --ansi \
@@ -33,7 +34,8 @@ function claude-sessions --argument-names dir
                 --with-nth='2' \
                 --header='enter: open | ctrl-n: new' \
                 --expect='ctrl-n' \
-                --preview-window='hidden')
+                --preview="$preview" \
+                --preview-window='down:40%:wrap')
 
         set -l key $result[1]
         set -l selected $result[2]

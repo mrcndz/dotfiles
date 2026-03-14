@@ -21,6 +21,7 @@ begin
         "--bind \"$ignore\"" \
         "--bind \"i:enable-search+unbind($all)\"" \
         "--bind \"esc:disable-search+rebind($all)\"" \
+        '--tmux center,80%,80%' \
     )
 end
 
@@ -38,12 +39,6 @@ if status is-interactive
     type -q zoxide && zoxide init fish | source
 
     # Binds
-    bind -M insert \ce "fzf-files-popup | xargs nvim"
-    bind -M default \ce "fzf-files-popup | xargs nvim"
-    bind -M insert \cg "tmux display-popup -d (pwd) -xC -yC -w80% -h80% -E lazygit"
-    bind -M default \cg "tmux display-popup -d (pwd) -xC -yC -w80% -h80% -E lazygit"
-    bind -M insert \co zi
-    bind -M default \co zi
     bind -M insert \t accept-autosuggestion
     bind -M insert --sets-mode default jj repaint
     bind yy fish_clipboard_copy
@@ -67,7 +62,6 @@ if status is-interactive
     alias dcu="docker compose up -d"
     alias dcr="docker compose down; docker-compose up -d"
     alias dcl="docker compose logs -f"
-    alias mux="tmuxinator"
     alias rc="redis-cli -h localhost -p 6379"
 
     # Enable vi key bindings

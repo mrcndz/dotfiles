@@ -14,8 +14,3 @@ function claude-tools --argument-names dir
         --bind='ctrl-y:execute-silent(echo {5} | pbcopy)' \
         --header='ctrl-y: copy input'
 end
-
-function claude-tools-popup --argument-names dir
-    set -l target (test -n "$dir"; and realpath $dir; or pwd)
-    $DOTFILES/tmux/popup-capture.fish "fish -c 'source $DOTFILES/fzf/claude-tools.fish; claude-tools $target'"
-end
