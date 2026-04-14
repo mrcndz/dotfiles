@@ -13,8 +13,8 @@
 </git-rules>
 
 <code-generation-rules>
-- Make comments in english, always prefer short comments over long comments.
 - Only comment on code that is not self-explanatory. The code must be clear enough to understand what it does.
+- Make comments in english, always prefer short comments over long comments.
 - Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
 </code-generation-rules>
 
@@ -27,6 +27,8 @@ Install if missing.
 - Is it about interacting with JSON? use 'jq'
 - Is it about interacting with YAML or XML? use 'yq'
 - Always uses context7 mcp for seeking documentation, code generation, setup or configuration steps without me having to explicitly ask. If it's not available ask me for it.
+- Is it about langfuse? Use 'langfuse' cli command.
+- Is it about talking with other claude instance? Use 'claude-mesh -h' command.
 
 ⚠️ MANDATORY: Fish Shell for ALL Commands
 
@@ -68,13 +70,61 @@ DO:
 
 </tolling-shell-interactions>
 
-<notifications>
-When you complete a big task, send a push notification:
+<behavioral-guidelines>
+# 1. Think Before Coding
 
-```bash
-~/.claude/_scripts/notify.sh "Title" "Brief summary of what was done"
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
 ```
 
-Do not send notifications for every command. Only for big tasks.
-</notifications>
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+</behavioral-guidelines>
