@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "fish -c 'if test -f .worktreeinclude; for file in (git ls-files --others --ignored --exclude-from=.worktreeinclude); mkdir -p (dirname $CLAUDE_WORKTREE_PATH/$file); cp $file $CLAUDE_WORKTREE_PATH/$file; end; end'"
+            "command": "~/.claude/_scripts/worktree-create.fish"
           }
         ]
       }
@@ -66,11 +66,13 @@
     "feature-dev@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
     "claude-mem@thedotmack": false,
-    "clangd-lsp@claude-plugins-official": true
+    "clangd-lsp@claude-plugins-official": true,
+    "telegram@claude-plugins-official": true
   },
   "effortLevel": "medium",
-  "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
+  "voiceEnabled": true,
+  "channels": [],
   "feedbackSurveyState": {
     "lastShownTime": 1754765047256
   }

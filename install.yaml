@@ -1,6 +1,7 @@
 pre_commands:
  - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
  - git update-index --assume-unchanged $DOTFILES/env.fish
+ - git config --global rebase.autoStash true
 
 symlinks:
   - ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
@@ -15,6 +16,7 @@ symlinks:
   - ~/.claude/_scripts: $DOTFILES/claude/_scripts
   - ~/.claude/settings.json: $DOTFILES/claude/settings.json
   - ~/.claude/CLAUDE.md: $DOTFILES/claude/CLAUDE.md
+  - ~/.aerospace.toml: $DOTFILES/aerospace/aerospace.toml
   
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
