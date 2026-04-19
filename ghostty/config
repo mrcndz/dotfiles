@@ -3,14 +3,9 @@ custom-shader = cursor_blaze.glsl
 auto-update-channel = tip
 theme = dark:Horizon,light:Alabaster
 shell-integration = fish
-quick-terminal-size = 90%
-quick-terminal-screen = mouse
-quick-terminal-animation-duration = 0
-quick-terminal-position = top
 font-family = Maple Mono NF
 font-size = 14
 
-keybind = global:cmd+grave_accent=toggle_quick_terminal
 keybind = cmd+a=text:\x01
 keybind = cmd+b=text:\x02
 keybind = cmd+c=text:\x03

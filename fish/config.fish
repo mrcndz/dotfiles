@@ -10,6 +10,7 @@ set -gx CPPFLAGS -I/opt/homebrew/opt/openjdk/include
 set -gx GOPATH $HOME/.go
 
 set -g async_prompt_functions _pure_prompt_git
+
 begin
     set -l ignore (string join , (for k in a b c d e f g h l m n o p r s t u v w x y z 0 1 2 3 4 5 6 7 8 9; printf '%s:ignore\n' $k; end))
     set -l all a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,5,6,7,8,9
@@ -38,9 +39,14 @@ if status is-interactive
     not set -q TMUX && exec sh -c "tmux -f $DOTFILES/tmux/tmux.conf attach 2>/dev/null || tmux -f $DOTFILES/tmux/tmux.conf new"
     type -q zoxide && zoxide init fish | source
 
+    # Enable vi key bindings (must come before custom binds)
+    fish_vi_key_bindings
+
     # Binds
     bind -M insert \t accept-autosuggestion
     bind -M insert --sets-mode default jj repaint
+    bind -M insert \cr history-pager
+    bind \cr history-pager
     bind yy fish_clipboard_copy
     bind Y fish_clipboard_copy
     bind p fish_clipboard_paste
@@ -63,7 +69,6 @@ if status is-interactive
     alias dcr="docker compose down; docker-compose up -d"
     alias dcl="docker compose logs -f"
     alias rc="redis-cli -h localhost -p 6379"
-
-    # Enable vi key bindings
-    fish_vi_key_bindings
+    alias gw="git worktree"
+    alias cpu="ps -Ao pid,pcpu,pmem,comm -r | head -15"
 end
