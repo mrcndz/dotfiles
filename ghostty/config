@@ -3,6 +3,7 @@ custom-shader = cursor_blaze.glsl
 auto-update-channel = tip
 theme = dark:Horizon,light:Alabaster
 shell-integration = fish
+macos-option-as-alt = right
 font-family = Maple Mono NF
 font-size = 14
 
