@@ -16,17 +16,18 @@ symlinks:
   - ~/.claude/_scripts: $DOTFILES/claude/_scripts
   - ~/.claude/settings.json: $DOTFILES/claude/settings.json
   - ~/.claude/CLAUDE.md: $DOTFILES/claude/CLAUDE.md
-  - ~/.aerospace.toml: $DOTFILES/aerospace/aerospace.toml
-  
+
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
 
 symlinks-darwin:
   - ~/.config/ghostty: $DOTFILES/ghostty
-  - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-darwin.toml
+  - ~/.hammerspoon: $DOTFILES/hammerspoon
+  - ~/.config/glide/glide.toml: $DOTFILES/glide/glide.toml
 
 post_commands:
   - curl -sL https://git.io/fisher | source && fisher update
   - source $DOTFILES/fish/config.fish
   - ~/.tmux/plugins/tpm/bin/install_plugins
   - sed -i 's/"credsStore"/"credStore"/g' ~/.docker/config.json
+  - git config --global core.excludesFile $DOTFILES/git/gitignore
