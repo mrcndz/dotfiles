@@ -58,16 +58,12 @@ if status is-interactive
 
     # Alias
 
-    alias claude="claude --dangerously-skip-permissions"
+    alias cl="claude --dangerously-skip-permissions"
+    alias clc="claude --dangerously-skip-permissions --continue"
+    alias clr="claude --dangerously-skip-permissions --resume"
+    alias clp="claude --dangerously-skip-permissions -p"
     alias g="git"
-    alias cdr="cd (ls -t | head -n 1)"
     alias lg="lazygit"
-    alias bat="batcat"
-    alias dot="cd $DOTFILES"
-    alias dcd="docker compose down"
-    alias dcu="docker compose up -d"
-    alias dcr="docker compose down; docker-compose up -d"
-    alias dcl="docker compose logs -f"
     alias rc="redis-cli -h localhost -p 6379"
     alias gw="git worktree"
     alias cpu="ps -Ao pid,pcpu,pmem,comm -r | head -15"
