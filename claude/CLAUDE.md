@@ -1,4 +1,3 @@
-## Git rules
 <git-rules>
 - Never use git add .
 - When asked to commit, always see staged files first
@@ -13,30 +12,28 @@
 </git-rules>
 
 <code-generation-rules>
-- Only comment on code that is not self-explanatory. The code must be clear enough to understand what it does.
+- Only comment on code that is not self-explanatory. The code must be clear enough to understand what it does. Avoid long comments.
 - Make comments in english, always prefer short comments over long comments.
 - Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
+- Always check and analyze codebase code standards and conventions before writing code.
+- Always prefer code reuse over code duplication.
 </code-generation-rules>
 
 <tolling-shell-interactions>
 Install if missing.
-- Is it about finding FILES? use 'fd'
-- Is it about finding TEXT/strings? use 'rg'
-- Is it about finding CODE STRUCTURE? use 'ast-grep'
-- Is it about SELECTING from multiple results? pipe to 'fzf'
-- Is it about interacting with JSON? use 'jq'
-- Is it about interacting with YAML or XML? use 'yq'
-- Always uses context7 mcp for seeking documentation, code generation, setup or configuration steps without me having to explicitly ask. If it's not available ask me for it.
+- Always uses context7 mcp for seeking documentation, code generation, setup or configuration steps without having to explicitly ask the user. 
 - Is it about langfuse? Use 'langfuse' cli command.
 - Is it about talking with other claude instance? Use 'claude-mesh -h' command.
+- If any mentioned tool is missing, suggest the user to install it.
 
-⚠️ MANDATORY: Fish Shell for ALL Commands
+<mandatory>
+Fish Shell for ALL Commands
 
 > **CRITICAL RULE — READ BEFORE ANY COMMAND EXECUTION**
 
 The Bash tool executes in zsh/bash. Your environment (fnm, pyenv, bun, etc.) exists ONLY in fish.
 
-🐟 THE RULE: ALWAYS use `fish -c "command"`
+THE RULE: ALWAYS use `fish -c "command"` 
 **EVERY command. No exceptions. No thinking required.**
 
 ```bash
@@ -56,17 +53,18 @@ Why this matters:
 - `node`, `bun`, `pnpm` → Managed by `fnm` → Only in fish PATH
 - `python`, `uv`, `pip` → Managed by `pyenv` → Only in fish PATH
 - `ruby`, `gem`, `bundle` → Managed by `rbenv` → Only in fish PATH
-- Environment variables → Set in `~/.config/fish/config.fish`
+- Environment variables → Set in `$DOTFILES/env.fish and $DOTFILES/fish/config.fish`
 
 DO NOT:
-❌ `node -v` → Will fail: "command not found"
-❌ `pnpm install` → Will fail: "command not found"
-❌ Run any command without `fish -c` wrapper
+- `node -v` → Will fail: "command not found"
+- `pnpm install` → Will fail: "command not found"
+- Run any command without `fish -c` wrapper
 
 DO:
-✅ `fish -c "node -v"`
-✅ `fish -c "pnpm install"`
-✅ `fish -c "ls -la"` (even simple commands - consistency matters)
+- `fish -c "node -v"`
+-  `fish -c "pnpm install"`
+- `fish -c "ls -la"` (even simple commands - consistency matters)
+</mandatory>
 
 </tolling-shell-interactions>
 
