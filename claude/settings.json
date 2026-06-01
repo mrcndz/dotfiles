@@ -3,6 +3,7 @@
     "commit": "",
     "pr": ""
   },
+  "model": "opus",
   "hooks": {
     "PermissionRequest": [
       {
@@ -67,10 +68,15 @@
     "lua-lsp@claude-plugins-official": true,
     "claude-mem@thedotmack": false,
     "clangd-lsp@claude-plugins-official": true,
-    "telegram@claude-plugins-official": true
+    "telegram@claude-plugins-official": false
   },
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
+  "theme": "light-daltonized",
+  "editorMode": "vim",
+  "remoteControlAtStartup": true,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
   "voiceEnabled": true,
   "channels": [],
   "feedbackSurveyState": {
