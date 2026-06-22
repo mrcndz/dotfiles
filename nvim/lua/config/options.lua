@@ -53,5 +53,5 @@ opt.splitright = true
 opt.virtualedit = 'block'
 opt.wildmode = 'longest:full,full'
 opt.winminwidth = 5
-opt.wrap = false
+opt.wrap = true
 opt.smoothscroll = true
