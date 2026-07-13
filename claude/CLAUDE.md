@@ -25,6 +25,7 @@ Install if missing.
 - Is it about langfuse? Use 'langfuse' cli command.
 - Is it about talking with other claude instance? Use 'claude-mesh -h' command.
 - If any mentioned tool is missing, suggest the user to install it.
+- `drop <file>`: stages a file on the Dropover shelf for drag-and-drop (e.g. into an email or chat). Use when the user wants to drag a file somewhere or asks to "drop" it.
 
 <mandatory>
 Fish Shell for ALL Commands
@@ -125,4 +126,11 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+## 5. Language
+
+1. Unless requested to use another language, always use English.
+2. Strict formatting rule: Under no circumstances are you to use the "em-dash" (—) or "en-dash" (–) for dialogues, sentence breaks, or any other purpose. Instead of dashes, exclusively use commas (,), parentheses (), colons (:), semicolons (;), or quotation marks (" ") to structure the text.
+
 </behavioral-guidelines>
+
+@RTK.md
