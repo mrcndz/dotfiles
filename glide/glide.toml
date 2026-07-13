@@ -22,21 +22,27 @@ status_icon.enable = true
 "Alt + J" = { move_focus = "down" }
 "Alt + K" = { move_focus = "up" }
 "Alt + L" = { move_focus = "right" }
+
 "Alt + Meta + H" = { move_node = "left" }
 "Alt + Meta + J" = { move_node = "down" }
 "Alt + Meta + K" = { move_node = "up" }
 "Alt + Meta + L" = { move_node = "right" }
-"Alt + Ctrl + H" = { resize = { direction = "left", percent = 5 } }
-"Alt + Ctrl + J" = { resize = { direction = "down", percent = 5 } }
-"Alt + Ctrl + K" = { resize = { direction = "up", percent = 5 } }
-"Alt + Ctrl + L" = { resize = { direction = "right", percent = 5 } }
+
 "Alt + Meta + Backslash" = { split = "horizontal" }
 "Alt + Meta + Minus" = { split = "vertical" }
-"Alt + Meta + Backslash" = { group = "horizontal" }
-"Alt + Meta + Minus" = { group = "vertical" }
+
+# Group vertically always with G and ungroup with U
+"Alt + Meta + Ctrl + G" = { group = "vertical" }
 "Alt + Meta + U" = "ungroup"
+
 "Alt + Meta + Ctrl + Space" = "toggle_window_floating"
 "Alt + Shift + Space" = "toggle_focus_floating"
+
+"Alt + Ctrl + H" = { resize = { direction = "left", percent = 10 } }
+"Alt + Ctrl + J" = { resize = { direction = "down", percent = 10 } }
+"Alt + Ctrl + K" = { resize = { direction = "up", percent = 10 } }
+"Alt + Ctrl + L" = { resize = { direction = "right", percent = 10 } }
+
 "Alt + Z" = "toggle_fullscreen"
 
 [settings.experimental]
