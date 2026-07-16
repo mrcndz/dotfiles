@@ -2,12 +2,12 @@ source $DOTFILES/env.fish
 
 # Variables
 set -gx EDITOR nvim
+set -gx SHELL (which fish)
 set -gx XDG_CONFIG_HOME $HOME/.config
-defaults read -g AppleInterfaceStyle &>/dev/null; and set -gx DARK_MODE 1; or set -gx DARK_MODE 0
-
 set -gx PYENV_ROOT $HOME/.pyenv
-set -gx CPPFLAGS -I/opt/homebrew/opt/openjdk/include
 set -gx GOPATH $HOME/.go
+set -gx CPPFLAGS -I/opt/homebrew/opt/openjdk/include
+defaults read -g AppleInterfaceStyle &>/dev/null; and set -gx DARK_MODE 1; or set -gx DARK_MODE 0
 
 set -g async_prompt_functions _pure_prompt_git
 
@@ -36,7 +36,10 @@ fish_add_path $DOTFILES/scripts
 if status is-interactive
     set -g fish_greeting # Disable fish greeting
 
-    not set -q TMUX && exec sh -c "tmux -f $DOTFILES/tmux/tmux.conf attach 2>/dev/null || tmux -f $DOTFILES/tmux/tmux.conf new"
+    # not set -q TMUX && exec sh -c "tmux -f $DOTFILES/tmux/tmux.conf attach 2>/dev/null || tmux -f $DOTFILES/tmux/tmux.conf new"
+    # using herdr for now
+    not set -q HERDR_ENV && not set -q TMUX && type -q herdr && exec herdr
+
     type -q zoxide && zoxide init fish | source
 
     # Enable vi key bindings (must come before custom binds)
@@ -58,13 +61,8 @@ if status is-interactive
 
     # Alias
 
-    alias cl="claude --dangerously-skip-permissions"
-    alias clc="claude --dangerously-skip-permissions --continue"
-    alias clr="claude --dangerously-skip-permissions --resume"
-    alias clp="claude --dangerously-skip-permissions -p"
+    alias c="claude --dangerously-skip-permissions"
     alias g="git"
     alias lg="lazygit"
-    alias rc="redis-cli -h localhost -p 6379"
-    alias gw="git worktree"
     alias cpu="ps -Ao pid,pcpu,pmem,comm -r | head -15"
 end

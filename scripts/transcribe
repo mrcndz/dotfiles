@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# transcribe — local audio/video transcription with Whisper large-v3 (Apple Silicon, MLX).
+# Usage: transcribe <file> [language] [model]
+#   file      audio or video (mov, mp4, mp3, wav, m4a, ...)
+#   language  ISO code, default: pt
+#   model     mlx-whisper repo, default: mlx-community/whisper-large-v3-mlx
+# Outputs txt/srt/vtt/json next to the input file. 100% local, no API key.
+
+set -euo pipefail
+
+INPUT="${1:-}"
+LANG="${2:-pt}"
+MODEL="${3:-mlx-community/whisper-large-v3-mlx}"
+
+if [ -z "$INPUT" ] || [ ! -f "$INPUT" ]; then
+  echo "usage: transcribe <file> [language] [model]" >&2
+  [ -n "$INPUT" ] && echo "file not found: $INPUT" >&2
+  exit 1
+fi
+
+command -v ffmpeg >/dev/null || { echo "ffmpeg not found (brew install ffmpeg)" >&2; exit 1; }
+command -v uv >/dev/null     || { echo "uv not found (brew install uv)" >&2; exit 1; }
+
+VENV="${TRANSCRIBE_VENV:-$HOME/.cache/transcribe-venv}"
+if [ ! -x "$VENV/bin/mlx_whisper" ]; then
+  echo "› setting up mlx-whisper venv at $VENV (first run only)…" >&2
+  uv venv "$VENV" --python 3.12 >&2
+  uv pip install --python "$VENV/bin/python" mlx-whisper >&2
+fi
+
+DIR="$(cd "$(dirname "$INPUT")" && pwd)"
+BASE="$(basename "${INPUT%.*}")"
+WAV="$(mktemp -t transcribe).wav"
+trap 'rm -f "$WAV"' EXIT
+
+echo "› extracting audio…" >&2
+ffmpeg -y -i "$INPUT" -vn -ac 1 -ar 16000 -c:a pcm_s16le "$WAV" >/dev/null 2>&1
+
+echo "› transcribing ($LANG, $MODEL)…" >&2
+"$VENV/bin/mlx_whisper" "$WAV" \
+  --model "$MODEL" \
+  --language "$LANG" \
+  --task transcribe \
+  --output-format all \
+  --output-dir "$DIR" \
+  --output-name "$BASE" \
+  --word-timestamps True \
+  --condition-on-previous-text False \
+  --verbose False
+
+echo "✓ done → $DIR/$BASE.{txt,srt,vtt,json}" >&2

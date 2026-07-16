@@ -5,12 +5,42 @@
   },
   "model": "opus",
   "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/_scripts/notify-sound.sh"
+          }
+        ]
+      }
+    ],
     "PermissionRequest": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "~/.claude/_scripts/notify.sh 'Waiting for approval' 'Claude needs your permission to continue'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/marc/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/_scripts/multiplexer-context.sh"
           }
         ]
       }
@@ -24,36 +54,6 @@
           }
         ]
       }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/_scripts/notify-sound.sh"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/_scripts/session-track.sh"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/_scripts/session-track.sh"
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
@@ -61,19 +61,20 @@
     "command": "bash /Users/marc/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "pyright-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true,
+    "claude-mem@thedotmack": false,
     "code-simplifier@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
-    "claude-mem@thedotmack": false,
-    "clangd-lsp@claude-plugins-official": true,
-    "telegram@claude-plugins-official": false
+    "pyright-lsp@claude-plugins-official": true,
+    "telegram@claude-plugins-official": false,
+    "typescript-lsp@claude-plugins-official": true
   },
-  "effortLevel": "high",
+  "effortLevel": "low",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "light-daltonized",
+  "theme": "auto",
   "editorMode": "vim",
+  "verbose": true,
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,

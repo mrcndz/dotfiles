@@ -1,5 +1,6 @@
 pre_commands:
  - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+ - git clone https://github.com/paulbkim-dev/vim-herdr-navigation ~/.config/herdr/plugins/vim-herdr-navigation
  - git update-index --assume-unchanged $DOTFILES/env.fish
  - git config --global rebase.autoStash true
 
@@ -24,6 +25,7 @@ symlinks-darwin:
   - ~/.config/ghostty: $DOTFILES/ghostty
   - ~/.hammerspoon: $DOTFILES/hammerspoon
   - ~/.config/glide/glide.toml: $DOTFILES/glide/glide.toml
+  - ~/.config/herdr/config.toml: $DOTFILES/herdr/config.toml
 
 post_commands:
   - curl -sL https://git.io/fisher | source && fisher update

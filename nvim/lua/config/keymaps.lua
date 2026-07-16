@@ -49,3 +49,18 @@ vim.keymap.set('v', '<C-c>', '"+y', { noremap = true, silent = true, desc = 'Cop
 vim.keymap.set('n', 'p', '"+p', { noremap = true, silent = true, desc = 'Paste from system clipboard' })
 vim.keymap.set('v', 'p', '"+p', { noremap = true, silent = true, desc = 'Paste from system clipboard' })
 vim.keymap.set('v', '<C-v>', '"+p', { noremap = true, silent = true, desc = 'Paste from system clipboard (Windows behavior)' })
+
+-- Neovide: Cmd acts as Ctrl (a-z), cmd+v stays paste
+if vim.g.neovide then
+  for c = string.byte('a'), string.byte('z') do
+    local key = string.char(c)
+    if key ~= 'v' then
+      vim.keymap.set({ 'n', 'i', 'v', 'c', 't', 'o' }, '<D-' .. key .. '>', '<C-' .. key .. '>', { remap = true, silent = true })
+    end
+  end
+
+  vim.keymap.set({ 'n', 'v' }, '<D-v>', '"+p', { noremap = true, silent = true })
+  vim.keymap.set('i', '<D-v>', '<C-r>+', { noremap = true, silent = true })
+  vim.keymap.set('c', '<D-v>', '<C-r>+', { noremap = true, silent = true })
+  vim.keymap.set('t', '<D-v>', [[<C-\><C-n>"+pi]], { noremap = true, silent = true })
+end

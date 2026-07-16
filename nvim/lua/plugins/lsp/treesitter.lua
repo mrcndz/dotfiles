@@ -1,19 +1,14 @@
 return {
-  'nvim-treesitter/nvim-treesitter',
-
-  dependencies = {
-    'windwp/nvim-ts-autotag',
-    'RRethy/nvim-treesitter-endwise',
-    'nvim-treesitter/nvim-treesitter-textobjects',
-  },
-
-  build = ':TSUpdate',
-  event = { 'BufReadPost', 'BufNewFile' },
-
-  config = function()
-    local treesitter = require 'nvim-treesitter.configs'
-    treesitter.setup {
-      ensure_installed = {
+  {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
+    dependencies = {
+      'RRethy/nvim-treesitter-endwise',
+    },
+    config = function()
+      require('nvim-treesitter').install {
         'bash',
         'c',
         'css',
@@ -34,34 +29,24 @@ return {
         'yaml',
         'markdown',
         'markdown_inline',
-      },
-      ignore_install = {},
-      modules = {},
-      sync_install = false,
-      auto_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-      autotag = {
-        enable = true,
-      },
-      endwise = {
-        enable = true,
-      },
-      indent = {
-        enable = false,
-      },
-      textobjects = {
+      }
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
+    end,
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'main',
+    event = { 'BufReadPost', 'BufNewFile' },
+    config = function()
+      require('nvim-treesitter-textobjects').setup {
         select = {
-          enable = true,
           lookahead = true,
-          keymaps = {
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner',
-          },
           selection_modes = {
             ['@function.outer'] = 'V',
             ['@function.inner'] = 'V',
@@ -70,7 +55,27 @@ return {
           },
           include_surrounding_whitespace = true,
         },
-      },
-    }
-  end,
+      }
+
+      local select = require 'nvim-treesitter-textobjects.select'
+      local maps = {
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
+      }
+      for key, obj in pairs(maps) do
+        vim.keymap.set({ 'x', 'o' }, key, function()
+          select.select_textobject(obj, 'textobjects')
+        end, { desc = 'Select ' .. obj })
+      end
+    end,
+  },
+  {
+    'windwp/nvim-ts-autotag',
+    event = { 'BufReadPost', 'BufNewFile' },
+    config = function()
+      require('nvim-ts-autotag').setup()
+    end,
+  },
 }
