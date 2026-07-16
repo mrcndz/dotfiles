@@ -162,10 +162,13 @@ return {
   },
   -- Dark theme
   {
-    'akinsho/horizon.nvim',
-    version = '*',
+    'rose-pine/neovim',
+    name = 'rose-pine',
     lazy = false,
     priority = 1000,
+    config = function()
+      require('rose-pine').setup {}
+    end,
   },
   -- Light theme
   {
@@ -182,7 +185,7 @@ return {
       update_interval = 1000,
       set_dark_mode = function()
         vim.api.nvim_set_option_value('background', 'dark', {})
-        vim.cmd.colorscheme 'horizon'
+        vim.cmd.colorscheme 'rose-pine-moon'
       end,
       set_light_mode = function()
         vim.api.nvim_set_option_value('background', 'light', {})

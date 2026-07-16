@@ -5,19 +5,31 @@ return {
     local wk = require 'which-key'
     local wkicon = require 'which-key.icons'
 
-    wk.add {
-      { '<leader>a', group = 'AI' },
-    }
-
     -- LSP
     wk.add {
       { '<leader>l', group = 'LSP' },
       { '<leader>lR', '<cmd>lua vim.lsp.buf.rename()<CR>', desc = 'Rename Symbol', mode = 'n', icon = '󰀘 ' },
     }
-    -- LazyGit
+
+    -- Git
     wk.add {
       { '<leader>g', group = 'Git' },
+      {
+        '<leader>gd',
+        function()
+          local gs = require 'gitsigns'
+          local on = not vim.b.inline_diff_on
+          gs.toggle_deleted(on)
+          gs.toggle_linehl(on)
+          gs.toggle_word_diff(on)
+          vim.b.inline_diff_on = on
+        end,
+        desc = 'Inline diff (toggle)',
+        mode = 'n',
+        icon = '󰦓',
+      },
     }
+
     -- Utils
     -- Clear Buffers
     wk.add {

@@ -6,3 +6,12 @@ notARepository: quit
 promptToReturnFromSubprocess: false
 git:
   overrideGpg: true
+  pagers:
+    - colorArg: always
+      pager: ~/.config/lazygit/delta-pager.sh
+customCommands:
+  - key: 'e'
+    context: 'files'
+    description: 'nvim -d against branch (HEAD)'
+    command: '~/.config/lazygit/nvim-diff.sh "{{.SelectedFile.Name}}"'
+    output: terminal

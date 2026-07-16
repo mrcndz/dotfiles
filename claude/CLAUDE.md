@@ -1,7 +1,6 @@
 <git-rules>
 - Never use git add .
 - When asked to commit, always see staged files first
-- Use `git flow` when needed
 - Use convetional commit messages written in English, with a short title and short description.
 - Never add Co-authored with Claude message to commits or pull requests.
 - When asked to "open a PR for [branch]" (e.g., main, staging):
@@ -20,13 +19,9 @@
 </code-generation-rules>
 
 <tolling-shell-interactions>
-Install if missing.
 - Always uses context7 mcp for seeking documentation, code generation, setup or configuration steps without having to explicitly ask the user. 
-- Is it about langfuse? Use 'langfuse' cli command.
-- Is it about talking with other claude instance? Use 'claude-mesh -h' command.
 - If any mentioned tool is missing, suggest the user to install it.
 - `drop <file>`: stages a file on the Dropover shelf for drag-and-drop (e.g. into an email or chat). Use when the user wants to drag a file somewhere or asks to "drop" it.
-
 <mandatory>
 Fish Shell for ALL Commands
 
