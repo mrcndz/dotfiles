@@ -15,8 +15,8 @@ close_workspace = "prefix+shift+x"
 
 goto = "prefix+w"
 previous_tab = "prefix+space"           
-split_vertical = "prefix+|"             
-split_horizontal = "prefix+minus"       
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
 
 #
 edit_scrollback = "prefix+shift+e"
@@ -30,28 +30,33 @@ focus_pane_down = "prefix+j"
 focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
 
+# Persistent popups (persistent-tmux-popup plugin): tmux session per
+# tool + pane; detach closes the popup, the process keeps running.
+# nvim popup is not persistent: auto-session restores buffers per git root
 [[keys.command]]
 key = "prefix+e"
-type = "pane"
-command = "nvim"
-description = "nvim"
+type = "popup"
+command = 'cd "${HERDR_ACTIVE_PANE_CWD:-$HOME}" && exec nvim'
+description = "n!vim"
+width = "90%"
+height = "90%"
 
 [[keys.command]]
 key = "prefix+g"
-type = "pane"
-command = "lazygit"
-description = "lazygit"
+type = "plugin_action"
+command = "persistent-tmux-popup.lazygit"
+description = "lazygit (persistent)"
 
 [[keys.command]]
 key = "prefix+p"
-type = "pane"
-command = "fish"
+type = "popup"
+command = 'exec fish'
 description = "shell"
 
 [[keys.command]]
 key = "prefix+@"                   # @ : copy pane info to clipboard
 type = "shell"
-command = "echo herdr pane: $HERDR_ACTIVE_WORKSPACE_ID:$HERDR_ACTIVE_TAB_ID:$HERDR_ACTIVE_PANE_ID | pbcopy"
+command = "echo herdr pane: $HERDR_ACTIVE_PANE_ID | pbcopy"
 description = "copy pane info"
 
 # Nvim + Herdr navigation
@@ -83,6 +88,7 @@ description = "navigate right (vim/herdr)"
 confirm_close = true
 show_agent_labels_on_pane_borders = true
 
+agent_panel_sort = "priority"
 [ui.toast]
 delivery = "terminal"
 

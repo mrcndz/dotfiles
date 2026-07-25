@@ -40,6 +40,10 @@ return {
     wk.add {
       { '<leader>Q', '<cmd>qa!<CR>', desc = 'Quit All', mode = 'n', icon = '󰩈' },
     }
+
+    wk.add {
+      { '<leader>q', '<cmd>qa<CR>', desc = 'Quit All', mode = 'n', icon = '󰩈' },
+    }
   end,
   opts = {
     preset = 'helix',
