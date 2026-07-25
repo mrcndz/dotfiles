@@ -145,7 +145,9 @@ return {
     {
       '<leader>f',
       function()
-        Snacks.picker.files {}
+        Snacks.picker.files {
+          on_show = feed_esc,
+        }
       end,
       desc = 'Files',
     },
@@ -162,7 +164,7 @@ return {
         win = {
           input = {
             keys = {
-              ['qqq'] = { { 'cancel', 'cancel' }, mode = 'i', noremap = true, nowait = true },
+              ['qq'] = { { 'cancel', 'cancel' }, mode = 'i', noremap = true, nowait = true },
               ['['] = { 'history_back', mode = { 'n' }, nowait = true },
               [']'] = { 'history_forward', mode = { 'n' }, nowait = true },
               ['[['] = { 'history_back', mode = { 'i' }, nowait = true, noremap = true },

@@ -4,6 +4,19 @@ vim.g.do_file_type_lua = 1
 local opt = vim.opt
 
 opt.cmdheight = 0
+opt.shortmess:append 'sIF'
+-- keep intermediate session-restore states off screen: with cmdheight=0 the
+-- cmdline claims the statusline row while the session's commands run
+opt.lazyredraw = true
+vim.api.nvim_create_autocmd('VimEnter', {
+  once = true,
+  callback = function()
+    vim.defer_fn(function()
+      vim.o.lazyredraw = false
+      require('config.statusline').fade_in()
+    end, 500)
+  end,
+})
 opt.autowrite = true
 opt.autoread = true
 opt.swapfile = false
@@ -55,3 +68,9 @@ opt.wildmode = 'longest:full,full'
 opt.winminwidth = 5
 opt.wrap = true
 opt.smoothscroll = true
+
+-- load and set synchronously so the custom bar (and its highlights) are
+-- there from the first frame
+require 'config.statusline'
+vim.o.laststatus = 3
+vim.o.statusline = "%!v:lua.require'config.statusline'.render()"

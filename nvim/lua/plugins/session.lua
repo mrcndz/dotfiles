@@ -4,9 +4,12 @@ return {
     lazy = false,
     dependencies = {},
     init = function()
-      vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+      -- no 'localoptions': it pins plugin window state into sessions
+      vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal'
     end,
     config = function()
+      local tree_session = require 'tree-session' -- defined in plugins/nvim-tree.lua
+
       local function git_root()
         local root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
         if vim.v.shell_error ~= 0 then return nil end
@@ -23,8 +26,11 @@ return {
         end,
         auto_save = true,
         auto_restore = true,
-        close_unsupported_windows = true,
-        pre_save_cmds = { 'NvimTreeClose' },
+        -- off: it would prune tree-session's placeholder window
+        close_unsupported_windows = false,
+        pre_save_cmds = { tree_session.stash_if_open },
+        save_extra_cmds = { tree_session.extra_cmd },
+        post_save_cmds = { tree_session.after_save },
         bypass_save_filetypes = {
           'alpha',
           'NvimTree',
