@@ -19,49 +19,10 @@
 </code-generation-rules>
 
 <tolling-shell-interactions>
+- fish is the login shell so terminals start fish directly; use `fish -c "command"` when necessary like when using fish syntax or a command unexpectedly reports "command not found".
 - Always uses context7 mcp for seeking documentation, code generation, setup or configuration steps without having to explicitly ask the user. 
-- If any mentioned tool is missing, suggest the user to install it.
 - `drop <file>`: stages a file on the Dropover shelf for drag-and-drop (e.g. into an email or chat). Use when the user wants to drag a file somewhere or asks to "drop" it.
-<mandatory>
-Fish Shell for ALL Commands
-
-> **CRITICAL RULE — READ BEFORE ANY COMMAND EXECUTION**
-
-The Bash tool executes in zsh/bash. Your environment (fnm, pyenv, bun, etc.) exists ONLY in fish.
-
-THE RULE: ALWAYS use `fish -c "command"` 
-**EVERY command. No exceptions. No thinking required.**
-
-```bash
-# Pattern
-fish -c "your command here"
-
-# Examples
-fish -c "node -v"
-fish -c "pnpm install"
-fish -c "bun run dev"
-fish -c "python --version"
-fish -c "git status"
-fish -c "ls -la"
-```
-
-Why this matters:
-- `node`, `bun`, `pnpm` → Managed by `fnm` → Only in fish PATH
-- `python`, `uv`, `pip` → Managed by `pyenv` → Only in fish PATH
-- `ruby`, `gem`, `bundle` → Managed by `rbenv` → Only in fish PATH
-- Environment variables → Set in `$DOTFILES/env.fish and $DOTFILES/fish/config.fish`
-
-DO NOT:
-- `node -v` → Will fail: "command not found"
-- `pnpm install` → Will fail: "command not found"
-- Run any command without `fish -c` wrapper
-
-DO:
-- `fish -c "node -v"`
--  `fish -c "pnpm install"`
-- `fish -c "ls -la"` (even simple commands - consistency matters)
-</mandatory>
-
+- You're always inside a herdr or tmux pane. The public Herdr pane ID format is wX:pY. When mentioned, use their CLI accordingly.
 </tolling-shell-interactions>
 
 <behavioral-guidelines>
