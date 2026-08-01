@@ -20,8 +20,7 @@ split_horizontal = "prefix+minus"
 
 #
 edit_scrollback = "prefix+shift+e"
-rename_tab = "prefix+comma"
-settings = "prefix+shift+comma"
+settings = "prefix+<"
 
 # --- pane focus (prefix+hjkl) ---
 last_pane = "prefix+;"
@@ -30,22 +29,22 @@ focus_pane_down = "prefix+j"
 focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
 
-# Persistent popups (persistent-tmux-popup plugin): tmux session per
-# tool + pane; detach closes the popup, the process keeps running.
-# nvim popup is not persistent: auto-session restores buffers per git root
+# Popups: nvim restores buffers per git root via auto-session
 [[keys.command]]
 key = "prefix+e"
 type = "popup"
 command = 'cd "${HERDR_ACTIVE_PANE_CWD:-$HOME}" && exec nvim'
-description = "n!vim"
+description = "nvim"
 width = "90%"
 height = "90%"
 
 [[keys.command]]
 key = "prefix+g"
-type = "plugin_action"
-command = "persistent-tmux-popup.lazygit"
-description = "lazygit (persistent)"
+type = "popup"
+command = 'exec "$DOTFILES/scripts/tmux-popup" lazygit --use-config-file "$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/popup-config.yml"'
+description = "lazygit"
+width = "90%"
+height = "90%"
 
 [[keys.command]]
 key = "prefix+p"
@@ -54,10 +53,29 @@ command = 'exec fish'
 description = "shell"
 
 [[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "rmarganti.herdr-pluck.pluck"
+description = "pluck visible token"
+
+[[keys.command]]
 key = "prefix+@"                   # @ : copy pane info to clipboard
 type = "shell"
-command = "echo herdr pane: $HERDR_ACTIVE_PANE_ID | pbcopy"
+command = "echo $HERDR_ACTIVE_PANE_ID | pbcopy"
 description = "copy pane info"
+
+[[keys.command]]
+key = "prefix+y"                   # @ : copy workspace info to clipboard
+type = "shell"
+command = "echo $HERDR_ACTIVE_WORKSPACE_ID | pbcopy"
+description = "copy workspace info"
+
+[[keys.command]]
+key = "prefix+Y"                   # @ : copy tab info to clipboard
+type = "shell"
+command = "echo $HERDR_ACTIVE_TAB_ID | pbcopy"
+description = "copy tab info"
+
 
 # Nvim + Herdr navigation
 [[keys.command]]
@@ -88,7 +106,7 @@ description = "navigate right (vim/herdr)"
 confirm_close = true
 show_agent_labels_on_pane_borders = true
 
-agent_panel_sort = "priority"
+agent_panel_sort = "spaces"
 [ui.toast]
 delivery = "terminal"
 
@@ -96,3 +114,7 @@ delivery = "terminal"
 auto_switch = true
 light_name = "gruvbox-light"
 dark_name = "rose-pine-moon"
+
+[experimental]
+pane_history = true
+switch_ascii_input_source_in_prefix = false
