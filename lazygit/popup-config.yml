@@ -1,0 +1,6 @@
+customCommands:
+  - key: 'q'
+    context: 'global'
+    description: 'detach popup (lazygit keeps running)'
+    command: 'tmux detach-client'
+    output: none
