@@ -6,7 +6,7 @@
 # file) is older than TTL, so reattaching implicitly voids older timers.
 #
 # Usage: tmux-popup <command> [args...]
-#   session name is the command basename plus the active Herdr pane id
+#   one session per command per directory, shared by every pane in that dir
 #   TMUX_POPUP_TTL overrides the detached TTL (seconds)
 TTL="${TMUX_POPUP_TTL:-600}"
 STATE_DIR="$HOME/.local/state/herdr-popup"
@@ -32,9 +32,18 @@ if [ $# -lt 1 ]; then
     exit 2
 fi
 
-# tmux session names cannot contain : or .
-S=$(printf '%s-%s' "$(basename "$1")" "${HERDR_ACTIVE_PANE_ID:-solo}" | tr ':.' '__')
-cd "${HERDR_ACTIVE_PANE_CWD:-$HOME}" || exit 1
+# One session per command per directory. Hash disambiguates same-named
+# dirs; tmux session names cannot contain : or .
+DIR="${HERDR_ACTIVE_PANE_CWD:-$HOME}"
+S=$(printf '%s-%s-%s' "$(basename "$1")" "$(basename "$DIR")" \
+    "$(printf '%s' "$DIR" | cksum | cut -d' ' -f1)" | tr ':.' '__')
+cd "$DIR" || exit 1
+
+# Timers only clean up after a kill, so drop stamps for dead sessions
+for f in "$STATE_DIR"/detach-*; do
+    [ -e "$f" ] || continue
+    tmux has-session -t "${f##*/detach-}" 2>/dev/null || rm -f "$f"
+done
 
 if ! tmux has-session -t "$S" 2>/dev/null; then
     tmux new-session -d -s "$S" "$@"
