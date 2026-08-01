@@ -1,0 +1,44 @@
+#!/bin/sh
+# Herdr popup: runs a command in a per-pane tmux session. The session
+# survives closing the popup, but dies after TTL seconds detached.
+# Event-driven: a tmux client-detached hook spawns a one-shot timer per
+# detach; each timer only kills the session if the LAST detach (timestamp
+# file) is older than TTL, so reattaching implicitly voids older timers.
+#
+# Usage: tmux-popup <command> [args...]
+#   session name is the command basename plus the active Herdr pane id
+#   TMUX_POPUP_TTL overrides the detached TTL (seconds)
+TTL="${TMUX_POPUP_TTL:-600}"
+STATE_DIR="$HOME/.local/state/herdr-popup"
+
+if [ "$1" = "--timer" ]; then
+    S="$2"
+    stamp="$STATE_DIR/detach-$S"
+    mkdir -p "$STATE_DIR"
+    date +%s >"$stamp"
+    sleep "$TTL"
+    tmux has-session -t "$S" 2>/dev/null || exit 0
+    [ "$(tmux display-message -p -t "$S" '#{session_attached}')" = "0" ] || exit 0
+    last=$(cat "$stamp" 2>/dev/null || echo 0)
+    if [ $(($(date +%s) - last)) -ge "$TTL" ]; then
+        tmux kill-session -t "$S"
+        rm -f "$stamp"
+    fi
+    exit 0
+fi
+
+if [ $# -lt 1 ]; then
+    echo "usage: ${0##*/} <command> [args...]" >&2
+    exit 2
+fi
+
+# tmux session names cannot contain : or .
+S=$(printf '%s-%s' "$(basename "$1")" "${HERDR_ACTIVE_PANE_ID:-solo}" | tr ':.' '__')
+cd "${HERDR_ACTIVE_PANE_CWD:-$HOME}" || exit 1
+
+if ! tmux has-session -t "$S" 2>/dev/null; then
+    tmux new-session -d -s "$S" "$@"
+    tmux set-hook -t "$S" client-detached "run-shell -b '$0 --timer $S'"
+fi
+
+exec tmux attach-session -t "$S"

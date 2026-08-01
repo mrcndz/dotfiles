@@ -23,15 +23,13 @@ return {
     end,
   },
   {
-    'alexghergh/nvim-tmux-navigation',
-    keys = {
-      { '<C-h>', '<cmd>NvimTmuxNavigateLeft<CR>', desc = 'Navigate Left' },
-      { '<C-l>', '<cmd>NvimTmuxNavigateRight<CR>', desc = 'Navigate Right' },
-      { '<C-j>', '<cmd>NvimTmuxNavigateDown<CR>', desc = 'Navigate Down' },
-      { '<C-k>', '<cmd>NvimTmuxNavigateUp<CR>', desc = 'Navigate Up' },
-    },
+    'christoomey/vim-tmux-navigator',
+    lazy = false,
+    init = function()
+      vim.g.tmux_navigator_no_mappings = 1
+    end,
     config = function()
-      require('nvim-tmux-navigation').setup {}
+      dofile(vim.fn.expand '~/.config/herdr/plugins/vim-herdr-navigation/editor/nvim.lua')
     end,
   },
 }
