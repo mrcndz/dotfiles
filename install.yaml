@@ -5,16 +5,14 @@ pre_commands:
  - git config --global rebase.autoStash true
 
 symlinks:
-  - ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
   - ~/.config/fish/config.fish: $DOTFILES/fish/config.fish 
-  - ~/.config/fish/completions/just.fish: $DOTFILES/fish/completions/just.fish
+  - ~/.config/fish/fish_plugins: $DOTFILES/fish/fish_plugins
   - ~/.tmux.conf: $DOTFILES/tmux/tmux.conf 
   - ~/.config/nvim: $DOTFILES/nvim
   - ~/.zshrc: $DOTFILES/zsh/zshrc
   - ~/.bashrc: $DOTFILES/bash/bashrc
   - ~/.config/lazygit: $DOTFILES/lazygit
   - ~/.config/just: $DOTFILES/just
-  - ~/.claude/_scripts: $DOTFILES/claude/_scripts
   - ~/.claude/settings.json: $DOTFILES/claude/settings.json
   - ~/.claude/CLAUDE.md: $DOTFILES/claude/CLAUDE.md
 
@@ -33,3 +31,4 @@ post_commands:
   - ~/.tmux/plugins/tpm/bin/install_plugins
   - sed -i 's/"credsStore"/"credStore"/g' ~/.docker/config.json
   - git config --global core.excludesFile $DOTFILES/git/gitignore
+  - echo "> Please use `npx skills $DOTFILES` to install skills"

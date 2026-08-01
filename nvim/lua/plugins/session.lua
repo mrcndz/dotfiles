@@ -26,8 +26,7 @@ return {
         end,
         auto_save = true,
         auto_restore = true,
-        -- off: it would prune tree-session's placeholder window
-        close_unsupported_windows = false,
+        close_unsupported_windows = true,
         pre_save_cmds = { tree_session.stash_if_open },
         save_extra_cmds = { tree_session.extra_cmd },
         post_save_cmds = { tree_session.after_save },

@@ -145,8 +145,9 @@ return {
     {
       '<leader>f',
       function()
+        if vim.o.lazyredraw then return end
         Snacks.picker.files {
-          on_show = feed_esc,
+          -- on_show = feed_esc,
         }
       end,
       desc = 'Files',
