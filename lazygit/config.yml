@@ -6,6 +6,6 @@ notARepository: quit
 promptToReturnFromSubprocess: false
 git:
   overrideGpg: true
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: ~/.config/lazygit/delta-pager.sh
+      command: ~/.config/lazygit/delta-pager.sh

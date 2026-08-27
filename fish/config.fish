@@ -28,6 +28,7 @@ end
 
 # Paths
 fish_add_path $HOME/.go/bin /usr/local/go/bin
+fish_add_path $HOME/.local/share/bob/nvim-bin
 fish_add_path /opt/homebrew/sbin /opt/homebrew/bin
 fish_add_path /opt/homebrew/opt/openjdk/bin
 fish_add_path $HOME/.cargo/bin $HOME/.local/bin $HOME/.local/share/nvim/mason/bin
@@ -62,6 +63,7 @@ if status is-interactive
     # Alias
 
     alias c="claude --dangerously-skip-permissions"
+    alias ag="agy --dangerously-skip-permissions"
     alias g="git"
     alias lg="lazygit"
     alias cpu="ps -Ao pid,pcpu,pmem,comm -r | head -15"

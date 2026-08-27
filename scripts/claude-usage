@@ -1,0 +1,272 @@
+#!/bin/bash
+
+# Claude Code Usage CLI
+# Fetches usage data from Anthropic API and displays it in a readable format
+#
+# Setup:
+#   1. Make sure you're logged into Claude Code (credentials stored in macOS Keychain)
+#   2. If you're behind a firewall, configure PROXY_PORT and SSH_HOST below
+#   3. chmod +x claude-usage && ./claude-usage
+#
+# Optional: alias usage="~/path/to/claude-usage"
+
+set -e
+
+# --- Colors ---
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# --- Configuration ---
+# If you need a SOCKS5 proxy to reach api.anthropic.com, set these.
+# Leave SSH_HOST empty to connect directly without a proxy.
+PROXY_PORT=1080
+SSH_HOST=""  # e.g. "user@your-server.com"
+SSH_PORT=22
+USE_PROXY=false
+# ---------------------
+
+# Start SSH SOCKS5 proxy if configured and not running
+start_proxy() {
+    if [[ "$USE_PROXY" != "true" ]] || [[ -z "$SSH_HOST" ]]; then
+        return
+    fi
+    if ! nc -z localhost $PROXY_PORT 2>/dev/null; then
+        ssh -o ConnectTimeout=5 -D $PROXY_PORT -f -N $SSH_HOST -p$SSH_PORT 2>/dev/null || {
+            echo "Error: Could not establish SSH tunnel to $SSH_HOST" >&2
+            exit 1
+        }
+        sleep 1
+    fi
+}
+
+# Get token from Keychain (macOS)
+get_token() {
+    local creds
+    creds=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null) || {
+        echo "Error: Could not retrieve Claude Code credentials from Keychain" >&2
+        echo "Make sure you're logged into Claude Code" >&2
+        exit 1
+    }
+    echo "$creds" | jq -r '.claudeAiOauth.accessToken'
+}
+
+# Fetch usage from API
+fetch_usage() {
+    local token="$1"
+    local curl_args=(-s)
+
+    if [[ "$USE_PROXY" == "true" ]] && [[ -n "$SSH_HOST" ]]; then
+        curl_args+=(--proxy "socks5h://localhost:$PROXY_PORT")
+    fi
+
+    curl "${curl_args[@]}" "https://api.anthropic.com/api/oauth/usage" \
+        -H "Authorization: Bearer $token" \
+        -H "anthropic-beta: oauth-2025-04-20" \
+        -H "User-Agent: claude-code/2.0.32"
+}
+
+# Format ISO date to readable format
+format_iso_date() {
+    local iso_date="$1"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        date -j -f "%Y-%m-%dT%H:%M:%S" "${iso_date%%.*}" "+%Y-%m-%d %H:%M" 2>/dev/null || echo "$iso_date"
+    else
+        date -d "$iso_date" "+%Y-%m-%d %H:%M" 2>/dev/null || echo "$iso_date"
+    fi
+}
+
+# Convert ISO to epoch
+iso_to_epoch() {
+    local iso_date="$1"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        date -j -f "%Y-%m-%dT%H:%M:%S" "${iso_date%%.*}" "+%s" 2>/dev/null || echo "0"
+    else
+        date -d "$iso_date" "+%s" 2>/dev/null || echo "0"
+    fi
+}
+
+# Calculate week start from reset date (7 days before)
+calc_week_start() {
+    local reset_iso="$1"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        local reset_epoch
+        reset_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%S" "${reset_iso%%.*}" "+%s" 2>/dev/null) || { echo "$reset_iso"; return; }
+        local start_epoch=$((reset_epoch - 604800))
+        date -r "$start_epoch" "+%Y-%m-%d %H:%M"
+    else
+        date -d "$reset_iso - 7 days" "+%Y-%m-%d %H:%M" 2>/dev/null || echo "$reset_iso"
+    fi
+}
+
+# Draw progress bar
+progress_bar() {
+    local pct="$1"
+    local width=30
+    local filled=$(echo "scale=0; $pct * $width / 100" | bc)
+    [[ $filled -gt $width ]] && filled=$width
+    local empty=$((width - filled))
+
+    local color=$GREEN
+    if (( $(echo "$pct > 90" | bc -l) )); then
+        color=$RED
+    elif (( $(echo "$pct > 75" | bc -l) )); then
+        color=$YELLOW
+    fi
+
+    printf "["
+    printf "${color}"
+    printf "%${filled}s" | tr ' ' '█'
+    printf "${NC}"
+    printf "%${empty}s" | tr ' ' '░'
+    printf "]"
+}
+
+check_deps() {
+    local deps=("jq" "bc" "curl")
+    for dep in "${deps[@]}"; do
+        if ! command -v "$dep" &> /dev/null; then
+            echo -e "${RED}Error: Required command '$dep' not found. Please install it.${NC}" >&2
+            exit 1
+        fi
+    done
+}
+
+# Main
+main() {
+    local token usage
+    local show_json=false
+    local show_token=false
+
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            --json) show_json=true ;;
+            --token) show_token=true ;;
+            -h|--help)
+                echo "Usage: $0 [--json] [--token] [-h|--help]"
+                exit 0
+                ;;
+        esac
+        shift
+    done
+
+    check_deps
+    start_proxy
+    token=$(get_token)
+
+    if [[ "$show_token" == "true" ]]; then
+        echo "$token"
+        exit 0
+    fi
+
+    usage=$(fetch_usage "$token")
+
+    if echo "$usage" | jq -e '.error' > /dev/null 2>&1; then
+        local err_msg=$(echo "$usage" | jq -r '.error.message // .error')
+        echo -e "${RED}API Error: ${err_msg}${NC}" >&2
+        if [[ "$err_msg" == *"expired"* || "$err_msg" == *"unauthorized"* ]]; then
+            if command -v claude &> /dev/null; then
+                echo -e "${YELLOW}Your authentication token has expired.${NC}" >&2
+                read -p "Would you like to run 'claude login' now? [Y/n] " -n 1 -r < /dev/tty
+                echo >&2
+                if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+                    claude login < /dev/tty
+                    echo -e "${GREEN}Login complete. Re-fetching usage...${NC}" >&2
+                    exec "$0" "$@"
+                fi
+            else
+                echo -e "${YELLOW}Hint: Run 'claude login' to refresh your token.${NC}" >&2
+            fi
+        fi
+        exit 1
+    fi
+
+    # Extract data
+    local five_hour_pct five_hour_reset seven_day_pct seven_day_reset
+    five_hour_pct=$(echo "$usage" | jq -r '.five_hour.utilization // 0')
+    five_hour_reset=$(echo "$usage" | jq -r '.five_hour.resets_at // ""')
+    seven_day_pct=$(echo "$usage" | jq -r '.seven_day.utilization // 0')
+    seven_day_reset=$(echo "$usage" | jq -r '.seven_day.resets_at // ""')
+
+    # Extract extra usage (pay-as-you-go) - API returns cents, convert to dollars
+    local extra_enabled extra_limit_cents extra_used_cents extra_pct extra_limit extra_used
+    extra_enabled=$(echo "$usage" | jq -r '.extra_usage.is_enabled // false')
+    extra_limit_cents=$(echo "$usage" | jq -r '.extra_usage.monthly_limit // 0')
+    extra_used_cents=$(echo "$usage" | jq -r '.extra_usage.used_credits // 0')
+    extra_pct=$(echo "$usage" | jq -r '.extra_usage.utilization // 0')
+    extra_limit=$(echo "scale=2; $extra_limit_cents / 100" | bc)
+    extra_used=$(echo "scale=2; $extra_used_cents / 100" | bc)
+
+    # Calculate pace info
+    local now_epoch reset_epoch start_epoch
+    now_epoch=$(date +%s)
+    reset_epoch=$(iso_to_epoch "$seven_day_reset")
+    start_epoch=$((reset_epoch - 604800))
+
+    local elapsed_seconds time_pct expected_pct diff
+    elapsed_seconds=$((now_epoch - start_epoch))
+    time_pct=$(echo "scale=1; $elapsed_seconds * 100 / 604800" | bc)
+    expected_pct="$time_pct"
+    diff=$(echo "scale=1; $seven_day_pct - $expected_pct" | bc)
+
+    # Days/hours remaining
+    local remaining_seconds days_remaining hours_remaining
+    remaining_seconds=$((reset_epoch - now_epoch))
+    days_remaining=$((remaining_seconds / 86400))
+    hours_remaining=$(( (remaining_seconds % 86400) / 3600 ))
+
+    echo ""
+    echo -e "${BLUE}📊 Claude Code Usage${NC}"
+    echo "─────────────────────────────────────────────"
+    echo ""
+
+    # Session (5-hour)
+    echo -e "${YELLOW}⏳ Session (5-hour window)${NC}"
+    printf "  Usage: %s%% " "$five_hour_pct"
+    progress_bar "$five_hour_pct"
+    echo ""
+    echo "  Resets: $(format_iso_date "$five_hour_reset")"
+    echo ""
+
+    # Weekly (7-day)
+    echo -e "${YELLOW}📅 Weekly (7-day window)${NC}"
+    printf "  Usage: %s%% " "$seven_day_pct"
+    progress_bar "$seven_day_pct"
+    echo ""
+    echo "  Period: $(calc_week_start "$seven_day_reset") -> $(format_iso_date "$seven_day_reset")"
+    echo "  Time left: ${days_remaining}d ${hours_remaining}h"
+    echo ""
+
+    # Extra usage (pay-as-you-go)
+    if [[ "$extra_enabled" == "true" ]]; then
+        echo -e "${YELLOW}💰 Extra Usage (Monthly)${NC}"
+        printf "  Used: $%.2f / $%s (%s%%)\n" "$extra_used" "$extra_limit" "$extra_pct"
+        progress_bar "$extra_pct"
+        echo ""
+        echo ""
+    fi
+
+    # Pace status
+    echo -e "${YELLOW}📈 Pace${NC}"
+    printf "  Expected: %s%% (linear) | Actual: %s%%\n" "$expected_pct" "$seven_day_pct"
+    if (( $(echo "$diff > 5" | bc -l) )); then
+        printf "  Status: ${RED}AHEAD by %s%%${NC} - consider slowing down\n" "$diff"
+    elif (( $(echo "$diff < -5" | bc -l) )); then
+        local behind
+        behind=$(echo "scale=1; $diff * -1" | bc)
+        printf "  Status: ${GREEN}BEHIND by %s%%${NC} - you have headroom\n" "$behind"
+    else
+        printf "  Status: ${GREEN}ON TRACK${NC}\n"
+    fi
+    echo ""
+
+    # JSON output option
+    if [[ "$show_json" == "true" ]]; then
+        echo -e "\n${BLUE}Raw API Response:${NC}"
+        echo "$usage" | jq
+    fi
+}
+
+main "$@"

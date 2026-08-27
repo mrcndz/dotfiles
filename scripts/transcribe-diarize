@@ -1,0 +1,246 @@
+#!/usr/bin/env bash
+# transcribe-diarize — local transcription with speaker labels (Apple Silicon).
+# Hybrid: mlx-whisper (Metal GPU) for ASR + pyannote (MPS/CPU) for diarization,
+# merged by word/turn time overlap. Sibling of `transcribe`.
+# Usage: transcribe-diarize <file> [language] [model] [--speakers N]
+#   file        audio or video (mov, mp4, mp3, wav, m4a, ...)
+#   language    ISO code, default: pt
+#   model       mlx-whisper repo, default: mlx-community/whisper-large-v3-mlx
+#   --speakers  known number of speakers, improves accuracy (env: TRANSCRIBE_SPEAKERS)
+# Reuses <basename>.json from a previous transcribe run when present.
+# Outputs <basename>.speakers.txt and <basename>.speakers.srt next to the input.
+# Needs HF_TOKEN (or HUGGINGFACE_TOKEN) once to download pyannote models; inference is 100% local.
+
+set -euo pipefail
+
+SPEAKERS="${TRANSCRIBE_SPEAKERS:-}"
+POSITIONAL=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --speakers)   SPEAKERS="${2:-}"; shift 2 ;;
+    --speakers=*) SPEAKERS="${1#*=}"; shift ;;
+    *)            POSITIONAL+=("$1"); shift ;;
+  esac
+done
+
+INPUT="${POSITIONAL[0]:-}"
+LANG="${POSITIONAL[1]:-pt}"
+MODEL="${POSITIONAL[2]:-mlx-community/whisper-large-v3-mlx}"
+
+if [ -z "$INPUT" ] || [ ! -f "$INPUT" ]; then
+  echo "usage: transcribe-diarize <file> [language] [model] [--speakers N]" >&2
+  [ -n "$INPUT" ] && echo "file not found: $INPUT" >&2
+  exit 1
+fi
+
+if [ -n "$SPEAKERS" ] && ! [[ "$SPEAKERS" =~ ^[0-9]+$ ]]; then
+  echo "--speakers must be a number, got: $SPEAKERS" >&2
+  exit 1
+fi
+
+command -v ffmpeg >/dev/null || { echo "ffmpeg not found (brew install ffmpeg)" >&2; exit 1; }
+command -v uv >/dev/null     || { echo "uv not found (brew install uv)" >&2; exit 1; }
+
+export HF_TOKEN="${HF_TOKEN:-${HUGGINGFACE_TOKEN:-}}"
+if [ -z "$HF_TOKEN" ]; then
+  cat >&2 <<'EOF'
+HF_TOKEN not set. pyannote models are gated on Hugging Face (free, one-time setup):
+  1. Create a read token at https://huggingface.co/settings/tokens
+  2. Accept the license terms on BOTH model pages:
+       https://huggingface.co/pyannote/speaker-diarization-3.1
+       https://huggingface.co/pyannote/segmentation-3.0
+  3. Export the token, e.g. in fish:  set -Ux HF_TOKEN hf_xxx
+EOF
+  exit 1
+fi
+
+DIR="$(cd "$(dirname "$INPUT")" && pwd)"
+BASE="$(basename "${INPUT%.*}")"
+JSON="$DIR/$BASE.json"
+WAV="$(mktemp -t transcribe-diarize).wav"
+trap 'rm -f "$WAV"' EXIT
+
+echo "› extracting audio…" >&2
+ffmpeg -y -i "$INPUT" -vn -ac 1 -ar 16000 -c:a pcm_s16le "$WAV" >/dev/null 2>&1
+
+if [ -f "$JSON" ]; then
+  echo "› reusing existing transcription: $JSON" >&2
+else
+  VENV="${TRANSCRIBE_VENV:-$HOME/.cache/transcribe-venv}"
+  if [ ! -x "$VENV/bin/mlx_whisper" ]; then
+    echo "› setting up mlx-whisper venv at $VENV (first run only)…" >&2
+    uv venv "$VENV" --python 3.12 >&2
+    uv pip install --python "$VENV/bin/python" mlx-whisper >&2
+  fi
+  echo "› transcribing ($LANG, $MODEL)…" >&2
+  "$VENV/bin/mlx_whisper" "$WAV" \
+    --model "$MODEL" \
+    --language "$LANG" \
+    --task transcribe \
+    --output-format json \
+    --output-dir "$DIR" \
+    --output-name "$BASE" \
+    --word-timestamps True \
+    --condition-on-previous-text False \
+    --verbose False
+fi
+
+DVENV="${DIARIZE_VENV:-$HOME/.cache/diarize-venv}"
+if ! "$DVENV/bin/python" -c 'import pyannote.audio' >/dev/null 2>&1; then
+  echo "› setting up pyannote venv at $DVENV (first run only, downloads torch)…" >&2
+  uv venv "$DVENV" --python 3.12 >&2
+  # torch>=2.6 (weights_only default) and huggingface_hub>=1 break pyannote 3.x
+  uv pip install --python "$DVENV/bin/python" \
+    'pyannote.audio<4' 'torch<2.6' 'torchaudio<2.6' 'huggingface_hub<1' >&2
+fi
+
+echo "› diarizing${SPEAKERS:+ ($SPEAKERS speakers)}…" >&2
+export PYTORCH_ENABLE_MPS_FALLBACK=1
+"$DVENV/bin/python" - "$JSON" "$WAV" "$DIR/$BASE.speakers.txt" "$DIR/$BASE.speakers.srt" "$SPEAKERS" <<'PYEOF'
+import json
+import sys
+
+
+def die(msg):
+    print(msg, file=sys.stderr)
+    sys.exit(1)
+
+
+def flatten_words(data):
+    """Whisper JSON -> ordered [{word, start, end, seg}]."""
+    words = []
+    for i, seg in enumerate(data.get("segments", [])):
+        for w in seg.get("words") or []:
+            words.append({"word": w["word"], "start": float(w["start"]),
+                          "end": float(w["end"]), "seg": i})
+    return words
+
+
+def assign_speakers(words, turns):
+    """Give each word the speaker with max time overlap.
+
+    turns: [(start, end, speaker)]. Words overlapping no turn carry the
+    previous word's speaker (nearest turn if there is no previous word).
+    """
+    turns = sorted(turns)
+    out = []
+    prev = None
+    for w in words:
+        # zero-duration words become tiny points so containment still counts
+        ws, we = w["start"], max(w["end"], w["start"] + 1e-6)
+        best, best_ov = None, 0.0
+        for ts, te, sp in turns:
+            if ts >= we:
+                break
+            ov = min(we, te) - max(ws, ts)
+            if ov > best_ov:
+                best_ov, best = ov, sp
+        if best is None:
+            if prev is not None:
+                best = prev
+            elif turns:
+                mid = (w["start"] + w["end"]) / 2
+                best = min(turns, key=lambda t: min(abs(mid - t[0]), abs(mid - t[1])))[2]
+            else:
+                best = "SPEAKER_00"
+        prev = best
+        out.append(dict(w, speaker=best))
+    return out
+
+
+def group_turns(awords):
+    """Merge consecutive same-speaker words into turns."""
+    groups = []
+    for w in awords:
+        if groups and groups[-1]["speaker"] == w["speaker"]:
+            groups[-1]["end"] = w["end"]
+            groups[-1]["text"] += w["word"]
+        else:
+            groups.append({"speaker": w["speaker"], "start": w["start"],
+                           "end": w["end"], "text": w["word"]})
+    return groups
+
+
+def segment_speakers(data, awords):
+    """Dominant (duration-weighted) speaker per whisper segment."""
+    weights = {}
+    for w in awords:
+        d = weights.setdefault(w["seg"], {})
+        d[w["speaker"]] = d.get(w["speaker"], 0.0) + max(w["end"] - w["start"], 1e-3)
+    result, prev = {}, "SPEAKER_00"
+    for i in range(len(data.get("segments", []))):
+        if i in weights:
+            prev = max(weights[i], key=weights[i].get)
+        result[i] = prev
+    return result
+
+
+def fmt_ts(sec):
+    s = int(sec)
+    return f"{s // 3600:02d}:{s % 3600 // 60:02d}:{s % 60:02d}"
+
+
+def fmt_srt(sec):
+    ms = int(round(sec * 1000))
+    return f"{ms // 3600000:02d}:{ms % 3600000 // 60000:02d}:{ms % 60000 // 1000:02d},{ms % 1000:03d}"
+
+
+def write_txt(path, groups):
+    with open(path, "w") as f:
+        for g in groups:
+            f.write(f"[{fmt_ts(g['start'])}] {g['speaker']}: {g['text'].strip()}\n\n")
+
+
+def write_srt(path, data, seg_speakers):
+    with open(path, "w") as f:
+        n = 0
+        for i, seg in enumerate(data.get("segments", [])):
+            text = seg["text"].strip()
+            if not text:
+                continue
+            n += 1
+            f.write(f"{n}\n{fmt_srt(seg['start'])} --> {fmt_srt(seg['end'])}\n")
+            f.write(f"{seg_speakers[i]}: {text}\n\n")
+
+
+def main():
+    whisper_json, wav, out_txt, out_srt, num_speakers = sys.argv[1:6]
+
+    import torch
+    from pyannote.audio import Pipeline
+
+    gated_help = (
+        "Make sure your HF token is valid and you accepted the license terms on BOTH:\n"
+        "  https://huggingface.co/pyannote/speaker-diarization-3.1\n"
+        "  https://huggingface.co/pyannote/segmentation-3.0"
+    )
+    try:
+        # auth comes from the HF_TOKEN env var (huggingface_hub reads it natively)
+        pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization-3.1")
+    except Exception as e:
+        die(f"pyannote model download failed: {e}\n{gated_help}")
+    if pipeline is None:
+        die(f"pyannote returned no pipeline (gated model access denied).\n{gated_help}")
+
+    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    print(f"› running pyannote on {device} (first run downloads models)…", file=sys.stderr)
+    pipeline.to(torch.device(device))
+
+    kwargs = {"num_speakers": int(num_speakers)} if num_speakers else {}
+    diarization = pipeline(wav, **kwargs)
+    turns = [(t.start, t.end, sp) for t, _, sp in diarization.itertracks(yield_label=True)]
+
+    with open(whisper_json) as f:
+        data = json.load(f)
+    awords = assign_speakers(flatten_words(data), turns)
+    if not awords:
+        die(f"no word timestamps in {whisper_json}; re-run transcribe with --word-timestamps True")
+
+    write_txt(out_txt, group_turns(awords))
+    write_srt(out_srt, data, segment_speakers(data, awords))
+
+
+main()
+PYEOF
+
+echo "✓ done → $DIR/$BASE.speakers.{txt,srt}" >&2

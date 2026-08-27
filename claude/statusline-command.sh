@@ -7,6 +7,7 @@ cwd=$(echo "$input" | jq -r '.workspace.current_dir // "."')
 ctx=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 branch=$(cd "$cwd" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')
 project=$(cd "$cwd" 2>/dev/null && basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || echo '')
+[ -z "$project" ] && project=$(basename "$cwd")
 
 # Fetch real usage from Anthropic API (cached for 60s)
 CACHE_FILE="/tmp/claude-usage-cache.json"
@@ -58,14 +59,32 @@ if [ -n "$usage_json" ]; then
 fi
 
 # --- Output ---
-printf "\033[2m%s\033[0m" "󱚣 $short_model"
+printf "\033[2m%s\033[0m" "$short_model"
+
+if [ "$ctx" -ge 80 ]; then
+  printf " \033[2m\033[0m \033[31m%s%%\033[0m" "󰠞 $ctx"
+elif [ "$ctx" -ge 50 ]; then
+  printf " \033[2m\033[0m \033[33m%s%%\033[0m" "󰠞 $ctx"
+else
+  printf " \033[2m\033[0m \033[2m%s%%\033[0m" "󰠞 $ctx"
+fi
+
+if [ -n "$usage_part" ]; then
+  if [ "$pct" -ge 80 ]; then
+    printf " \033[2m-\033[0m \033[31m%s\033[0m" "$usage_part"
+  elif [ "$pct" -ge 50 ]; then
+    printf " \033[2m-\033[0m \033[33m%s\033[0m" "$usage_part"
+  else
+    printf " \033[2m-\033[0m \033[32m%s\033[0m" "$usage_part"
+  fi
+fi
 
 if [ -n "$project" ]; then
-  printf " \033[2m│\033[0m \033[2m%s\033[0m" " $project"
+  printf " \033[2m|\033[0m \033[2m%s\033[0m" " $project"
 fi
 
 if [ -n "$branch" ]; then
-  printf "  \033[2m│\033[0m \033[2m%s\033[0m" " $branch"
+  printf " \033[2mat\033[0m \033[2m%s\033[0m" " $branch"
 fi
 
 # Herdr pane id
@@ -74,21 +93,5 @@ if [ "${HERDR_ENV:-}" = 1 ] && [ -n "${HERDR_PANE_ID:-}" ]; then
 fi
 
 # Context %
-if [ "$ctx" -ge 80 ]; then
-  printf " \033[2m│\033[0m \033[31m%s%%\033[0m" "󰠞 $ctx"
-elif [ "$ctx" -ge 50 ]; then
-  printf " \033[2m│\033[0m \033[33m%s%%\033[0m" "󰠞 $ctx"
-else
-  printf " \033[2m│\033[0m \033[2m%s%%\033[0m" "󰠞 $ctx"
-fi
 
 # Usage from API
-if [ -n "$usage_part" ]; then
-  if [ "$pct" -ge 80 ]; then
-    printf " \033[2m│\033[0m \033[31m%s\033[0m" "$usage_part"
-  elif [ "$pct" -ge 50 ]; then
-    printf " \033[2m│\033[0m \033[33m%s\033[0m" "$usage_part"
-  else
-    printf " \033[2m│\033[0m \033[32m%s\033[0m" "$usage_part"
-  fi
-fi
