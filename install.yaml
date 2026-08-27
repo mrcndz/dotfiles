@@ -15,6 +15,7 @@ symlinks:
   - ~/.config/just: $DOTFILES/just
   - ~/.claude/settings.json: $DOTFILES/claude/settings.json
   - ~/.claude/CLAUDE.md: $DOTFILES/claude/CLAUDE.md
+  - ~/.claude/statusline-command.sh: $DOTFILES/claude/statusline-command.sh
 
 symlinks-linux:
   - ~/.config/alacritty/alacritty.toml: $DOTFILES/alacritty/alacritty-linux.toml
