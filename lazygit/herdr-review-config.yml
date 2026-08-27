@@ -1,0 +1,5 @@
+gui:
+  screenMode: full
+keybinding:
+  universal:
+    quit: '<disabled>'
