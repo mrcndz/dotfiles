@@ -49,14 +49,22 @@ vim.api.nvim_create_autocmd('BufEnter', {
 })
 
 -- Empty start (no args, no session buffers): open the file picker instead
-vim.defer_fn(function()
-  if vim.fn.argc() > 0 then return end
-  for _, b in ipairs(vim.fn.getbufinfo { buflisted = 1 }) do
-    if b.name ~= '' then return end
-  end
-  if not vim.fs.find(function() return true end, { type = 'file', limit = 1 })[1] then return end
-  Snacks.picker.files { on_show = feed_esc }
-end, 100)
+local function empty_start_picker()
+  vim.defer_fn(function()
+    if vim.fn.argc() > 0 then return end
+    for _, b in ipairs(vim.fn.getbufinfo { buflisted = 1 }) do
+      if b.name ~= '' then return end
+    end
+    if not vim.fs.find(function() return true end, { type = 'file', limit = 1 })[1] then return end
+    Snacks.picker.files { on_show = feed_esc }
+  end, 100)
+end
+-- A headless server (herdr-nvim sidebar) waits for its UI, so a file sent with --remote wins
+if #vim.api.nvim_list_uis() > 0 then
+  empty_start_picker()
+else
+  vim.api.nvim_create_autocmd('UIEnter', { once = true, group = main_augroup, callback = empty_start_picker })
+end
 
 -- Restore cursor to last known position when reopening a file
 vim.api.nvim_create_autocmd('BufReadPost', {

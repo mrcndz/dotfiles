@@ -74,3 +74,8 @@ opt.smoothscroll = true
 require 'config.statusline'
 vim.o.laststatus = 3
 vim.o.statusline = "%!v:lua.require'config.statusline'.render()"
+
+-- Neovide: same Nerd Font as Ghostty so icons render
+if vim.g.neovide then
+  vim.o.guifont = 'Maple Mono NF:h12'
+end

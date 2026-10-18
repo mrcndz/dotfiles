@@ -1,5 +1,8 @@
 onboarding = false
 
+[terminal]
+default_shell = "/opt/homebrew/bin/fish"
+
 [keys]
 prefix = "ctrl+a"                       
 
@@ -29,14 +32,23 @@ focus_pane_down = "ctrl+j"
 focus_pane_up = "ctrl+k"
 focus_pane_right = "ctrl+l"
 
-# Popups: nvim restores buffers per git root via auto-session
 [[keys.command]]
 key = "prefix+e"
-type = "popup"
-command = 'cd "${HERDR_ACTIVE_PANE_CWD:-$HOME}" && exec nvim'
-description = "nvim"
-width = "90%"
-height = "90%"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+description = "nvim sidebar"
+
+[[keys.command]]
+key = "prefix+o"
+type = "shell"
+command = 'exec fish -c "tern-popup fish -c herdr-file-pick"'
+description = "pick file from screen"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "openr.pick-transcript"
+description = "open file/URL from Claude transcript"
 
 [[keys.command]]
 key = "prefix+g"
@@ -76,31 +88,17 @@ type = "shell"
 command = "echo $HERDR_ACTIVE_TAB_ID | pbcopy"
 description = "copy tab info"
 
-
-# Nvim + Herdr navigation
 [[keys.command]]
-key = "ctrl+h"
-type = "plugin_action"
-command = "vim-herdr-navigation.left"
-description = "navigate left (vim/herdr)"
+key = "prefix+#"                   # # : copy agent session id to clipboard
+type = "shell"
+command = "herdr pane get $HERDR_ACTIVE_PANE_ID | jq -r '.result.pane.agent_session.value' | tr -d '\\n' | pbcopy"
+description = "copy agent session id"
 
 [[keys.command]]
-key = "ctrl+j"
-type = "plugin_action"
-command = "vim-herdr-navigation.down"
-description = "navigate down (vim/herdr)"
-
-[[keys.command]]
-key = "ctrl+k"
-type = "plugin_action"
-command = "vim-herdr-navigation.up"
-description = "navigate up (vim/herdr)"
-
-[[keys.command]]
-key = "ctrl+l"
-type = "plugin_action"
-command = "vim-herdr-navigation.right"
-description = "navigate right (vim/herdr)"
+  key = "prefix+a"
+  type = "plugin_action"
+  command = "herdr-projects.open"
+  description = "work board"
 
 [ui]
 confirm_close = true
@@ -108,12 +106,31 @@ show_agent_labels_on_pane_borders = true
 
 agent_panel_sort = "spaces"
 [ui.toast]
-delivery = "terminal"
+delivery = "herdr"
+
+[ui.toast.herdr]
+position = "bottom-left"
+
+[ui.sidebar]
+
+[ui.sidebar.agents]
+row_gap = 0
+rows = [
+  ["state_icon", { token = "$title", fg = "#4d7a87", bold = true, dim = false }],
+  [{ token = "$provider", fg = "#84aab4", bold = false, dim = false }, { token = "$limit", fg = "#5fd75f", bold = true, dim = false }],
+  [{ token = "$context", fg = "#84aab4", bold = false, dim = false }],
+]
+
+[ui.sidebar.spaces]
+rows = [
+  ["state_icon", { token = "workspace", fg = "#4d7a87", bold = true, dim = false }],
+  ["branch", "git_status"],
+]
 
 [theme]
 auto_switch = true
 light_name = "gruvbox-light"
-dark_name = "rose-pine-moon"
+dark_name = "rose-pine"
 
 [experimental]
 pane_history = true

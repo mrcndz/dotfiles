@@ -50,3 +50,19 @@ status_icon.space_index = true
 status_icon.color = false
 status_icon.enable = true
 scroll.enable = false
+
+[[window_rules]]
+if.app_id = "com.apple.iCal"
+float = true
+
+[[window_rules]]
+if.app_id = "com.apple.finder"
+float = true
+
+[[window_rules]]
+if.app_id = "com.apple.QuickTimePlayerX"
+float = true
+
+[[window_rules]]
+if.app_id = "com.1password.1password"
+float = true
