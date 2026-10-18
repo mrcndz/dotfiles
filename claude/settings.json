@@ -55,6 +55,17 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -87,10 +98,13 @@
       }
     }
   },
-  "effortLevel": "low",
+  "effortLevel": "medium",
   "modelSettings": {
     "claude-opus-5": {
-      "effortLevel": "low"
+      "effortLevel": "medium"
+    },
+    "claude-sonnet-5": {
+      "effortLevel": "medium"
     }
   },
   "skipDangerousModePermissionPrompt": true,
@@ -99,7 +113,7 @@
   "vimInsertModeRemaps": {
     "jj": "<Esc>"
   },
-  "verbose": true,
+  "verbose": false,
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,

@@ -39,7 +39,7 @@ if status is-interactive
 
     # not set -q TMUX && exec sh -c "tmux -f $DOTFILES/tmux/tmux.conf attach 2>/dev/null || tmux -f $DOTFILES/tmux/tmux.conf new"
     # using herdr for now
-    not set -q HERDR_ENV && not set -q TMUX && type -q herdr && exec herdr
+    # not set -q HERDR_ENV && not set -q TMUX && type -q herdr && exec herdr
 
     type -q zoxide && zoxide init fish | source
 

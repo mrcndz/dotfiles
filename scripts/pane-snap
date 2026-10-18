@@ -1,0 +1,25 @@
+#!/bin/sh
+# Herdr: freeze a pane's screen (colors included) into a new sibling pane.
+# Usage: pane-snap [pane-id] [--scrollback]
+#   pane-id defaults to the current pane; --scrollback captures recent
+#   unwrapped output instead of just the visible viewport.
+set -e
+
+[ "${HERDR_ENV:-}" = 1 ] || { echo "pane-snap: not inside a Herdr pane" >&2; exit 1; }
+
+pane="$HERDR_PANE_ID"
+source=visible
+for arg in "$@"; do
+    case "$arg" in
+    --scrollback) source=recent-unwrapped ;;
+    *) pane="$arg" ;;
+    esac
+done
+
+snap=$(mktemp -t pane-snap).ansi
+herdr pane read "$pane" --source "$source" --format ansi >"$snap"
+
+new=$(herdr pane split --current --direction right --no-focus | jq -r '.result.pane.pane_id')
+# Mark private-use areas printable so Nerd Font glyphs render (less >= 633)
+herdr pane run "$new" "clear; LESSUTFCHARDEF='E000-F8FF:p,F0000-FFFFD:p' less -R '$snap'; rm -f '$snap'"
+echo "snapshot of $pane in $new (q to close viewer)"

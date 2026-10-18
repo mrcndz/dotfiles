@@ -100,6 +100,18 @@ description = "copy agent session id"
   command = "herdr-projects.open"
   description = "work board"
 
+[[keys.command]]
+key = "prefix+shift+r"
+type = "plugin_action"
+command = "herdr-agent-quota.refresh"
+description = "refresh all agent quotas"
+
+[[keys.command]]
+key = "prefix+shift+q"
+type = "plugin_action"
+command = "herdr-agent-quota.open-settings"
+description = "open agent quota settings"
+
 [ui]
 confirm_close = true
 show_agent_labels_on_pane_borders = true
@@ -114,12 +126,18 @@ position = "bottom-left"
 [ui.sidebar]
 
 [ui.sidebar.agents]
-row_gap = 0
-rows = [
-  ["state_icon", { token = "$title", fg = "#4d7a87", bold = true, dim = false }],
-  [{ token = "$provider", fg = "#84aab4", bold = false, dim = false }, { token = "$limit", fg = "#5fd75f", bold = true, dim = false }],
-  [{ token = "$context", fg = "#84aab4", bold = false, dim = false }],
-]
+row_gap = 1 # herdr-agent-quota
+rows = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-row
+
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", fg = "#e88461", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
+codex = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", fg = "#c4d7f5", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
+grok = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", fg = "#d5d5d8", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
+agy = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", fg = "#8ab4f8", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
+opencode = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
+pi = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", fg = "#d4a0c8", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
+omp = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", fg = "#bba3e8", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
+devin = [["state_icon", { token = "tab", bold = true, dim = false }, { token = "$quota_provider_model", fg = "#6c5ce7", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_context", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }]] # herdr-agent-quota-provider
 
 [ui.sidebar.spaces]
 rows = [

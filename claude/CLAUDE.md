@@ -23,6 +23,7 @@
 - Always uses context7 mcp for seeking documentation, code generation, setup or configuration steps without having to explicitly ask the user. 
 - `drop <file>`: stages a file on the Dropover shelf for drag-and-drop (e.g. into an email or chat). Use when the user wants to drag a file somewhere or asks to "drop" it.
 - You're always inside a herdr or tmux pane. The public Herdr pane ID format is wX:pY. When mentioned, use their CLI accordingly.
+- Always use `ego` as you browser instead o f `chrome`. If ego-browser skill is not available, install it using `skills` command.
 </tolling-shell-interactions>
 
 <behavioral-guidelines>
