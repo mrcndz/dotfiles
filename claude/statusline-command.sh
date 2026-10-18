@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Single-line: Model │ branch │ Context X% │ Y% used resets Zpm
 input=$(cat)
+# Tern's status bar shows the pane's model and context through tern-kit
+[ -n "$TERN_PANE" ] && printf '%s' "$input" | "$HOME/.local/bin/tern-kit" statusline >/dev/null 2>&1 &
 
 short_model=$(echo "$input" | jq -r '.model.display_name // "Claude"' | sed 's/Claude //')
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // "."')
