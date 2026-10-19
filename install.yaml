@@ -26,7 +26,7 @@ symlinks-darwin:
   - ~/.config/herdr/config.toml: $DOTFILES/herdr/config.toml
 
 post_commands:
-  - curl -sL https://git.io/fisher | source && fisher update
+  - curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update
   - source $DOTFILES/fish/config.fish
   - if test -f ~/.docker/config.json; perl -pi -e 's/"credsStore"/"credStore"/g' ~/.docker/config.json; end
   - git config --global core.excludesFile $DOTFILES/git/gitignore
