@@ -6,6 +6,8 @@
   "theme_dark": "dark-rose-pine",
   "confirm_close": "always",
   "status_bar": true,
+  "agent_command": "claude",
+  "new_blocks": "Shell",
   "keybinds": {
     "ctrl+a>t": "new_tab",
     "ctrl+a>|": "split_right",
@@ -27,7 +29,7 @@
     "ctrl+a>shift+k": "move_pane:up",
     "ctrl+a>shift+l": "move_pane:right",
     "ctrl+a>space": "show_previous_tab",
-    "ctrl+a>s": "switch_session",
+    "ctrl+a>s": "plugin.kit.pick_session",
     "ctrl+a>w": "switch_session",
     "ctrl+a>n": "new_session",
     "ctrl+a>shift+x": "close_session",
