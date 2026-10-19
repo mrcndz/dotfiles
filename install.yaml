@@ -28,7 +28,7 @@ symlinks-darwin:
   - ~/.config/herdr/config.toml: $DOTFILES/herdr/config.toml
   - ~/.config/tern-kit/settings.json: $DOTFILES/tern/settings.json
   - ~/.local/bin/tern-kit: ~/Workspace/Repos/tern-kit/bin/tern-kit
-  - ~/.agents/skills/tern-kit: ~/Workspace/Repos/tern-kit/skill/tern-kit
+  - ~/.agents/skills/tern: ~/Workspace/Repos/tern-kit/skill/tern
 
 post_commands:
   - curl -sL https://git.io/fisher | source && fisher update
