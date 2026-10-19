@@ -8,7 +8,7 @@
   "status_bar": true,
   "agent_command": "claude",
   "new_blocks": "Shell",
-  "command_lenses": false,
+  "command_lenses": true,
   "keybinds": {
     "ctrl+a>t": "new_tab",
     "ctrl+a>|": "split_right",
