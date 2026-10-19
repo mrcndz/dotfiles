@@ -27,6 +27,7 @@ symlinks-darwin:
   - ~/.config/herdr/config.toml: $DOTFILES/herdr/config.toml
   - ~/.config/tern-kit/settings.json: $DOTFILES/tern/settings.json
   - ~/.local/bin/tern-kit: ~/Workspace/Repos/tern-kit/bin/tern-kit
+  - ~/.local/bin/tern-file-pick: ~/Workspace/Repos/tern-kit/bin/tern-file-pick
   - ~/.agents/skills/tern: ~/Workspace/Repos/tern-kit/skill/tern
 
 post_commands:

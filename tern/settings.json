@@ -37,7 +37,7 @@
     "ctrl+a><": "preferences",
     "ctrl+a>shift+,": "preferences",
     "ctrl+a>shift+r": "reload_config",
-    "ctrl+a>o": "plugin.kit.attention",
+    "ctrl+a>o": "plugin.kit.pick_file",
     "ctrl+h": "plugin.kit.nav_left",
     "ctrl+j": "plugin.kit.nav_down",
     "ctrl+k": "plugin.kit.nav_up",
