@@ -38,6 +38,8 @@
     "ctrl+a>shift+,": "preferences",
     "ctrl+a>shift+r": "reload_config",
     "ctrl+a>o": "plugin.kit.pick_file",
+    "ctrl+a>b": "plugin.kit.toggle_sidebar",
+    "ctrl+a>a": "plugin.kit.focus_sidebar",
     "ctrl+h": "plugin.kit.nav_left",
     "ctrl+j": "plugin.kit.nav_down",
     "ctrl+k": "plugin.kit.nav_up",
