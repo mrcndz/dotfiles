@@ -14,15 +14,6 @@
             "command": "~/.claude/_scripts/notify-sound.sh"
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
-          }
-        ]
       }
     ],
     "PermissionRequest": [
@@ -31,16 +22,6 @@
           {
             "type": "command",
             "command": "~/.claude/_scripts/notify.sh 'Waiting for approval' 'Claude needs your permission to continue'"
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
           }
         ]
       }
@@ -63,16 +44,6 @@
             "command": "~/.claude/_scripts/multiplexer-context.sh"
           }
         ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
-          }
-        ]
       }
     ],
     "WorktreeCreate": [
@@ -81,63 +52,6 @@
           {
             "type": "command",
             "command": "~/.claude/_scripts/worktree-create.fish"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "[ -z \"$TERN_PANE\" ] || \"$HOME/.local/bin/tern-kit\" hook claude",
-            "timeout": 5
           }
         ]
       }
