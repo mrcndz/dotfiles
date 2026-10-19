@@ -1,5 +1,4 @@
 pre_commands:
- - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
  - git clone https://github.com/paulbkim-dev/vim-herdr-navigation ~/.config/herdr/plugins/vim-herdr-navigation
  - git clone git@github.com:mrcndz/tern-kit.git ~/Workspace/Repos/tern-kit
  - git update-index --assume-unchanged $DOTFILES/env.fish
@@ -33,8 +32,7 @@ symlinks-darwin:
 post_commands:
   - curl -sL https://git.io/fisher | source && fisher update
   - source $DOTFILES/fish/config.fish
-  - ~/.tmux/plugins/tpm/bin/install_plugins
   - tern plugin link ~/Workspace/Repos/tern-kit
-  - sed -i 's/"credsStore"/"credStore"/g' ~/.docker/config.json
+  - test -f ~/.docker/config.json && perl -pi -e 's/"credsStore"/"credStore"/g' ~/.docker/config.json
   - git config --global core.excludesFile $DOTFILES/git/gitignore
   - echo "> Please use `npx skills $DOTFILES` to install skills"
