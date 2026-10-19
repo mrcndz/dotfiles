@@ -31,7 +31,7 @@ symlinks-darwin:
   - ~/.agents/skills/tern: ~/Workspace/Repos/tern-kit/skill/tern
 
 post_commands:
-  - curl -sL https://git.io/fisher | source && fisher update
+  - curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update
   - source $DOTFILES/fish/config.fish
   - tern plugin link ~/Workspace/Repos/tern-kit
   - if test -f ~/.docker/config.json; perl -pi -e 's/"credsStore"/"credStore"/g' ~/.docker/config.json; end
