@@ -67,6 +67,7 @@ function create_symlink -a source -a dest
     end
 
     set_color red
+    mkdir -p (dirname $dest)
     ln -sf $source $dest | sed "s/^/  |  /"
     if not test $status -ne 0
         set_color green
