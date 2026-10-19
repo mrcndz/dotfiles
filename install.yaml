@@ -28,6 +28,6 @@ symlinks-darwin:
 post_commands:
   - curl -sL https://git.io/fisher | source && fisher update
   - source $DOTFILES/fish/config.fish
-  - test -f ~/.docker/config.json && perl -pi -e 's/"credsStore"/"credStore"/g' ~/.docker/config.json
+  - if test -f ~/.docker/config.json; perl -pi -e 's/"credsStore"/"credStore"/g' ~/.docker/config.json; end
   - git config --global core.excludesFile $DOTFILES/git/gitignore
   - echo "> Please use `npx skills $DOTFILES` to install skills"
