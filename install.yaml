@@ -1,7 +1,8 @@
 pre_commands:
  - git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
  - git clone https://github.com/paulbkim-dev/vim-herdr-navigation ~/.config/herdr/plugins/vim-herdr-navigation
- - git clone https://github.com/mrcndz/tern-kit ~/Workspace/Repos/tern-kit
+ - git clone git@github.com:mrcndz/tern-kit.git ~/Workspace/Repos/tern-kit
+ - mkdir -p ~/.config/tern-kit ~/.local/bin ~/.agents/skills
  - git update-index --assume-unchanged $DOTFILES/env.fish
  - git config --global rebase.autoStash true
 
