@@ -1,0 +1,10 @@
+id = "tern-cwd"
+name = "Tern cwd"
+version = "0.1.0"
+min_herdr_version = "0.7.5"
+description = "Report the focused pane's directory to Tern (OSC 7) so its Files pane follows herdr"
+platforms = ["macos"]
+
+[[events]]
+on = "pane.focused"
+command = ["bash", "tern-cwd.sh"]

@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# Herdr popup: pick a file or URL mentioned on the active pane's screen.
+#   enter  .md in Tern's viewer beside herdr; other files in the herdr-nvim sidebar;
+#          URLs and .html in the browser
+#   y  copy the absolute path or URL to the clipboard
+#   e  open the file in the herdr-nvim sidebar (files only)
+# Run it through fish so fzf gets FZF_DEFAULT_OPTS from config.fish.
+set -uo pipefail
+
+pane="${HERDR_ACTIVE_PANE_ID:?run from a herdr popup}"
+# Take workspace, tab and cwd from the pane itself, not from the popup env
+{ read -r workspace; read -r tab; read -r cwd; } < <(
+    herdr pane get "$pane" | jq -r '.result.pane | .workspace_id, .tab_id, .cwd'
+)
+root="$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)"
+screen="$(herdr pane read "$pane" --source visible 2>/dev/null)"
+
+# Newest mention (bottom) first; drop trailing sentence punctuation
+urls="$(
+    grep -oE 'https?://[^][[:space:]<>"`()]+' <<<"$screen" | sed -E 's/[.,;:!?]+$//' | tail -r |
+        awk '!seen[$0]++ { print $0 "\t" $0 }'
+)"
+# PR mentions like org/repo:#320 or org/repo:PR#320
+prs="$(
+    grep -oE '[[:alnum:]_.-]+/[[:alnum:]_.-]+:(PR)?#[0-9]+' <<<"$screen" | tail -r |
+        awk '!seen[$0]++ { split($0, a, /:(PR)?#/); print $0 "\thttps://github.com/" a[1] "/pull/" a[2] }'
+)"
+
+# Resolve against the pane cwd, the git root, then one subdir of the cwd
+# (agents print paths relative to a subproject). Newest mention (bottom) first.
+# Claude Code hard-wraps long paths with an indent; also scan a copy with
+# indented continuation lines joined (the -f check drops false joins)
+joined="$(perl -0pe 's/(\S)\n[ \t]+(?=\S)/$1/g' <<<"$screen")"
+files="$(
+    printf '%s\n%s\n' "$screen" "$joined" |
+        grep -oE '[[:alnum:]_.@~/+-]*[[:alnum:]_]\.[[:alpha:]][[:alnum:]]*' | tail -r |
+        while IFS= read -r tok; do
+            p="${tok/#\~/$HOME}"
+            if [[ $p == /* ]]; then
+                candidates=("$p")
+            else
+                candidates=("$cwd/$p" ${root:+"$root/$p"})
+                # Bare names like index.html would match in random subdirs
+                [[ $p == */* ]] && candidates+=("$cwd"/*/"$p")
+            fi
+            for abs in "${candidates[@]}"; do
+                [ -f "$abs" ] && printf '%s\t%s\n' "$tok" "$abs" && break
+            done
+        done | awk -F'\t' '!seen[$2]++'
+)"
+
+list="$(printf '%s\n%s\n%s\n' "$prs" "$urls" "$files" | sed '/^$/d')"
+
+if [ -z "$list" ]; then
+    herdr notification show "file-pick" --body "no files or URLs on screen" >/dev/null 2>&1
+    exit 0
+fi
+
+# y/e override the ignore binds of FZF_DEFAULT_OPTS; its i/esc unbind and rebind them
+out="$(printf '%s\n' "$list" | fzf --delimiter='\t' --with-nth=1 \
+    --reverse --no-sort --cycle --header='enter open · y copy · e edit · q quit' \
+    --bind='enter:print(o)+accept' --bind='y:print(y)+accept' --bind='e:print(e)+accept')" || exit 0
+
+key="$(sed -n 1p <<<"$out")"
+abs="$(sed -n 2p <<<"$out" | cut -f2)"
+
+nvim_sidebar() {
+    # herdr kills the popup's process group on close; set -m gives the job its own
+    bin=(~/.config/herdr/plugins/github/chmarax.herdr-nvim-*/bin/herdr-nvim)
+    set -m
+    HERDR_PLUGIN_CLICKED_URL="$abs" HERDR_PANE_ID="$pane" \
+        HERDR_WORKSPACE_ID="$workspace" HERDR_TAB_ID="$tab" \
+        nohup "${bin[0]}" open-link >/dev/null 2>&1 </dev/null &
+    disown
+}
+
+case "$key" in
+    o)
+        if [[ $abs == http* || $abs == *.html ]]; then
+            open "$abs"
+        elif [[ $abs == *.md ]]; then
+            tern open --split right "$abs"
+        else
+            nvim_sidebar
+        fi
+        ;;
+    y) printf '%s' "$abs" | pbcopy ;;
+    e) [[ $abs == http* ]] || nvim_sidebar ;;
+esac

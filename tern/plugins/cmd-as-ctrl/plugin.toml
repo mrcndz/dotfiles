@@ -1,0 +1,6 @@
+schema = 1
+id = "cmd-as-ctrl"
+name = "Cmd as Ctrl"
+version = "0.1.0"
+description = "Cmd+letter sends Ctrl+letter, Cmd+digit sends the herdr prefix and the digit"
+window = "window.luau"

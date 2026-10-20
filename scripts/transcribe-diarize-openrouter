@@ -1,0 +1,328 @@
+#!/usr/bin/env bash
+# transcribe-diarize-openrouter — transcription with speaker labels via OpenRouter.
+# ASR: an STT model (default microsoft/mai-transcribe-2) on silence-aligned chunks.
+# Diarization: an audio LLM (default google/gemini-3.8-flash) hears the whole recording
+# and labels every ASR segment, so speakers stay consistent across chunks.
+# Sibling of `transcribe-diarize` (local, mlx-whisper + pyannote).
+# Usage: transcribe-diarize-openrouter <file> [language] [--speakers N] [--asr-model M] [--diarize-model M]
+#   file             audio or video (mov, mp4, mp3, wav, m4a, ...)
+#   language         ISO code, default: pt
+#   --speakers       known number of speakers, improves accuracy (env: TRANSCRIBE_SPEAKERS)
+#   --asr-model      OpenRouter STT model (env: OPENROUTER_ASR_MODEL)
+#   --diarize-model  OpenRouter audio-input chat model (env: OPENROUTER_DIARIZE_MODEL)
+# Key: OPENROUTER_API_KEY, else read from 1Password with OP_TOKEN (env or ./.env).
+# Reuses <basename>.openrouter.json from a previous run (skips ASR, re-runs diarization).
+# Outputs <basename>.{txt,speakers.txt,speakers.srt,openrouter.json} next to the input.
+
+set -euo pipefail
+
+SPEAKERS="${TRANSCRIBE_SPEAKERS:-}"
+ASR_MODEL="${OPENROUTER_ASR_MODEL:-microsoft/mai-transcribe-2}"
+DIARIZE_MODEL="${OPENROUTER_DIARIZE_MODEL:-google/gemini-3.8-flash}"
+POSITIONAL=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --speakers)        SPEAKERS="${2:-}"; shift 2 ;;
+    --speakers=*)      SPEAKERS="${1#*=}"; shift ;;
+    --asr-model)       ASR_MODEL="${2:-}"; shift 2 ;;
+    --asr-model=*)     ASR_MODEL="${1#*=}"; shift ;;
+    --diarize-model)   DIARIZE_MODEL="${2:-}"; shift 2 ;;
+    --diarize-model=*) DIARIZE_MODEL="${1#*=}"; shift ;;
+    *)                 POSITIONAL+=("$1"); shift ;;
+  esac
+done
+
+INPUT="${POSITIONAL[0]:-}"
+LANG="${POSITIONAL[1]:-pt}"
+
+if [ -z "$INPUT" ] || [ ! -f "$INPUT" ]; then
+  echo "usage: transcribe-diarize-openrouter <file> [language] [--speakers N] [--asr-model M] [--diarize-model M]" >&2
+  [ -n "$INPUT" ] && echo "file not found: $INPUT" >&2
+  exit 1
+fi
+
+if [ -n "$SPEAKERS" ] && ! [[ "$SPEAKERS" =~ ^[0-9]+$ ]]; then
+  echo "--speakers must be a number, got: $SPEAKERS" >&2
+  exit 1
+fi
+
+command -v ffmpeg >/dev/null || { echo "ffmpeg not found (brew install ffmpeg)" >&2; exit 1; }
+command -v uv >/dev/null     || { echo "uv not found (brew install uv)" >&2; exit 1; }
+
+DIR="$(cd "$(dirname "$INPUT")" && pwd)"
+BASE="$(basename "${INPUT%.*}")"
+TMP="$(mktemp -d -t transcribe-diarize-openrouter)"
+trap 'rm -rf "$TMP"' EXIT
+
+echo "› extracting audio…" >&2
+ffmpeg -y -i "$INPUT" -vn -ac 1 -ar 16000 -c:a pcm_s16le "$TMP/audio.wav" >/dev/null 2>&1
+
+uv run --quiet --no-project --python 3.12 --with onepassword-sdk python - \
+  "$TMP" "$DIR/$BASE" "$LANG" "$SPEAKERS" "$ASR_MODEL" "$DIARIZE_MODEL" <<'PYEOF'
+import base64
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+
+API = "https://openrouter.ai/api/v1"
+CHUNK_SEC = int(os.environ.get("OPENROUTER_CHUNK_SEC", "300"))
+OP_VAULT = os.environ.get("OPENROUTER_OP_VAULT", "Agents")
+OP_ITEM = os.environ.get("OPENROUTER_OP_ITEM", "OpenRouter API Key - Default")
+OP_FIELD = os.environ.get("OPENROUTER_OP_FIELD", "credencial")
+
+
+def log(msg):
+    print(msg, file=sys.stderr)
+
+
+def die(msg):
+    log(msg)
+    sys.exit(1)
+
+
+def dotenv_value(name):
+    try:
+        with open(".env") as f:
+            for line in f:
+                key, sep, value = line.strip().partition("=")
+                if sep and key.strip() == name:
+                    return value.strip().strip("'\"")
+    except FileNotFoundError:
+        pass
+    return None
+
+
+def api_key():
+    if os.environ.get("OPENROUTER_API_KEY"):
+        return os.environ["OPENROUTER_API_KEY"]
+    token = os.environ.get("OP_TOKEN") or dotenv_value("OP_TOKEN")
+    if not token:
+        die("No key. Set OPENROUTER_API_KEY, or OP_TOKEN (1Password service account) in env or ./.env")
+
+    import asyncio
+    from onepassword.client import Client
+
+    async def read():
+        client = await Client.authenticate(auth=token, integration_name="transcribe-diarize-openrouter",
+                                           integration_version="v1")
+        vault = next((v for v in await client.vaults.list() if v.title == OP_VAULT), None)
+        if vault is None:
+            die(f"1Password vault not found: {OP_VAULT}")
+        # the item title carries a trailing space in 1Password, so compare stripped
+        item = next((i for i in await client.items.list(vault.id) if i.title.strip() == OP_ITEM.strip()), None)
+        if item is None:
+            die(f"1Password item not found: {OP_VAULT}/{OP_ITEM}")
+        full = await client.items.get(vault.id, item.id)
+        field = next((f for f in full.fields if f.title == OP_FIELD), None)
+        if field is None or not field.value:
+            die(f"1Password field not found: {OP_VAULT}/{OP_ITEM}/{OP_FIELD}")
+        return field.value
+
+    log("› reading OpenRouter key from 1Password…")
+    return asyncio.run(read())
+
+
+def post(key, path, body, timeout, attempts=4):
+    data = json.dumps(body).encode()
+    for attempt in range(1, attempts + 1):
+        req = urllib.request.Request(f"{API}{path}", data=data, headers={
+            "Authorization": f"Bearer {key}", "Content-Type": "application/json",
+            "X-Title": "transcribe-diarize-openrouter"})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.load(resp)
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode(errors="replace")[:500]
+            if e.code not in (408, 429, 500, 502, 503, 504) or attempt == attempts:
+                die(f"{path} failed: HTTP {e.code}: {detail}")
+            log(f"  HTTP {e.code} on {path}, retry {attempt}/{attempts - 1}")
+        except (urllib.error.URLError, TimeoutError) as e:
+            if attempt == attempts:
+                die(f"{path} failed: {e}")
+            log(f"  {e} on {path}, retry {attempt}/{attempts - 1}")
+        time.sleep(2 ** attempt)
+
+
+def duration(wav):
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                          "-of", "default=nw=1:nk=1", wav], capture_output=True, text=True, check=True)
+    return float(out.stdout.strip())
+
+
+def cut_points(wav, total):
+    """Chunk boundaries near every CHUNK_SEC, moved to the nearest silence within 45s."""
+    err = subprocess.run(["ffmpeg", "-i", wav, "-af", "silencedetect=noise=-35dB:d=0.3", "-f", "null", "-"],
+                         capture_output=True, text=True).stderr
+    starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", err)]
+    ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", err)]
+    mids = [(s + e) / 2 for s, e in zip(starts, ends)]
+    cuts, target = [0.0], float(CHUNK_SEC)
+    while target < total - 30:
+        near = [m for m in mids if abs(m - target) <= 45 and m > cuts[-1] + 60]
+        cut = min(near, key=lambda m: abs(m - target)) if near else target
+        cuts.append(cut)
+        target = cut + CHUNK_SEC
+    cuts.append(total)
+    return list(zip(cuts, cuts[1:]))
+
+
+def encode_mp3(wav, out, start=None, length=None, bitrate="48k"):
+    cmd = ["ffmpeg", "-y"]
+    if start is not None:
+        cmd += ["-ss", f"{start:.3f}", "-t", f"{length:.3f}"]
+    cmd += ["-i", wav, "-ac", "1", "-c:a", "libmp3lame", "-b:a", bitrate, out]
+    subprocess.run(cmd, capture_output=True, check=True)
+    with open(out, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+
+def transcribe(key, tmp, wav, lang, model):
+    total = duration(wav)
+    chunks = cut_points(wav, total)
+    log(f"› transcribing {total / 60:.1f} min in {len(chunks)} chunk(s) ({lang}, {model})…")
+
+    def one(args):
+        i, (start, end) = args
+        audio = encode_mp3(wav, f"{tmp}/chunk{i:03d}.mp3", start, end - start)
+        body = {"model": model, "input_audio": {"data": audio, "format": "mp3"}, "language": lang,
+                "response_format": "verbose_json", "timestamp_granularities": ["segment"]}
+        if model.startswith("microsoft/mai-transcribe"):
+            body["provider"] = {"options": {"azure": {"diarization": {"enabled": True}}}}
+        resp = post(key, "/audio/transcriptions", body, timeout=180)
+        log(f"  chunk {i + 1}/{len(chunks)} done")
+        segs = resp.get("segments") or [{"start": 0.0, "end": end - start, "text": resp.get("text", "")}]
+        out = []
+        for s in segs:
+            hint = s.get("speaker")
+            out.append({"start": round(start + float(s["start"]), 3), "end": round(start + float(s["end"]), 3),
+                        "text": s["text"].strip(),
+                        "asr_speaker": None if hint is None else f"c{i}s{hint}"})
+        return out, (resp.get("usage") or {}).get("cost") or 0.0
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        results = list(pool.map(one, enumerate(chunks)))
+    segments = [s for segs, _ in results for s in segs if s["text"]]
+    for n, s in enumerate(segments):
+        s["id"] = n
+    return {"duration": total, "language": lang, "asr_model": model, "chunks": chunks,
+            "segments": segments, "asr_cost": round(sum(c for _, c in results), 6)}
+
+
+DIARIZE_PROMPT = """You are a speaker diarization system for a recorded meeting.
+You get the full meeting audio and the ASR segments (id, start-end in seconds, a chunk-local speaker hint, text).
+Hints like c0s1 are only consistent inside one chunk (c0, c1, ...); the same person gets other hints in other chunks.
+Listen to the voices and assign every segment to a global speaker: SPEAKER_00, SPEAKER_01, ... in order of first appearance.
+Return speaker turns: each turn gives the id of its first segment; a turn lasts until the next turn starts.
+A new turn starts whenever the speaker changes, even for one short segment.
+For each speaker, give a name only if the audio states it (self-introduction, or others address them by name), else null.
+{speakers_line}"""
+
+
+def diarize(key, tmp, wav, data, speakers, model):
+    log(f"› diarizing{f' ({speakers} speakers)' if speakers else ''} with {model}…")
+    audio = encode_mp3(wav, f"{tmp}/full.mp3", bitrate="32k")
+    listing = "\n".join(f"{s['id']}\t{s['start']:.1f}-{s['end']:.1f}\t{s['asr_speaker'] or '-'}\t{s['text']}"
+                        for s in data["segments"])
+    speakers_line = f"There are exactly {speakers} speakers." if speakers else ""
+    schema = {"type": "object", "additionalProperties": False, "required": ["speakers", "turns"], "properties": {
+        "speakers": {"type": "array", "items": {"type": "object", "additionalProperties": False,
+                     "required": ["label", "name", "evidence"], "properties": {
+                         "label": {"type": "string"}, "name": {"type": ["string", "null"]},
+                         "evidence": {"type": "string"}}}},
+        "turns": {"type": "array", "items": {"type": "object", "additionalProperties": False,
+                  "required": ["first_id", "speaker"], "properties": {
+                      "first_id": {"type": "integer"}, "speaker": {"type": "string"}}}}}}
+    body = {"model": model, "temperature": 0, "max_tokens": 32000,
+            "response_format": {"type": "json_schema",
+                                "json_schema": {"name": "diarization", "strict": True, "schema": schema}},
+            "messages": [
+                {"role": "system", "content": DIARIZE_PROMPT.format(speakers_line=speakers_line)},
+                {"role": "user", "content": [
+                    {"type": "input_audio", "input_audio": {"data": audio, "format": "mp3"}},
+                    {"type": "text", "text": "ASR segments (id\tstart-end\thint\ttext):\n" + listing}]}]}
+    resp = post(key, "/chat/completions", body, timeout=900)
+    content = resp["choices"][0]["message"]["content"]
+    try:
+        result = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip()))
+    except json.JSONDecodeError:
+        die(f"diarization returned non-JSON output:\n{content[:1000]}")
+
+    ids = {s["id"] for s in data["segments"]}
+    turns = sorted((t for t in result["turns"] if t["first_id"] in ids), key=lambda t: t["first_id"])
+    if not turns:
+        die("diarization returned no usable turns")
+    current, k = turns[0]["speaker"], 0
+    for s in data["segments"]:
+        while k < len(turns) and turns[k]["first_id"] <= s["id"]:
+            current = turns[k]["speaker"]
+            k += 1
+        s["speaker"] = current
+    data["speakers"] = result["speakers"]
+    data["diarize_model"] = model
+    data["diarize_cost"] = (resp.get("usage") or {}).get("cost")
+    return data
+
+
+def fmt_ts(sec):
+    s = int(sec)
+    return f"{s // 3600:02d}:{s % 3600 // 60:02d}:{s % 60:02d}"
+
+
+def fmt_srt(sec):
+    ms = int(round(sec * 1000))
+    return f"{ms // 3600000:02d}:{ms % 3600000 // 60000:02d}:{ms % 60000 // 1000:02d},{ms % 1000:03d}"
+
+
+def write_outputs(prefix, data):
+    with open(f"{prefix}.txt", "w") as f:
+        f.writelines(f"{s['text']}\n" for s in data["segments"])
+    if "speakers" not in data:
+        return
+    turns = []
+    for s in data["segments"]:
+        if turns and turns[-1]["speaker"] == s["speaker"]:
+            turns[-1]["text"] += " " + s["text"]
+        else:
+            turns.append({"speaker": s["speaker"], "start": s["start"], "text": s["text"]})
+    with open(f"{prefix}.speakers.txt", "w") as f:
+        f.writelines(f"[{fmt_ts(t['start'])}] {t['speaker']}: {t['text']}\n\n" for t in turns)
+    with open(f"{prefix}.speakers.srt", "w") as f:
+        for n, s in enumerate(data["segments"], 1):
+            f.write(f"{n}\n{fmt_srt(s['start'])} --> {fmt_srt(s['end'])}\n{s['speaker']}: {s['text']}\n\n")
+
+
+def main():
+    tmp, prefix, lang, speakers, asr_model, diarize_model = sys.argv[1:7]
+    wav, cache = f"{tmp}/audio.wav", f"{prefix}.openrouter.json"
+    key = api_key()
+
+    if os.path.exists(cache):
+        log(f"› reusing existing transcription: {cache}")
+        with open(cache) as f:
+            data = json.load(f)
+    else:
+        data = transcribe(key, tmp, wav, lang, asr_model)
+    with open(cache, "w") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)
+    write_outputs(prefix, data)
+
+    data = diarize(key, tmp, wav, data, speakers, diarize_model)
+    with open(cache, "w") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)
+    write_outputs(prefix, data)
+
+    for sp in data["speakers"]:
+        log(f"  {sp['label']}: {sp['name'] or '?'} ({sp['evidence']})")
+    log(f"› cost: ASR ${data.get('asr_cost') or 0:.4f}, diarization ${data.get('diarize_cost') or 0:.4f}")
+
+
+main()
+PYEOF
+
+echo "✓ done → $DIR/$BASE.{txt,speakers.txt,speakers.srt,openrouter.json}" >&2

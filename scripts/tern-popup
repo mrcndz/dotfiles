@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Tern popup: runs a command in a block floated (PiP) over the focused block.
+# The block closes when the command succeeds. HERDR_ACTIVE_* vars are passed on,
+# since Tern spawns the block with its own env.
+#
+# Usage: tern-popup <command> [args...]
+set -euo pipefail
+
+envs=()
+for v in "${!HERDR_ACTIVE_@}"; do envs+=("$v=${!v}"); done
+
+id="$(tern split @focused right --json -- env "${envs[@]}" "$@" | jq -r .block)"
+tern pip "$id" >/dev/null
+tern focus "$id" >/dev/null
