@@ -4,7 +4,7 @@
     "pr": "",
     "sessionUrl": false
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
@@ -183,6 +183,9 @@
     },
     "claude-sonnet-5": {
       "effortLevel": "medium"
+    },
+    "claude-fable-5": {
+      "effortLevel": "low"
     }
   },
   "skipDangerousModePermissionPrompt": true,

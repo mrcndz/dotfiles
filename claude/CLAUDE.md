@@ -3,6 +3,10 @@
 - When asked to commit, always see staged files first
 - Use convetional commit messages written in English, with a short title and short description.
 - Never add Co-authored with Claude message to commits or pull requests.
+- PR titles and descriptions are always in English, even when our conversation is in another language. Keep domain terms untranslated.
+- PR descriptions carry only technical content: what the change does, how it was verified, what is pending. Never name teammates, never attribute decisions or suggestions to people, and never copy our conversation history, internal discussion, or meeting context into a PR.
+- Prefer small stacked PRs: one idea per PR, aim for under ~250 changed lines, split the work before writing it. For multi-step changes, base branch N+1 on branch N's head and open each PR when its step is green; merge in order. Fixes from a review round stay in that PR; new scope goes to the next PR in the stack. Titles state the outcome, not the activity.
+- When mentioning PR's please use the format: organization/repo:PR#number (With the #, ex: my-org/my-repo:#58)
 - When asked to "open a PR for [branch]" (e.g., main, staging):
   1. Create a new branch from `origin/<target-branch>`
   2. Apply changes (commits, cherry-picks, etc.)
@@ -22,8 +26,9 @@
 - fish is the login shell so terminals start fish directly; use `fish -c "command"` when necessary like when using fish syntax or a command unexpectedly reports "command not found".
 - Always uses context7 mcp for seeking documentation, code generation, setup or configuration steps without having to explicitly ask the user. 
 - `drop <file>`: stages a file on the Dropover shelf for drag-and-drop (e.g. into an email or chat). Use when the user wants to drag a file somewhere or asks to "drop" it.
-- You're always inside a herdr or tmux pane. The public Herdr pane ID format is wX:pY. When mentioned, use their CLI accordingly.
+- You're always inside a herdr, tmux or Tern pane; the SessionStart hook says which one, so use that multiplexer's CLI. The public Herdr pane ID format is wX:pY.
 - Always use `ego` as you browser instead o f `chrome`. If ego-browser skill is not available, install it using `skills` command.
+- When you mention a file in a reply, always write its absolute path, never a path relative to another directory.
 </tolling-shell-interactions>
 
 <behavioral-guidelines>
