@@ -28,6 +28,7 @@ symlinks-darwin:
   - ~/.config/tern-kit/settings.json: $DOTFILES/tern/settings.json
   - ~/.local/bin/tern-kit: ~/Workspace/Repos/tern-kit/bin/tern-kit
   - ~/.local/bin/tern-file-pick: ~/Workspace/Repos/tern-kit/bin/tern-file-pick
+  - ~/.local/bin/kanban-md: ~/Workspace/Repos/tern-kit/bin/kanban-md
   - ~/.agents/skills/tern: ~/Workspace/Repos/tern-kit/skill/tern
 
 post_commands:
