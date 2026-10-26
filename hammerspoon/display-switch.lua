@@ -19,41 +19,53 @@ local function run(cmd, args, callback)
     end, args):start()
 end
 
-local function monitorEnabled()
+local function monitorScreen()
     for _, screen in ipairs(hs.screen.allScreens()) do
-        if screen:name() == MONITOR then return true end
+        if screen:name() == MONITOR then return screen end
     end
-    return false
+end
+
+local function monitorEnabled()
+    return monitorScreen() ~= nil
 end
 
 -- Blocks the poll while taking, so it doesn't read the old input and disable us again.
 local taking = false
 
--- Writes through the HDMI adapter can be dropped while still exiting 0, so send it a few times.
-local function setInput(attempt)
+local function setInput()
     run(M1DDC, { "set", "input", tostring(myInput) }, function()
-        if attempt < 3 then
-            hs.timer.doAfter(0.5, function() setInput(attempt + 1) end)
-        else
-            hs.timer.doAfter(POLL_SECONDS, function() taking = false end)
-        end
+        hs.timer.doAfter(POLL_SECONDS, function() taking = false end)
     end)
+end
+
+-- Re-enabling lets macOS pick a mode the HDMI link may not hold, so restore the one saved on give.
+local function restoreMode()
+    local mode = hs.settings.get("displaySwitch.mode")
+    local screen = monitorScreen()
+    if mode and screen then
+        screen:setMode(mode.w, mode.h, mode.scale, mode.freq, mode.depth)
+    end
 end
 
 function M.take()
     taking = true
     if monitorEnabled() then
-        setInput(1)
+        setInput()
     else
         -- DDC needs a moment after the monitor is re-enabled.
         run(DISPLAYCTL, { "on" }, function()
-            hs.timer.doAfter(2, function() setInput(1) end)
+            hs.timer.doAfter(2, function()
+                restoreMode()
+                setInput()
+            end)
         end)
     end
 end
 
 -- Hand the monitor to the other Mac and disable our copy.
 function M.give()
+    local screen = monitorScreen()
+    if screen then hs.settings.set("displaySwitch.mode", screen:currentMode()) end
     run(M1DDC, { "set", "input", tostring(otherInput) }, function()
         run(DISPLAYCTL, { "off", MONITOR })
     end)
