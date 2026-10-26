@@ -35,6 +35,7 @@ post_commands:
   - curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update
   - source $DOTFILES/fish/config.fish
   - tern plugin link ~/Workspace/Repos/tern-kit
+  - if test (uname) = Darwin; swiftc -O -o ~/.local/bin/displayctl $DOTFILES/scripts/displayctl.swift; end
   - if test -f ~/.docker/config.json; perl -pi -e 's/"credsStore"/"credStore"/g' ~/.docker/config.json; end
   - git config --global core.excludesFile $DOTFILES/git/gitignore
   - echo "> Please use `npx skills $DOTFILES` to install skills"
