@@ -1,6 +1,5 @@
 -- Share one monitor between two Macs that also share keyboard/mouse via Universal Control.
--- Hotkey on either Mac pulls the monitor to it; the other Mac sees the input change over
--- DDC and disables its copy, so Universal Control stops showing the monitor twice.
+-- The Mac not on screen disables its copy, so Universal Control stops showing the monitor twice.
 local M = {}
 
 local DISPLAYCTL = os.getenv("HOME") .. "/.local/bin/displayctl"
@@ -9,7 +8,10 @@ local MONITOR = "DELL P2725QE"
 local POLL_SECONDS = 3
 
 -- DDC input codes: macpro is on USB-C (27), the other Mac on HDMI 1 (17).
-local myInput = hs.host.localizedName() == "macpro" and 27 or 17
+-- Only macpro polls: DDC reads through the other Mac's HDMI adapter return garbage.
+local IS_MACPRO = hs.host.localizedName() == "macpro"
+local myInput = IS_MACPRO and 27 or 17
+local otherInput = IS_MACPRO and 17 or 27
 
 local function run(cmd, args, callback)
     hs.task.new(cmd, function(code, stdout)
@@ -47,19 +49,36 @@ function M.take()
     end
 end
 
--- Disable our copy once the monitor shows another input. Read errors are ignored.
+-- Hand the monitor to the other Mac and disable our copy.
+function M.give()
+    run(M1DDC, { "set", "input", tostring(otherInput) }, function()
+        run(DISPLAYCTL, { "off", MONITOR })
+    end)
+end
+
+function M.toggle()
+    if monitorEnabled() then M.give() else M.take() end
+end
+
+-- Follow the input: disable our copy when it shows the other Mac, re-enable when it's back.
+-- Unknown values are ignored. macpro reads DDC even while its copy is disabled.
 local function poll()
-    if taking or not monitorEnabled() then return end
+    if taking then return end
     run(M1DDC, { "get", "input" }, function(code, stdout)
         local current = tonumber(stdout)
-        if code == 0 and current and current > 0 and current ~= myInput then
+        if code ~= 0 then return end
+        if current == otherInput and monitorEnabled() then
             run(DISPLAYCTL, { "off", MONITOR })
+        elseif current == myInput and not monitorEnabled() then
+            run(DISPLAYCTL, { "on" })
         end
     end)
 end
 
--- Ctrl + Option + Cmd + M -> show this Mac on the shared monitor
-M.hotkey = hs.hotkey.bind({ "ctrl", "alt", "cmd" }, "M", M.take)
-M.timer = hs.timer.doEvery(POLL_SECONDS, poll)
+-- Ctrl + Option + Cmd + M -> macpro: show macpro; other Mac: toggle between both Macs
+M.hotkey = hs.hotkey.bind({ "ctrl", "alt", "cmd" }, "M", IS_MACPRO and M.take or M.toggle)
+if IS_MACPRO then
+    M.timer = hs.timer.doEvery(POLL_SECONDS, poll)
+end
 
 return M
