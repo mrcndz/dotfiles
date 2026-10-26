@@ -29,10 +29,10 @@ end
 -- Blocks the poll while taking, so it doesn't read the old input and disable us again.
 local taking = false
 
--- DDC needs a moment after the monitor is re-enabled, so retry the input switch.
+-- Writes through the HDMI adapter can be dropped while still exiting 0, so send it a few times.
 local function setInput(attempt)
-    run(M1DDC, { "set", "input", tostring(myInput) }, function(code)
-        if code ~= 0 and attempt < 10 then
+    run(M1DDC, { "set", "input", tostring(myInput) }, function()
+        if attempt < 3 then
             hs.timer.doAfter(0.5, function() setInput(attempt + 1) end)
         else
             hs.timer.doAfter(POLL_SECONDS, function() taking = false end)
@@ -45,7 +45,10 @@ function M.take()
     if monitorEnabled() then
         setInput(1)
     else
-        run(DISPLAYCTL, { "on" }, function() setInput(1) end)
+        -- DDC needs a moment after the monitor is re-enabled.
+        run(DISPLAYCTL, { "on" }, function()
+            hs.timer.doAfter(2, function() setInput(1) end)
+        end)
     end
 end
 
