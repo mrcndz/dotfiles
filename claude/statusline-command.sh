@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # Single-line: Model │ Context X% │ project at branch (Claude's quota lives in Tern's Agents sidebar)
 input=$(cat)
-# Tern's status bar shows the pane's model and context through tern-kit
-[ -n "$TERN_PANE" ] && printf '%s' "$input" | "$HOME/.local/bin/tern-kit" statusline >/dev/null 2>&1 &
-
 # Feed usagebar so the Herdr sidebar $limit row gets Claude's rate-limit data
 printf '%s' "$input" | bash "$HOME/.config/herdr/plugins/github/usagebar-33803b79d616/bin/run-statusline.sh" >/dev/null 2>&1
 
