@@ -6,7 +6,7 @@ if [ -n "$HERDR_ENV" ]; then
 elif [ -n "$TMUX" ]; then
   context="This session runs inside a tmux pane (\$TMUX is set). For any pane/window work, use tmux resources."
 elif [ -n "$TERN_PANE" ]; then
-  context="This session runs directly inside a Tern pane (\$TERN_PANE is set). For any pane/tab/session or agent-to-agent work, use the 'tern' skill (tern and tern-kit CLIs)."
+  context="This session runs directly inside a Tern pane (\$TERN_PANE is set). For any pane/tab/session or agent-to-agent work, use the 'tern' skill."
 else
   context="This session runs in a plain terminal, no multiplexer."
 fi
